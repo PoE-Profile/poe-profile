@@ -1,0 +1,1740 @@
+/*bootstrap overides and others*/
+.tooltip { z-index:99999; }
+.tooltip-inner {
+    max-width: 500px;
+    /*width: 350px; */
+}
+.popover{
+    max-width: 100%;
+}
+
+.about-link {
+    color: orange;
+}
+
+.nav-link:hover{
+    color:#ebb16c!important;
+}
+.nav-link:focus{
+    color: white;
+}
+.corrupted {
+    font-style: italic;
+    color:red;
+    font-size: 12px;
+}
+
+.jewel-result{
+    margin: 3px;
+    width: 370px;
+/*    min-height:250px;*/
+    display: inline-block;
+    vertical-align: top;
+
+}
+.jewel-result a{
+    color: #ebb16c;
+}
+
+a {
+    color: #FFF;
+}
+a:hover {
+    color: #ebb16c;
+}
+a.navbar-brand{
+    color: #FFF;
+}
+a:focus {
+    color: #ebb16c;
+}
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.navbar-fixed-top{
+    z-index: 999999;
+}
+
+
+.dropdown-menu {
+    background-color: #373A3C;
+}
+
+.dropdown-menu > a {
+		color: white;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: #999999;
+    background-image: none;
+}
+
+
+.skillsFloatRight {
+    margin-left: 445px;
+    margin-top: 60px;
+}
+
+.-stat{
+    color:white;
+}
+
+.mod-info .title{
+    color: rgb(127, 127, 127);
+    font-weight: bold;
+}
+
+/*.poe-profile-menu.btn-outline-secondary.active {
+    color:
+}*/
+
+.fa a :hover {
+    color: #ddd;
+}
+
+.poe-btn {
+    background-color: #332F24;
+    color: #FFF;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif!important;
+    /*border: 1px solid #ddd;*/
+}
+
+.poe-btn:hover {
+    background-color: #ebb16c;
+    color: #FFF;
+}
+
+.poe-btn.active {
+    /*background-color: #332F24;*/
+    color: #ebb16c;
+    border-color: #ebb16c;
+}
+.poe-btn.active:hover {
+    color: #fff ;
+    background-color: #ebb16c;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.ad-main-pole {
+    height: 91px;
+    width: 729px;
+    border: 1px solid #000;
+    float: right;
+    /*opacity: 0.5;*/
+    /*background-color: #ddd;*/
+    margin-right: 15px;
+    margin-top: 17px;
+}
+.ad-stashes-pole{
+    height: 90px;
+    width: 728px;
+    /*border: 1px solid #ddd;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.list-group-item {
+    border: 0px solid #ddd;
+}
+
+.home-warning{
+    filter: brightness(150%);
+    background-color: #202624;
+    border-color: #202624;
+    /*color: gold;*/
+}
+.nav-tabs {
+    border-bottom: 1px solid #ebb16c;
+}
+.nav-tabs .nav-link{
+    border: 0px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+    color: #ebb16c;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: transparent transparent transparent;
+    border-bottom: 5px solid #ebb16c;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #ebb16c;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: transparent transparent transparent;
+    /*border-bottom: 5px solid #ebb16c;*/
+    /*font-weight: bold;*/
+}
+
+.nav-link:hover {
+    border-color: #eceeef #eceeef #ddd;
+    color: #eee;
+}
+
+.nav-link {
+    color: #eee;
+}
+
+.tab-content {
+    height: 100%;
+    background: #190a09;
+}
+
+.more-info-content{
+    background-color: #190a09;
+}
+
+
+.more-info-content .tab-pane h3 span::before,
+.more-info-content .tab-pane h3 span::after {
+    position: absolute;
+    content: '';
+    height: 1px;
+    background-color: #ebb16c;
+    top: 16px;
+    width: 300px;
+    right: 100%;
+    margin-right: 20px;
+}
+
+.more-info-content .tab-pane h3 span::after {
+    left: 100%;
+    margin-left: 20px;
+}
+
+.more-info-content .tab-pane h3 span {
+    position: relative;
+}
+
+.more-info-content .tab-pane h3 {
+    text-align: center;
+    font-size: 23.8px;
+}
+
+.more-info-content .tab-pane h3 {
+    color: #ebb16c;
+}
+
+/*poe template css*/
+
+/*.character-panel {
+    background-image: url('https://web.poecdn.com/gen/image/YTozOntpOjA7aTowO2k6/MjthOjI6e3M6MjoiaWQi/O2k6Nzg2O3M6NDoic2l6/ZSI7czo0OiJvcmlnIjt9/aToxO2k6NDt9/6dbbac5ac7/Path_of_Exile_Wallpaper_28.jpg');
+    background-image: url('http://i.imgur.com/AmRMw2Y.jpg');
+
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Templar_1920x1080.jpg');
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Witch_1920x1080.jpg');
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Ranger_1920x1080.jpg'/*);
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Duelist_1920x1080.jpg');
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Marauder_1920x1080.jpg');
+    background-image: url('https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Shadow_1920x1080.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}*/
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Shadow_1920x1080.jpg*/
+.Shadow-panel {
+    background-image: url('/imgs/classes/Shadow.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Marauder_1920x1080.jpg*/
+.Marauder-panel {
+    background-image: url('/imgs/classes/Marauder.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Duelist_1920x1080.jpg*/
+.Duelist-panel {
+    background-image: url('/imgs/classes/Duelist.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Ranger_1920x1080.jpg*/
+.Ranger-panel {
+    background-image: url('/imgs/classes/Ranger.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Witch_1920x1080.jpg*/
+.Witch-panel {
+    background-image: url('/imgs/classes/Witch.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*https://p7p4m6s5.ssl.hwcdn.net/public/news/25-10-2016/wallpapers/Templar_1920x1080.jpg*/
+.Templar-panel {
+    background-image: url('/imgs/classes/Templar.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+/*http://i.imgur.com/AmRMw2Y.jpg*/
+.Scion-panel {
+    background-image: url('/imgs/classes/Scion.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 624px;
+}
+
+
+/*start chuse character pannel*/
+
+.char-nav.nav-pills .nav-link.active{
+    border-style: solid;
+    background: #190a09;
+    border-color: #ebb16c;
+    color: #ebb16c;
+    border-width: 1px;
+}
+
+.nav-pills .nav-link {
+    display: block;
+    margin-top: 5px;
+    padding: .2em 0.65em;
+}
+.panel-heading {
+    font-weight: normal;
+}
+.char-nav.nav-pills .nav-link:hover{
+    color: #ebb16c;
+}
+
+.link,.link:visited {
+    color: #999;
+}
+.link:hover{
+    color: #ebb16c;
+}
+
+.characters{
+    background: #190a09;
+    max-height: 175px;
+    overflow:hidden;
+    position: relative;
+}
+
+.toggle-show{
+    /*background: red;*/
+    width: 100%;
+    display: block;
+    color: white;
+    text-align: center;
+    /*background-color: #451f1c;*/
+    color: #FFF;
+}
+.toggle-show:hover{
+    /*background: red;*/
+    color: white;
+    text-decoration: none;
+    /*background-color: #ebb16c;*/
+    background-color: #451f1c;
+
+}
+.toggle-show:focus{
+    /*background: red;*/
+    color: white;
+    text-decoration: none;
+    background-color: #190a09;
+}
+.toggle-show:focus:hover{
+    /*background: red;*/
+    color: white;
+    background-color: #451f1c;
+}
+
+.list-characters{
+    /*background: #190a09;*/
+    /*position: absolute;*/
+    /*height: 250px;*/
+    clear:both;
+    /*min-height: 50px;*/
+    /*margin: 0 auto;*/
+    vertical-align: middle;
+    padding-left: 5px;
+    text-align:center;
+
+}
+
+
+.list-characters li{
+    /*float: left;*/
+    display: inline-block;
+    list-style: none;
+}
+/*:hover*/
+.more-characters {
+    overflow: visible;
+    z-index: 100;
+    /*height: 195px;*/
+    background: #190a09;
+
+    max-height: 325px;
+    overflow: auto;
+
+}
+.character {
+  /*position: relative;*/
+  margin: 2px;
+  padding: 0px;
+  height: 115px;
+  color: #000;
+  background:rgba(0,0,0,.75);
+  border-style: solid;
+  border-width: 1px;
+  border-color: orange;
+}
+.character .name{
+    display: inline-block;
+    /*list-style-type: none;*/
+    color:DarkOrange;
+    padding: 3px;
+    width: 99%;
+    height: 32px;
+    font-size: 0.90em;
+    background: #000;
+    text-align: center;
+    word-wrap: break-word;
+    line-height: 1.0;
+    position: absolute;
+    left: 1px;
+    top: 76px;
+}
+.character .level,
+.skill .links{
+    color: white;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: #000;
+    opacity: 0.70;
+    font-size: 0.80em;
+    padding: 2px;
+    margin: 2px;
+
+    border-radius:0.3em;
+}
+.Hardcore{
+    filter: brightness(100%)!important;
+    color: #f81d1d!important;
+}
+/* darken images on hover*/
+.character:hover {
+  filter: brightness(100%);
+  /*opacity: 1;*/
+}
+
+.current {
+  filter: brightness(130%);
+  /*opacity: 1.5 !important;*/
+}
+.hide-current{
+    display: none;
+}
+
+.character .icon2{
+  background: url('/imgs//inventory-sprite-sae995ad842.png') no-repeat;
+}
+.home-list .icon2{
+  background: url('/imgs//inventory-sprite-sae995ad842.png') no-repeat;
+}
+.icon2{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.icon2.Marauder {
+	background-position:0 -1185px;
+	width:100px;
+	height:80px
+}
+.icon2.Juggernaut {
+	background-position:-110px 0;
+	width:100px;
+	height:80px
+}
+.icon2.Berserker {
+	background-position:0 -1105px;
+	width:100px;
+	height:80px
+}
+.icon2.Chieftain {
+	background-position:-190px -1105px;
+	width:100px;
+	height:80px
+}
+.icon2.Shadow {
+	background-position:0 -465px;
+	width:100px;
+	height:80px
+}
+.icon2.Assassin {
+	background-position:-200px -225px;
+	width:100px;
+	height:80px
+}
+.icon2.Saboteur {
+	background-position:0 -305px;
+	width:100px;
+	height:80px
+}
+.icon2.Trickster {
+	background-position:0 -545px;
+	width:100px;
+	height:80px
+}
+.icon2.Witch {
+	background-position:-110px -1025px;
+	width:100px;
+	height:80px
+}
+.icon2.Occultist {
+	background-position:0 -945px;
+	width:100px;
+	height:80px
+}
+.icon2.Elementalist {
+	background-position:0 -785px;
+	width:100px;
+	height:80px
+}
+.icon2.Necromancer {
+	background-position:-110px -865px;
+	width:100px;
+	height:80px
+}
+.icon2.Templar {
+	background-position:0 -385px;
+	width:100px;
+	height:80px
+}
+.icon2.Inquisitor {
+	background-position:-190px -305px;
+	width:100px;
+	height:80px
+}
+.icon2.Hierophant {
+	background-position:-110px -385px;
+	width:100px;
+	height:80px
+}
+.icon2.Guardian {
+	background-position:-190px -465px;
+	width:100px;
+	height:80px
+}
+.icon2.Duelist {
+	background-position:0 0;
+	width:100px;
+	height:80px
+}
+.icon2.Slayer {
+	background-position:-190px -625px;
+	width:100px;
+	height:80px
+}
+.icon2.Gladiator {
+	background-position:0 -1025px;
+	width:100px;
+	height:80px
+}
+.icon2.Champion {
+	background-position:-190px -945px;
+	width:100px;
+	height:80px
+}
+.icon2.Ranger {
+	background-position:-110px -705px;
+	width:100px;
+	height:80px
+}
+.icon2.Deadeye {
+	background-position:0 -705px;
+	width:100px;
+	height:80px
+}
+.icon2.Raider {
+	background-position:0 -625px;
+	width:100px;
+	height:80px
+}
+.icon2.Pathfinder {
+	background-position:-110px -545px;
+	width:100px;
+	height:80px
+}
+.icon2.Scion {
+	background-position:0 -865px;
+	width:100px;
+	height:80px
+}
+.icon2.Ascendant {
+	background-position:-190px -785px;
+	width:100px;
+	height:80px
+}
+
+
+/* end of chuse character pannel*/
+
+/* start of inventoryPanel pannel*/
+
+.right-panel-info{
+    width: 70%;
+    float: right;
+    padding:0;
+}
+
+.icon img {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.character-info {
+    /*width: 100%;*/
+    /*position: absolute;
+    top: 69px;
+    right: 15px;*/
+    text-align: center;
+    /* padding-left: 20px; */
+    text-shadow: none;
+    color: #EEE;
+}
+
+.character-info .name {
+    font-size: 46px;
+    margin: 0;
+    color: #ebb16c;
+    /*line-height: 48px;*/
+}
+
+.character-info .info1 {
+    font-size: 22px;
+    margin: 0;
+    color: #ebb16c;
+}
+
+.character-info .info2 {
+    font-size: 15px;
+    margin: 0;
+}
+.wiki-link{
+    position: absolute;
+    right: 20px;
+    top:2px;
+    z-index: 9999;
+}
+.wiki-link a:hover{
+    color: #ebb16c!important;
+    text-decoration: none;
+}
+.inventoryPanel {
+    float: right;
+    margin-top: 90px;
+    /*margin-right: 10px;*/
+    width: 425px;
+    height: 335px;
+    position: relative;
+    /*position: absolute;*/
+}
+
+.twoRolls {
+    list-style-type: none;
+    width:47%;
+    /*float:left;*/
+    display: inline-block;
+    padding: 0px;
+    height: 20px;
+}
+
+.noneItemBg{
+    opacity: 0.50;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#757575+0,282200+81 */
+    background: #757575; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #757575 0%, #282200 81%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover,  #757575 0%,#282200 81%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center,  #757575 0%,#282200 81%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#757575', endColorstr='#282200',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+    /*background: #ffef11; /* Old browsers */
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #ffffff; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #ffffff; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #ffffff; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.normalItemBg {
+    /*opacity: 0.70;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,282200+100 */
+    background: #ffffff; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #ffffff 0%, #282200 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 0%,#282200 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center,  #ffffff 0%,#282200 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#282200',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+    /*background: #ffef11; /* Old browsers */
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #ffffff; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #ffffff; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #ffffff; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.magicItemBg {
+    /*opacity: 0.70;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4162bf+0,282200+100 */
+    background: #4162bf; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #4162bf 0%, #282200 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover,  #4162bf 0%,#282200 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center,  #4162bf 0%,#282200 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4162bf', endColorstr='#282200',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+    /*background: #ffef11; /* Old browsers */
+    border: 2px solid #4162bf;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #4162bf; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #4162bf; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #4162bf; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+
+.rareItemBg {
+    /*opacity: 0.70;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffef11+0,282200+100 */
+    background: #ffef11; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #ffef11 0%, #282200 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, #ffef11 0%, #282200 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, #ffef11 0%, #282200 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffef11', endColorstr='#282200', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+
+    /*background: #ffef11; /* Old browsers */
+    */ border: 2px solid #ffef11;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #ffef11; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #ffef11; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #ffef11; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+
+}
+
+.uniqueItemBg {
+    /*opacity: 0.70;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c96d2c+0,af6025+0,825327+37,26180b+99 */
+    background: #c96d2c; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c96d2c', endColorstr='#26180b', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+
+    border: 2px solid #af6025;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #ffa84c; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #ffa84c; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #ffa84c; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+
+}
+
+.uniqueLegacyItemBg {
+    /*opacity: 0.70;*/
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c96d2c+0,af6025+0,825327+37,26180b+99 */
+    background: #c96d2c;
+    /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%);
+    /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, #c96d2c 0%, #af6025 0%, #825327 37%, #26180b 99%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c96d2c', endColorstr='#26180b', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+    border: 2px solid #af6025;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
+    -webkit-box-shadow: 1px 1px 8px 2px #ffa84c;
+    /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 1px 8px 2px #ffa84c;
+    /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 1px 8px 2px #ffa84c;
+    /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.fakeFlask {
+  background-image: url(/imgs/emptyItems/flask.png);
+  width: 50px;
+  height: 75px;
+}
+
+/* profile weapon imgs*/
+.inventoryPanel .Amulet {
+    position: absolute;
+    left: 268.895px;
+    top: 94px;
+    width: 45px;
+    height: 45px
+}
+
+.Amulet .icon {
+    position: absolute;
+    left: -25px;
+    top: 25px;
+}
+
+.inventoryPanel .Ring {
+    position: absolute;
+    left: 92px;
+    top: 175px;
+    width: 45px;
+    height: 45px
+}
+
+.Ring .icon {
+    position: absolute;
+    left: 0px;
+    width: 45px;
+    top: 0px;
+    height: 45px
+}
+
+.inventoryPanel .Ring2 {
+    position: absolute;
+    left: 268px;
+    top: 175px;
+    width: 45px;
+    height: 45px
+}
+
+.Ring2 .icon {
+    position: absolute;
+    left: 0px;
+    width: 45px;
+    top: 0px;
+    height: 45px
+}
+
+.icon {
+    display: table; position: absolute;
+}
+
+.icon .sockets{
+    /*display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;*/
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
+.inventoryPanel .Weapon ,
+.inventoryPanel .Weapon2 {
+    position: absolute;
+    left: 15px;
+    top: 65px;
+    width: 60px;
+    height: 155px
+
+}
+
+.Weapon .icon,
+.Weapon2 .icon,
+.Offhand .icon,
+.Offhand2 .icon {
+    position: absolute;
+    left: -15px;
+    top: -10px;
+    height: 175px;
+}
+
+
+
+.inventoryPanel .Gloves {
+    position: absolute;
+    left: 62px;
+    top: 245px;
+    width: 75px;
+    height: 75px
+}
+
+.Gloves .icon,
+.Boots .icon {
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    height: 95px;
+}
+
+.inventoryPanel .Helm {
+    position: absolute;
+    left: 165px;
+    top: 5px;
+    width: 75px;
+    height: 75px
+}
+
+.Helm .icon {
+    position: absolute;
+    left: -15px;
+    top:-5px;
+    height: 95px;
+}
+
+.inventoryPanel .BodyArmour {
+    position: absolute;
+    left: 165px;
+    top: 100px;
+    width: 75px;
+    height: 120px
+}
+
+.BodyArmour .icon {
+    position: absolute;
+    left: -10px;
+    top:-10px;
+    height: 142px
+}
+
+.inventoryPanel .Belt {
+    position: absolute;
+    left: 165px;
+    top: 245px;
+    width: 75px;
+    height: 40px
+}
+
+.Belt .icon {
+    position: absolute;
+    left: -10px;
+    height: 40px
+}
+
+.inventoryPanel .Offhand ,
+.inventoryPanel .Offhand2{
+    position: absolute;
+    left: 330px;
+    top: 65px;
+    width: 60px;
+    height: 155px
+}
+
+.inventoryPanel .Boots {
+    position: absolute;
+    left: 268px;
+    top: 245px;
+    width: 75px;
+    height: 75px;
+}
+
+.inventoryPanel .skillGems {
+
+}
+
+.flask-list .Flask{
+    position: relative;
+    width: 55px;
+    height: 85px;
+
+}
+.Flask .icon{
+    position: absolute;
+    left: 0px;
+    width: 50px;
+    height: 75px;
+}
+
+/* stat / mod-info css */
+.mod-info {
+    display: table;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #84350C;
+    padding: 1px;
+    /*opacity: 0.75;*/
+    min-width: 365px;
+    text-align: center;
+    white-space: nowrap;
+    color: #7f7f7f;
+    background-color: #000;
+    margin: 15px 0px 0px 3px;
+    float: left;
+
+}
+
+.mod-info a {
+    color: #ebb16c;
+    font-weight: bold;
+}
+
+.mod-header {
+    width: 100%;
+    color: #FFF;
+    padding: 5px 5px;
+    height: 28px;
+    font-weight: bold;
+    line-height: 22px;
+    background-image: url(/imgs/Hover_header_double_fills.png);
+    display: block;
+    position: relative;
+    font-size: 20px;
+    background-repeat: repeat-x;
+
+}
+
+/*item css*/
+.infobox-page-container {
+    float: right;
+    clear: right;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+
+.item-info {
+    position: relative;
+    /*margin-right: 10px;
+    margin-left: 20px;*/
+    left: -430px;
+    z-index: 2;
+}
+
+.item-info-gem{
+    width:830px!important;
+    left: -847px!important;
+}
+
+.item-info-flask{
+    z-index: 999999!important;
+}
+
+.item-info-gems {
+    position: relative;
+    /*margin-right: 10px;
+    margin-left: 20px;*/
+    right: -70px;
+    z-index: 1;
+}
+
+.item-box {
+    display: table;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #84350C;
+    padding: 2px;
+    margin: 3px;
+    opacity: 0.85;
+    min-width: 410px;
+    text-align: center;
+    white-space: nowrap;
+    color: #7f7f7f;
+    background-color: #000;
+}
+
+
+.item-box > .header.-double {
+    padding: 5px 44px;
+    height: 48px;
+    line-height: 22px;
+    background-image: url(/imgs/Hover_header_double_fills.png);
+}
+
+
+
+
+.item-box > .header.-double {
+    padding: 3px 44px;
+    height: 48px;
+    line-height: 22px;
+    background-image: url(/imgs/Hover_header_double_fills.png);
+}
+
+.item-box.-unique > .header {
+    color: #af6025;
+}
+
+.item-box.-uniqueLegacy>.header {
+    color: lawngreen;
+}
+
+.item-box > .header {
+    display: block;
+    position: relative;
+    font-size: 20px;
+    background-repeat: repeat-x;
+}
+
+.item-box {
+    text-align: center;
+    white-space: nowrap;
+    color: #7f7f7f;
+}
+
+/*start HEADAR ITEM INFO*/
+.item-box > .header.-double::before, .item-box > .header.-double::after {
+    width: 44px;
+    height: 54px;
+}
+
+
+/*unique HEADAR ITEM INFO*/
+.item-box.-unique > .header {
+    color: #af6025;
+}
+.item-box.-unique > .header::before {
+    background-position: 0 -122px;
+}
+.item-box.-unique > .header.-double {
+    background-position: center -54px;
+    height: 54px;
+}
+.item-box.-unique > .header::after {
+    background-position: -44px -122px;
+}
+
+
+.item-box.-uniqueLegacy>.header {
+    color: lawngreen;
+}
+.item-box.-uniqueLegacy>.header::before {
+    background-position: 0 -122px;
+}
+.item-box.-uniqueLegacy>.header.-double {
+    background-position: center -54px;
+    height: 54px;
+}
+.item-box.-uniqueLegacy>.header::after {
+    background-position: -44px -122px;
+}
+
+
+
+/*rare HEADAR ITEM INFO*/
+.item-box.-rare > .header {
+    color: yellow;
+}
+.item-box.-rare > .header::before {
+    background-position: 0 0;
+}
+.item-box.-rare > .header::before {
+    background-position: 0 -68px;
+}
+
+.item-box.-rare > .header.-double {
+    background-position: center 0px;
+    height: 54px;
+}
+.item-box.-rare > .header::after {
+    background-position: -44px -68px;
+}
+
+
+/*normal HEADAR ITEM INFO*/
+.item-box.-normal > .header::before {
+    background-position: 0 0;
+}
+.item-box.-normal{
+    border-color: white;
+}
+
+/*magic HEADAR ITEM INFO*/
+.item-box.-magic > .header {
+    color: #8888ff;
+}
+.item-box.-magic > .header {
+    color: #8888ff;
+}
+.item-box.-magic{
+    border-color: #8888ff;
+}
+.item-box.-magic > .header::before {
+    background-position: 0px -32px;
+    height: 34px!important;
+    width: 30px;
+}
+.item-box.-magic > .header.-single {
+    background-position: 0 -32px;
+    height: 34px;
+}
+.item-box.-magic > .header::after {
+    background-position: -43px -32px;
+    height: 34px !important;
+    width: 30px;
+}
+
+/*rare HEADAR ITEM INFO*/
+.item-box.-none > .header {
+    background-color: white;
+}
+
+
+
+
+/*END HEADAR  item INFO*/
+
+.item-box > .header.-double::before, .item-box > .header.-double::after {
+    width: 44px;
+    height: 54px;
+}
+
+.item-box > .header::before {
+    left: 0;
+}
+
+.item-box > .header::before, .item-box > .header::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    background-image: url(/imgs/Item-ui-sprites-1.png);
+    background-repeat: no-repeat;
+    content: "";
+}
+
+.item-box > .header.-double {
+    line-height: 22px;
+}
+
+.item-box.-unique > .header {
+    color: #af6025;
+}
+
+.item-box.-uniqueLegacy>.header {
+    color: lawngreen;
+}
+
+.item-box > .header.-double {
+    line-height: 22px;
+}
+
+
+.item-box > .header {
+    font-size: 20px;
+}
+
+.item-box {
+    text-align: center;
+    white-space: nowrap;
+    color: #7f7f7f;
+}
+
+
+.item-box > .header.-double::before, .item-box > .header.-double::after {
+    width: 44px;
+    height: 54px;
+}
+
+.item-box > .header::after {
+    right: 0;
+}
+
+.item-box > .header::before, .item-box > .header::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    background-image: url(/imgs/Item-ui-sprites-1.png);
+    background-repeat: no-repeat;
+    content: "";
+}
+
+.item-box > .header.-double {
+    line-height: 22px;
+}
+
+
+.item-stats {
+    display: block;
+    padding: 7px 12px;
+}
+
+.group.-mtx{
+    color:#C1B385;
+    list-style-type: none;
+    font-style: italic;
+}
+
+.item-stats > .group.-textwrap {
+    width: 100%;
+    white-space: normal;
+}
+
+.item-stats > .group {
+    display: block;
+    margin: 0 auto;
+}
+
+.text-color.-mod, .tc.-mod {
+    color: #8888ff;
+}
+
+.item-stats > .group:nth-last-child(n+2)::after, .item-stat-separator::before {
+    display: block;
+    margin: 5px auto;
+    width: 221px;
+    height: 2px;
+    background-image: url(/imgs/Item-ui-sprites-1.png);
+    background-position: 0 -312px;
+    background-repeat: no-repeat;
+    content: "";
+}
+
+/*stats list*/
+.all-stats {
+    width: 335px;
+    /*width: 350px;
+    float: right;*/
+    /*height: 720px;*/
+    padding: 0px;
+    margin-left: 5px;
+    margin-top: 5px;
+    position: relative;
+    height: 615px;
+    z-index: 0;
+    overflow: hidden;
+    float: left;
+}
+
+.all-stats:hover .list-group {
+    z-index: 2;
+}
+
+.all-stats:hover {
+    /*height: 845px;*/
+    overflow: visible;
+    z-index: 100;
+}
+
+.all-stats .list-group {
+    /*height: 1000px;*/
+    width: 100%;
+    position: absolute;
+    top: 95px;
+    left: 0;
+    z-index: 1;
+}
+
+.all-stats a.active {
+    background-color: #494535;
+    color: #ebb16c;
+}
+
+.all-stats .list-group-item i {
+    float: right;
+}
+
+.all-stats .panel-heading {
+    background-color: #28251C;
+    color: #EEE;
+    text-align: center;
+    height: 95px;
+    /*opacity: 0.8;*/
+}
+
+.all-stats .panel-footer {
+    background-color: #332F24;
+    color: #EEE
+}
+
+.all-stats a:nth-child(odd) {
+    color: #eee;
+    background-color: #211F18;
+    opacity: 0.7;
+}
+
+.all-stats a:nth-child(even) {
+    /*color: #eee;background-color: #26231B;opacity: 0.7;*/
+    color: #eee;
+    background-color: #211F18;
+    opacity: 0.7;
+    /*color: #eee;background-color: #1C1411;opacity: 0.7;*/
+
+}
+
+.all-stats:hover a {
+    opacity: 1;
+}
+
+.all-stats a:hover {
+    background-color: #494535;
+    color: #ebb16c;
+}
+
+.all-stats .showless {
+    /*height: 445px;*/
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.all-stats .showmore {
+    /*height: 700px;*/
+    /*overflow-y: scroll;
+    padding-right: 17px;*/
+    overflow: auto;
+    margin-bottom: 0;
+}
+
+/*stashes css*/
+/*.stashes a{
+    color: #eee;
+    background-color: #211F18;
+    opacity: 1.7;
+}*/
+.stashes a:nth-child(odd) {
+    color: #eee;
+    background-color: #211F18;
+    opacity: 0.7;
+}
+
+.stashes a:nth-child(even) {
+    /*color: #eee;background-color: #26231B;opacity: 0.7;*/
+    color: #eee;
+    background-color: #26231B;
+    opacity: 0.7;
+    /*color: #eee;background-color: #1C1411;opacity: 0.7;*/
+
+}
+.stashes a.active ,
+.stashes a.active:focus{
+    background-color: #494535;
+    color: #ebb16c;
+}
+.stashes a.active:hover {
+    background-color: #494535;
+    color: #ebb16c;
+}
+.stashes a:hover {
+    background-color: #494535;
+    color: #ebb16c;
+}
+
+.hideitem {
+    display: none;
+}
+
+
+/*more-info-content*/
+.info-panel{
+
+}
+.info-panel h3 span::before,
+.info-panel h3 span::after,
+.flasks-panel h3 span::before,
+.flasks-panel h3 span::after{
+        width: 100px !important;
+}
+
+.flasks-panel{
+}
+
+
+/*end more-info-content*/
+.fav-list{
+    /*background: red;*/
+    /*height: 500px;*/
+    overflow: auto;
+    width: 100%;
+    margin: 0 auto;
+
+}
+.fav-acc-list{
+    padding: 0px;
+    /*text-align: center;*/
+}
+
+.list-group-item-warning {
+    opacity: 0.8;
+    /*background-color: #776d56;*/
+    /*background-color: #213138;*/
+    background-color: #202624;
+    color:#FFF!important;
+    text-align: left;
+}
+.list-group-item-warning:hover,
+.list-group-item-warning:focus{
+    color:orange!important;
+    background-color: #213138!important;
+    /*background-color: #776d56!important;*/
+    /*color: black!important;
+    background-color: white!important;*/
+
+    opacity: 1;
+
+}
+.close-icon{
+    font-size: 1.35em;
+}
+.close-icon:hover{
+    color: orange;
+}
+
+/*remove responsevnes*/
+
+body {
+    min-width: 1140px !important;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    background: #202624;
+
+}
+
+a.navbar-brand {
+    display: block;
+}
+
+@media (min-width: 544px) {
+    .container {
+      width: 1140px!important;
+      max-width: none !important;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    html {
+        overflow: auto;
+    }
+    a.navbar-brand {
+        display: inline;
+    }
+}
+
+
+/*.container { width: 1140px!important; max-width:1140px!important;}*/
+.container {
+  width: 1140px!important;
+  max-width: none !important;
+}
+
+/* Finesse the page header spacing */
+.page-header {
+  margin-bottom: 30px;
+}
+.page-header .lead {
+  margin-bottom: 10px;
+}
+
+
+/* Demonstrate the grids */
+.col-xs-4 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  background-color: rgba(86,61,124,.15);
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86,61,124,.2);
+}
+
+.container .navbar-header,
+.container .navbar-collapse {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Always float the navbar header */
+.navbar-header {
+  float: left;
+}
+
+
+
+/* life mana globs*/
+.bottom-center-info{
+  width: 480px;
+  margin: auto;
+}
+
+.bottom-info-content{
+    background-color: #0b0706;
+    /*background-color: #05060A;*/
+    /*background-color: #190a09;*/
+}
+
+
+.info-panel{
+    text-align: center;padding:0px;padding-top: 10px;
+}
+
+
+/*home page css*/
+
+.homapage-table{
+    /*background: #202624;opacity:0.8;*/
+    background-color: #211F18;margin-bottom: 0rem;
+}
+.homapage-table a{
+    color: #ebb16c;
+}
+.homapage-table tbody tr:hover{
+    /*background-color: rgba(0,0,0,1);*/
+    background-color: #494535;
+    color: #CCCCCC;
+}
+.homapage-table .twitch-cell{
+    width:240px;
+    height: 140px;
+    padding: 5px;
+}
+.homapage-table .class-cell{
+    width:135px;
+    height: 105px;
+    padding: 5px;
+}
+.twitch-cell img{
+    width:320px;
+
+}
+.homapage-table .row{
+    width: 50px;
+}
+
+
+.homapage-table td,.homapage-table th{
+border-top: 0px solid #eceeef;
+vertical-align: middle;
+}
+.homapage-table thead th{
+border-bottom: 1px solid #ebb16c;
+}
+
+.twitch-card{
+border: 0px;
+margin-bottom: 0rem;
+background-color: #000;
+}
+
+.twitch-card:hover,
+.skill-card:hover{
+box-shadow: 0 2px 2px 0 #ebb16c, 0 1px 5px 0 #ebb16c, 0 3px 1px -2px #ebb16c;
+}
+.twitch-card .card-text{
+    color: #FFFFFF;
+}
+.twitch-card .caption-overlay ,
+.skill-card .caption-overlay {
+    position: absolute;
+    right: 0;
+    top: ;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    padding: 4px;
+}
+.card-backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    /*border-radius: .35rem;*/
+    background: transparent linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 1) 100%) repeat scroll 0% 0%;
+    /*background: transparent linear-gradient(to bottom, transparent 30%, rgba(0, 0, 0, 0.35) 56%, #002d5b 100%) repeat scroll 0% 0%;*/
+}
+.twitch-card .card {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.twitch-card:hover .hover .play {
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+}
+.twitch-card:hover .hover {
+    opacity: 0.7; /* added */
+    top: 0; /* added */
+    z-index: 100;
+    background: black;
+}
+.twitch-card .hover{
+    display: block;
+    position: absolute;
+    right: -100%;
+    opacity: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: inherit;
+}
+
+.home-list-skills{
+    /*width:280px;*/
+    padding: 0;
+    height: 88px;
+    overflow: hidden;
+}
+.home-list-skills li{
+    width: 85px;
+    list-style: none;
+    float: left;
+    height: 85px;
+    margin: 1px;
+}
+.skill-card{
+    /*filter: brightness(50%);*/
+    border: 0px;
+}
+.skill-card .card-text{
+    color: #ebb16c;
+    line-height: 0.9;
+    text-align: center;
+}
+.skill-card img{
+    width: 100%;
+    /*border-radius: .35rem;*/
+}
+.skill-cell{
+    width:280px;
+    padding: 0rem!important;
+}
+
+/*fixing problem with profile list chars leagues*/
+.nav-pills .nav-item + .nav-item {
+    margin-left: 0px;
+}
+
+.my-sticky-top {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+.prevNext{
+    padding: 5px;
+    /*background-color: #211F18;*/
+    /*opacity: 0.85;*/
+    height: 55px;
+}
+.dropdown-item{
+    color: white!important;
+    padding: 5px 5px;
+    border-bottom:  1px solid #ccc;
+}
+.dropdown-item:hover{
+    color: black!important;
+}
+
+.homapage-table tbody tr{
+    border-bottom:  1px solid #000;
+}

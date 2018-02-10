@@ -1,0 +1,110 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+body {
+    line-height: 1.3;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 1.3em;
+}
+
+body, .defaultText {
+    color: #a38d6d;
+}
+
+#passiveSkillTree {
+    position: relative;
+}
+
+#passiveSkillTree canvas {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+#skillTreeMainCanvas {
+    background: #000;
+    z-index: 1000;
+}
+#skillTreeMidCanvas {
+    z-index: 1001;
+}
+#skillTreeTopCanvas {
+    z-index: 1002;
+}
+
+#passiveSkillTreeControls {
+    background: #0E0E0E;
+    border-top: 2px solid #0F0F0F;
+    text-align: center;
+    display: none;
+}
+
+#passiveControlsForm {
+    display: inline-block;
+    text-align: left;
+}
+
+
+#passiveControlsForm .skillTreeInfo {
+    font-size: 120%;
+    clear: both;
+    float: left;
+    padding: 10px 5px 2px 6px;
+    color: #888;
+}
+
+.clear {
+    clear: both;
+}
+
+#passiveControlsForm .controlsTop {
+    float: left;
+}
+#passiveControlsForm .controlsBottom {
+    float: left;
+}
+
+
+#passiveControlsForm .flContainer {
+    float: left;
+    padding: 3px 0px 3px 6px;
+    min-height: 45px;
+}
+
+#passiveControlsForm .flContainer {
+    float: left;
+    padding: 3px 0px 3px 6px;
+    min-height: 45px;
+}
+#passiveControlsForm #buildNameContainer {
+    display: none;
+}
+
+#passiveControlsForm .label {
+    font-size: 120%;
+}
+.FontinBold, blockquote .quote, .eventsList.displaySimple .upcomingControls .heading, .eventsList.displaySimple .inProgressControls .heading, h1.t1 {
+    font-weight: normal;
+    font-style: normal;
+    line-height: normal;
+    font-family: 'FontinBold', Verdana,Arial,Helvetica,sans-serif;
+    font-size-adjust: 0.52;
+}
+#passiveControlsForm textarea, #passiveControlsForm input.textInput, #passiveControlsForm select {
+    width: 294px;
+}
+
+#passiveControlsForm .highlightSimilarNodesContainer, #passiveControlsForm .highlightShortestPathsContainer, #passiveControlsForm .muteContainer {
+    float: left;
+    padding: 14px 15px 13px 15px;
+}
+
+#passiveControlsForm .buttonContainer {
+    float: left;
+    padding: 3px 5px 5px 5px;
+}
