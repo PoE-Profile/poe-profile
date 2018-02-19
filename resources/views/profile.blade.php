@@ -1,39 +1,14 @@
 @extends('layouts.profile')
 
 @section('jsData')
-
 <script type="text/javascript">
     window.PHP = {
         char: '{!! $char !!}',
         chars: {!! json_encode($chars) !!},
         account: '{!! $acc !!}',
         dbAcc: {!! $dbAcc !!},
-        csrf_token: "{{ csrf_token() }}"
     }
-
-    Array.prototype.move = function (from, to) {
-       this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    function inArray(needle, haystack) {
-        var length = haystack.length;
-        for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
-        }
-        return false;
-    }
-
-    function sleep (time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-    }
-
-    function jsUcfirst(string)
-    {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
 </script>
-
 @stop
 
 @section('script')
@@ -45,58 +20,14 @@ $('.show-tooltip').tooltip();
 $(function () {
     new Clipboard('.clipboard');
 })
-
-var ByteEncoder=function() {
-    this.init = function() {
-        this.dataString = "", this.position = 0
-    }, this.int16ToBytes = function(e) {
-        return this.intToBytes(e, 2)
-    }, this.intToBytes = function(e, t) {
-        t = t || 4, e = parseInt(e);
-        var n = [],
-            r = t;
-        do n[--r] = e & 255, e >>= 8; while (r > 0);
-        return n
-    }, this.appendInt8 = function(e) {
-        this.appendInt(e, 1)
-    }, this.appendInt16 = function(e) {
-        this.appendInt(e, 2)
-    }, this.appendInt = function(e, t) {
-        t = t || 4;
-        var n = this.intToBytes(e, t);
-        for (var r = 0; r < t; ++r) this.dataString += String.fromCharCode(n[r])
-    }, this.getDataString = function() {
-        return this.dataString
-    }, this.init()
-}
-
-function getTreeUrl(class_id,a_class_id,nodes){
-	var u = new ByteEncoder();
-	var o=!0;
-	//r classId
-	var r = class_id,//n.activeCharacter.get("classId"),
-	//i ascendancyClass
-	i = a_class_id;//n.activeCharacter.get("ascendancyClass"),
-	//n PoE/PassiveSkillTree/Version
-	var n=4;
-	//tree nod ids
-	var s=nodes;
-	u.appendInt(n), u.appendInt8(r), u.appendInt8(i), u.appendInt8(o ? 1 : 0);
-	for (var a = 0, f = s.length; a < f; ++a) u.appendInt16(s[a]);
-	var l=$.base64.encode( u.getDataString() );
-	l = l.replace(/\+/g, "-").replace(/\//g, "_"), (o ? "/fullscreen-passive-skill-tree/" : "/passive-skill-tree/") + l
-	return l;
-}
 </script>
 @endsection
 
 @section('content')
-
 <div class="container" v-cloak>
     @if (session()->has('flash_notification.message'))
         <div class="alert alert-{{ session('flash_notification.level') }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
             {!! session('flash_notification.message') !!}
         </div>
     @endif
@@ -152,7 +83,6 @@ function getTreeUrl(class_id,a_class_id,nodes){
                 data-toggle="tooltip" data-placement="top" title="Go to profil on pathofexile.com"
                 :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName=' + character.name">PoE profile</a>]
             </li>
-
       </ul>
     </div>
 
@@ -172,7 +102,7 @@ function getTreeUrl(class_id,a_class_id,nodes){
             	  <h2 class="info1">Level @{{character.level}} @{{character.class}}
 
                         <button class="btn btn-sm poe-btn show-tooltip po-pob-link"
-                                @click.prevent="getPoBLink()"
+                                @click.prevent="getPoBCode()"
                                 data-toggle="tooltip" data-placement="right"
                                 title="Generate PoB import code">
                             <i class="fa fa-share-square-o" aria-hidden="true"></i> PoB Code
@@ -348,9 +278,9 @@ function getTreeUrl(class_id,a_class_id,nodes){
         </div>
 
         <div class="tab-pane" role="tabpanel" :class="{ active: skillTreeActive }">
-            <div class="row" style="position:absolute; padding:10px; width:1130px;">
-                <a class="btn poe-btn show-tooltip clipboard pull-right"
-                    style="margin-right: 25px;" data-toggle="tooltip" data-placement="top"
+            <div class="row" style="position:absolute; padding:0px;width:1120px;">
+                <a class="btn poe-btn show-tooltip clipboard"
+                    style="position:absolute;top:5px; right:10px;border: 1px solid #ddd;" data-toggle="tooltip" data-placement="top"
                     :href="'https://www.pathofexile.com/fullscreen-passive-skill-tree/' + skillTreeUrl.replace('/passive-skill-tree/','')"
                     title="Open official skill tree" target="_blank">
                     <i class="fa fa-external-link" aria-hidden="true"></i>

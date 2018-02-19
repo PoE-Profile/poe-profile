@@ -1,5 +1,5 @@
 <template>
-<div>
+<span>
     <div v-if="linked" :class="'socketLink socketLink' + currentSocket"></div>
 
     <div v-if="gem !== null" data-toggle="tooltip" data-placement="right" :title="gem.typeLine"
@@ -10,7 +10,7 @@
 
     <div v-else :class="['socket socket'+socket.attr+' '+abyssClass(), (currentSocket === 2 || currentSocket === 3) ? 'socketRight' : '']">
     </div>
-</div>
+</span>
 </template>
 
 <script type="text/javascript">

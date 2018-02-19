@@ -47,11 +47,11 @@
         </div>
 
         <div class="list-group showless">
-            <span v-for="(stat, index) in computedStats"  
+            <span v-for="(stat, index) in computedStats"
                 @mouseover="toggleStat(stat, index)"
                 @mouseleave="untoggleStat"
                 @click.prevent="stickStat(stat)">
-                <stat 
+                <stat
                     :stat="stat"
                     :index="index"
                     :key="index"
@@ -99,7 +99,6 @@
 <script type="text/javascript">
 var favStore = require('../../helpers/FavStore.js');
 var localStore = require('../../helpers/LocalStore.js');
-import { event } from '../../helpers/eventHub.js';
 import Stat from './Stat.vue';
 import Loader from '../Loader.vue';
 
@@ -126,10 +125,6 @@ export default {
         }
     },
 
-    events: {
-        
-    },
-
     created: function () {
     },
 
@@ -144,7 +139,7 @@ export default {
     //         return value.charAt(0).toUpperCase() + value.slice(1)
     //     }
     // },
-    
+
 
     computed: {
         'filteredStats': function(){

@@ -5,18 +5,6 @@
     window.PHP = {
         poe_leagues: "{{ env('POE_LEAGUES') }}"
     }
-
-    Array.prototype.move = function (from, to) {
-       this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    function inArray(needle, haystack) {
-        var length = haystack.length;
-        for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
-        }
-        return false;
-    }
 </script>
 @stop
 
@@ -48,7 +36,7 @@
 
         <h3 class="" style="padding:7px;">Favorites</h3>
         <list-characters :char-data="favAccChars"></list-characters>
-        
+
         <div class="" v-if="favAccChars.length==0" style="height:100%;">
             <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
             <div class="" v-if="listCharsError.length>0">
@@ -58,5 +46,4 @@
 
     </div>
 </div>
-<modal-twitch></modal-twitch>
 @endsection
