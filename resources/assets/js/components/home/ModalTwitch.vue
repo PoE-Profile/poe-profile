@@ -1,31 +1,37 @@
 <template>
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" id="twitchModal" style="top: 30px;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" v-if="loadStream">
+<transition name="modal-fade">
+<div class="modal-backdrop2">
+    <div class="modal2 bd-example-modal-lg2" style="top: 70px;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog2 modal-lg2" role="document">
+        <div v-if="loadStream" class="modal-body">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-                <div class="pull-right pl-1">
-                    <a :href="('/profile/' + stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
-                    <a :href="('https://www.twitch.tv/' + stream.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Twitch</a>
-                    <button type="button" class="btn btn-sm poe-btn active" data-dismiss="modal">Close</button>
-                </div>
-                {{stream.status}}
-            </h5>
+              <div class="pull-right">
+                  <span v-if="stream.account">
+                      <a :href="('/profile/' + stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
+                  </span>
+                  <a :href="('https://www.twitch.tv/' + stream.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Twitch</a>
+                  <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>
+              </div>
+              {{stream.status}}
           </div>
 
           <div class="modal-body">
-            <iframe  :src="('https://player.twitch.tv/?channel=' + stream.name)" frameborder="0" allowfullscreen="true" scrolling="no" height="550" width="100%"></iframe>
+            <iframe :src="streamUrl"
+                frameborder="0" allowfullscreen="true" scrolling="no"
+                height="550" width="100%"></iframe>
           </div>
 
         </div>
       </div>
     </div>
+</div>
+</transition>
+
 </template>
 
 <script type="text/javascript">
-import { event } from '../../helpers/eventHub.js';
 
 export default {
     props: {
@@ -38,12 +44,25 @@ export default {
     data: function(){
         return {
             loadStream: false,
+            isModalVisible: false,
+            streamUrl:"",
         }
     },
-
+    computed: {
+        profileUrl: function(){
+            if(stream.account)
+            return '/profile/' + stream.account.name;
+        },
+    },
     watch : {
         stream : function (val) {
-            this.playTwitch(val)
+            if(val==null){
+                console.log("watch stream");
+                return;
+            }
+            console.log("watch stream");
+            this.streamUrl='https://player.twitch.tv/?channel=' + this.stream.name;
+            this.loadStream=true;
         },
         loadStream : function (value) {
             // console.log("loadStream change to "+value);
@@ -51,45 +70,76 @@ export default {
     },
 
     mounted: function() {
-        var vm = this;
-        $('#twitchModal').on('hidden.bs.modal', function (e) {
-            vm.loadStream=false;
-            console.log("hidden.bs.modal");
-        })
     },
 
     methods: {
-        playTwitch: function(stream){
-            this.stream=stream;
-            this.loadStream=true;
-            $('#twitchModal').modal('show')
-        }
+        close:function(event) {
+            this.loadStream=false;
+            this.streamUrl='';
+            console.log(this.stream);
+            this.$emit('close');
+        },
+
+
     },
 };
 
 </script>
 
 <style>
-#twitchModal .modal-content{
-    background-color: #211F18;
-    color: white !important;
+.modal-backdrop2 {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
 }
-.modal-body{
-    padding: 0px;
+
+.modal2 {
+  /* background: #ffffff; */
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  width: 950px;
+  z-index: 99999;
 }
-.poe-btn-twitch:hover {
-    background-color: #ebb16c!important;
-    color: white;
+
+.modal-header,
+.modal-footer {
+  padding: 5px;
 }
-.modal-header{
-    border: 0px;
-    padding: 5px;
+
+
+.modal-body {
+  position: relative;
+  padding: 10px 5px;
+  color: #FFF;
+  background-color: rgb(33, 31, 24);
 }
-.modal-footer{
-    border: 0px;
-    padding: 5px;
+
+.btn-close {
+  border: none;
+  font-size: 20px;
+  padding: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #4aae9b;
+  background: transparent;
 }
-.poe-btn-twitch{
-    color: #ebb16c;
+
+.modal-fade-enter,
+.modal-fade-leave-active {
+  opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.5s ease;
 }
 </style>

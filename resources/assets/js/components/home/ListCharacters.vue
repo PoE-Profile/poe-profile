@@ -50,7 +50,7 @@
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                    <span v-if="showRank && !char.public">{{char.name}} 
+                    <span v-if="showRank && !char.public">{{char.name}}
                         <span style="color: gray;font-weight: bold;">(private)</span></span>
                     <a v-else :href="('profile/' + char.account.name + '/' + char.name)">{{char.name}}</a>
                     <span v-if="char.dead" style="color: red; font-weight: bold;">(dead)</span>
@@ -105,7 +105,9 @@
             </tr>
         </tbody>
     </table>
-    <modal-twitch :stream="stream"></modal-twitch>
+    <div style="background:#000;">
+        <modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
+    </div>
 </div>
 </template>
 
@@ -141,6 +143,7 @@ export default {
     },
     data: function(){
         return {
+            isModalVisible: false,
             // showRank: false,
             // showTwitch: false,
             trigerChangeFromFilter:false,
@@ -236,10 +239,6 @@ export default {
             }
         },
 
-        openTwitch: function(stream){
-            this.stream = stream;
-        },
-
         trigerFilterSkills: function(skill){
             this.selectedSkill = '';
             if (skill !== 'All') {
@@ -286,6 +285,15 @@ export default {
             }
             return text.substring(0, after)+".."
         },
+
+        openTwitch: function(stream){
+            this.stream = stream;
+            this.isModalVisible=true;
+        },
+        closeModal: function() {
+            this.stream = null;
+            this.isModalVisible = false;
+        }
     },
 };
 </script>
