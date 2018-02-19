@@ -41,63 +41,10 @@
 <script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 <script type="text/javascript">
-    
-$( document ).ready(function() {
-  new Clipboard('.clipboard');
-});
-</script>
-<script type="text/javascript">
 $('.show-tooltip').tooltip();
 $(function () {
-
-var myDiv = $('#popper-content');
-
- $('.po-bandits-link').popover({
-    trigger: 'click',
-    html: true,  // must have if HTML is contained in popover
-    // get the title and conent
-    title: function() {
-        return $('.po-title').html();
-    },
-    content: function() {
-        return myDiv;
-    },
-    container: 'body',
-    placement: 'top'
-}).on('show.bs.popover', function() {
-    $('#popper-content').addClass('show1')
-  }).on('hide.bs.popover', function() {
-    $('#popper-content').addClass('hide1')
-  });
-
-
-  var myDivPoB = $('#popper-content-pob');
-
- $('.po-pob-link').popover({
-    trigger: 'click',
-    html: true,  // must have if HTML is contained in popover
-    // get the title and conent
-    title: function() {
-        return $('.po-title').html();
-    },
-    content: function() {
-        return myDivPoB;
-    },
-    container: 'body',
-    placement: 'top'
-}).on('show.bs.popover', function() {
-    $('#popper-content').addClass('show1')
-  }).on('hide.bs.popover', function() {
-    $('#popper-content').addClass('hide1')
-  });
-
+    new Clipboard('.clipboard');
 })
-
-
-
-
-
-
 
 var ByteEncoder=function() {
     this.init = function() {
@@ -123,12 +70,6 @@ var ByteEncoder=function() {
     }, this.init()
 }
 
-// function stopIframeLoad(){
-//     console.log('stop load msg');
-//     $('#load-iframe-msg').hide();
-//     $('iframe').show();
-// };
-
 function getTreeUrl(class_id,a_class_id,nodes){
 	var u = new ByteEncoder();
 	var o=!0;
@@ -146,7 +87,6 @@ function getTreeUrl(class_id,a_class_id,nodes){
 	l = l.replace(/\+/g, "-").replace(/\//g, "_"), (o ? "/fullscreen-passive-skill-tree/" : "/passive-skill-tree/") + l
 	return l;
 }
-
 </script>
 @endsection
 
@@ -177,7 +117,7 @@ function getTreeUrl(class_id,a_class_id,nodes){
                              @{{account}}
                               <input type="hidden" name="account" :value="account">
                               <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                              
+
                               <button href="#" class="btn btn-sm poe-btn show-tooltip"
                               data-toggle="tooltip" data-placement="top" v-if="hasTwitch()"
                               title="Load Twitch Stream" @click.prevent="playTwitch()">
@@ -221,7 +161,7 @@ function getTreeUrl(class_id,a_class_id,nodes){
     <div :class="['row', getCharacterClass()+'-panel']">
         <div class="row">
             <div class=" all-stats">
-                <character-stats @toggle-stick="toggleStickStat" @stat-loaded="calcTotals"  
+                <character-stats @toggle-stick="toggleStickStat" @stat-loaded="calcTotals"
                     :character="character" :account="account" :off-hand="showOffHand"></character-stats>
             </div>
 
@@ -230,35 +170,17 @@ function getTreeUrl(class_id,a_class_id,nodes){
                   <h2 v-if="skillTreeReseted" style="color:darkred;background-color: black;opacity: 0.6"> No skill tree data.</h2>
             	  <h2 class="name">@{{character.name}}</h2>
             	  <h2 class="info1">Level @{{character.level}} @{{character.class}}
-                        
-                        <a class="btn btn-sm poe-btn show-tooltip po-pob-link"
+
+                        <button class="btn btn-sm poe-btn show-tooltip po-pob-link"
                                 @click.prevent="getPoBLink()"
                                 data-toggle="tooltip" data-placement="right"
                                 title="Generate PoB import code">
-                            <i class="fa fa-plus-square" aria-hidden="true"></i> PoB
-                        </a>
-
-                        <div class="po-body" id="popper-content-pob" >
-                            <div  style="text-align:center; color:white;" >
-
-                                <a  v-if="pobXml!==''" class="btn btn-sm poe-btn"
-                                    style="color:red;" 
-                                    v-clipboard:copy="pobXml"
-                                    @click.prevent="copyPoB()">
-                                    @{{pobText}}
-                                </a>
-                            </div>
-                            <div  style="text-align:center; color:white;" >
-                                <h5  v-if="showPoB && pobXml==''">
-                                    Generating code ...
-                                </h5>
-                            </div>
-                        </div>
+                            <i class="fa fa-share-square-o" aria-hidden="true"></i> PoB Code
+                        </button>
                   </h2>
             	  <h2 class="info2"> @{{character.league}} League @{{characterRank}}</small></h2>
               </div>
               <div class="inventory ">
-
         	        <div class="inventoryPanel">
                         <loader :loading="loadingItems" style="position:absolute;margin:auto;"></loader>
 
@@ -323,7 +245,6 @@ function getTreeUrl(class_id,a_class_id,nodes){
                             </span>
                         </span>
                     </div>
-
               </div>
               <div class="ad-main-pole">
                   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -365,7 +286,7 @@ function getTreeUrl(class_id,a_class_id,nodes){
                     <li style="list-style-type: none;">
                         <!-- <a href="#" class="po-link" @click.prevent="">Bandits</a> -->
                         <a class="btn btn-sm poe-btn show-tooltip po-bandits-link"
-                                @click.prevent="showBandits=true"
+                                @click.prevent="poContent='bandits'"
                                 data-toggle="tooltip" data-placement="right"
                                 title="Select Bandit quest Rewards">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> Bandits
@@ -392,15 +313,6 @@ function getTreeUrl(class_id,a_class_id,nodes){
                         <item :item="flask" :show-flask="true"></item>
                     </li>
                 </ul>
-            </div>
-            <div class="po-content" style="display: none;" >
-                <div class="po-title" >
-                    <!-- Wed June 25, 2014 -->
-                </div> <!-- ./po-title -->
-
-                <div class="po-body" id="popper-content">
-                    <bandits :show="showBandits"></bandits>
-                </div>
             </div>
         </div>
         <div id="navmoreinfo" class="row more-info-nav" style="margin-top: 10px;">
@@ -477,6 +389,33 @@ function getTreeUrl(class_id,a_class_id,nodes){
     </div>
 </div>
 
-<modal-twitch :stream="stream"></modal-twitch>
+<div class="po-content" style="display: none;" >
+    <div class="po-title" ></div>
+    <div class="po-body" id="popper-content-bandits">
+        <div>
+            <bandits :show="showBandits"></bandits>
+        </div>
+    </div>
+    <div class="po-body" id="popper-content-pob" >
+        <div class="col-lg-12">
+            <h4>PoB import Code:
+                <a href="#" class="pull-right" onclick="$('.po-pob-link').trigger('click')">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </a>
+            </h4>
+            <div class="input-group">
+              <input class="form-control" id="pobCode" placeholder="Generating code ..."
+              aria-label="" aria-describedby="" :value="pobXml">
+              <span class="input-group-btn">
+                <button class="btn btn-outline-secondary btn-outline-warning clipboard" type="button"
+                     data-clipboard-target="#pobCode" onclick="$('.po-pob-link').trigger('click')">
+                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                </button>
+              </span>
+            </div>
+        </div>
+    </div>
+</div>
 
+<modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
 @endsection

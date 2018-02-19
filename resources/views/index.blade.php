@@ -64,9 +64,9 @@
                 </script>
             </div>
         </div>
-        
+
         <div class="navigation" style="padding-bottom: 0px;margin-top: 10px;">
-            <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;background-color: #211F18;opacity: 0.85;">
+            <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;background-color: #211F18;">
                 <li class="nav-item">
         		    <a class="nav-link " data-toggle="tab" @click.prevent="getFavs()"
                     href="#favs" role="tab" aria-controls="favs">Favorites</a>
@@ -82,12 +82,12 @@
         	    </li>
             </ul>
         </div>
-        <div class="tab-content" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
+        <div class="tab-content" style="background-color: #211F18;min-height:800px;">
             <ul class="nav nav-pills char-nav" style=""
                 v-if="selectedTab=='ladder'">
                 <li class="nav-item" v-for="(league, index) in poe_leagues">
-                    <drop-down v-on:selected="filterListCharacters" :list="leaguesDropDown(league)" 
-                        v-if="isLeagueDropDown(league)" :search="false" 
+                    <drop-down v-on:selected="filterListCharacters" :list="leaguesDropDown(league)"
+                        v-if="isLeagueDropDown(league)" :search="false"
                         :lclass="''" :class="[isLeagueDropDownSelected(league)?'active nav-link':'nav-link']">
                         <span v-if="isLeagueDropDownSelected(league)">@{{selectedLeague}}</span>
                         <span v-else>@{{league.split("::")[0]}}     </span>

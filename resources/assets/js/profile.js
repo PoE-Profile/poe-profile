@@ -21,6 +21,7 @@ event.init();
 new Vue({
     el: '#app',
     data: {
+        isModalVisible: false,
         accountCharacters: '',
         searchAcc: '',
         account: '',
@@ -63,9 +64,10 @@ new Vue({
         showOffHand: false,
         skillTreeReseted: false,
         pobXml: '',
-        showPoB: false,
+        // showPoB: false,
         stream: null,
         pobText: 'Copy PoB Code',
+        poContent: ''
     },
 
     created: function () {
@@ -74,7 +76,23 @@ new Vue({
     },
 
     mounted: function () {
+        $('.po-bandits-link').popover({
+           trigger: 'click',
+           html: true,
+           title: $('.po-title').html(),
+           content: $('#popper-content-bandits'),
+           container: 'body',
+           placement: 'top'
+        });
 
+        $('.po-pob-link').popover({
+           trigger: 'click',
+           html: true,
+           title: $('.po-title').html(),
+           content: $('#popper-content-pob'),
+           container: 'body',
+           placement: 'bottom'
+       });
     },
 
     computed: {
@@ -400,8 +418,12 @@ new Vue({
 
         playTwitch: function(){
             this.stream = window.PHP.dbAcc.streamer;
+            this.isModalVisible=true;
         },
-
+        closeModal: function() {
+            this.stream = null;
+            this.isModalVisible = false;
+        },
         toggleFavAcc: function (acc) {
             this.showAlert=true;
             if (this.favStore.checkAccIsFav(acc)) {
@@ -505,7 +527,7 @@ new Vue({
             axios.post('/api/getPoBCode', formData).then((response) => {
                 this.pobXml = response.data;
             });
-   
+
         }
 
     }
