@@ -1,8 +1,23 @@
 @extends('layouts.profile')
 
+@section('jsData')
+<script type="text/javascript">
+    window.PHP = {
+        csrf_token: "{{ csrf_token() }}",
+        poe_leagues: "{{ env('POE_LEAGUES') }}"
+    }
+</script>
+@endsection
+
+@section('script')
+<script type="text/javascript" src="/js/build/home.js"></script>
+<script type="text/javascript">
+$('.show-tooltip').tooltip();
+</script>
+@endsection
+
 
 @section('content')
-
 <div class="container text-center" style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;" v-cloak>
     <div class="account" style="width:100%">
         <div class="wrapper" style="width: 100%;padding-bottom: 10px">
@@ -120,35 +135,4 @@
     </div>
 </div>
 
-@endsection
-
-@section('jsData')
-
-<script type="text/javascript">
-
-    window.PHP = {
-        csrf_token: "{{ csrf_token() }}",
-        poe_leagues: "{{ env('POE_LEAGUES') }}"
-    }
-    Array.prototype.move = function (from, to) {
-       this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    function inArray(needle, haystack) {
-        var length = haystack.length;
-        for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
-        }
-        return false;
-    }
-
-</script>
-
-@endsection
-
-@section('script')
-<script type="text/javascript" src="/js/build/home.js"></script>
-<script type="text/javascript">
-$('.show-tooltip').tooltip();
-</script>
 @endsection

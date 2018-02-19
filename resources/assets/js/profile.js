@@ -12,11 +12,10 @@ Vue.component('bandits', require('./components/profile/Bandits.vue'));
 Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
-
-import { event } from './helpers/eventHub.js';
+import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
 var localStore = require('./helpers/LocalStore.js');
-event.init();
+
 
 new Vue({
     el: '#app',
@@ -64,7 +63,6 @@ new Vue({
         showOffHand: false,
         skillTreeReseted: false,
         pobXml: '',
-        // showPoB: false,
         stream: null,
         pobText: 'Copy PoB Code',
         poContent: ''
@@ -104,7 +102,7 @@ new Vue({
                 if (c.name === self.character.name) {
                     rank = '(Rank: ' + c.rank + ')';
                     if (c.league !== self.character.league.toLowerCase()) {
-                        rank = '(Rank: ' + c.rank + ' in ' + jsUcfirst(c.league) + ')';
+                        rank = '(Rank: ' + c.rank + ' in ' + _.upperFirst(c.league) + ')';
                     }
                 }
             });
@@ -150,7 +148,8 @@ new Vue({
             tempFlasks.forEach(function (flask, index) {
                 if (flask.x === '') {
                     for (var i = 0; i < 4; i++) {
-                        if (!inArray(i, tempIndexes)) {
+                        // if (!inArray(i, tempIndexes)) {
+                        if (!_.includes(tempIndexes,i)) {
                             flask.x = i;
                             tempIndexes.push(i)
                             break;
@@ -214,7 +213,8 @@ new Vue({
             }
 
             tempItems = this.items.filter(function(item){
-                return !inArray(item.inventoryId, skipTypes);
+                return !_.includes(skipTypes,item.inventoryId);
+                // return !inArray(item.inventoryId, skipTypes);
             });
 
             if (tempItems.length < 10) {
@@ -262,12 +262,6 @@ new Vue({
             }
             this.stickedStat = stat;
             this.hoveredStat = stat;
-        },
-
-
-        copyPoB: function(){
-            this.pobText = 'PoB copied to clipboard !';
-            setTimeout(() => this.pobText = 'Copy PoB Code', 1300);
         },
 
         goToAcc: function(acc) {
@@ -441,7 +435,6 @@ new Vue({
         },
 
         navMoreInfo: function (event) {
-            // console.log(event.target.getAttribute("data-toggle"));
             switch (event.target.getAttribute("data-toggle")) {
                 case 'more-info':
                     this.moreInfoTabActive = true;
@@ -458,7 +451,6 @@ new Vue({
                     }else{
                         this.getTreeData(function(response){
                             self.treeData=response.data;
-                            //console.log('load jewels');
                         });
                     }
                     break;
@@ -468,7 +460,6 @@ new Vue({
                     this.skillTreeActive = true;
                     var self=this;
                     if(this.treeData!=null){
-                        //console.log('skill-tree treeData in cache no request');
                         self.setTreeUrl();
                         return;
                     }else{
@@ -480,7 +471,7 @@ new Vue({
                     document.getElementById("navmoreinfo").scrollIntoView();
                     break;
             }
-            // window.scroll(0,findPos(document.getElementById("navmoreinfo")));
+
         },
 
         getTreeData: function (response){
@@ -495,7 +486,7 @@ new Vue({
         setTreeUrl: function(){
             var userStr="?accountName="+this.account+"&characterName="+this.character.name;
             var tempStr = "/passive-skill-tree/hash"+userStr;
-            var url_hash = window.getTreeUrl(
+            var url_hash = (new poeHelpers).getTreeUrl(
                 this.character.classId,
                 this.character.ascendancyClass,
                 this.treeData.hashes
@@ -517,17 +508,15 @@ new Vue({
             });
         },
 
-        getPoBLink: function() {
+        getPoBCode: function() {
             this.showPoB=true;
             var vm = this;
             var formData = new FormData();
             formData.append('account', vm.account);
             formData.append('char', vm.character.name);
-
             axios.post('/api/getPoBCode', formData).then((response) => {
                 this.pobXml = response.data;
             });
-
         }
 
     }

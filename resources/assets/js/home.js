@@ -1,17 +1,13 @@
 
 require('./bootstrap');
 
-
 Vue.component('loader', require('./components/Loader.vue'));
 Vue.component('list-characters', require('./components/home/ListCharacters.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import { SkillsHelper } from './helpers/SkillsHelper.js';
-import { event } from './helpers/eventHub.js';
 var favStore = require('./helpers/FavStore.js');
 var localStore = require('./helpers/LocalStore.js');
-
-event.init();
 
 
 const app = new Vue({
@@ -36,7 +32,6 @@ const app = new Vue({
         poe_leagues:[],
         listCharsError:'',
         listPages: 10,
-    
         pages: 0,
     },
 
@@ -55,6 +50,10 @@ const app = new Vue({
                 paginateEnd = val.current_page + 3;
             } else {
                 paginateEnd =val.last_page;
+            }
+            
+            function range(start, end) {
+              return Array(end - start + 1).fill().map((_, idx) => start + idx)
             }
             this.pages = range(paginateStart, paginateEnd);
         },
@@ -91,7 +90,7 @@ const app = new Vue({
 
         this.poe_leagues=window.PHP.poe_leagues.split(",");
         //load data if ladder URL
-        
+
         this.selectedLeague=this.poe_leagues[0];
         if(this.isLeagueDropDown(this.selectedLeague)){
             this.selectedLeague=this.selectedLeague.split("::")[1].split("|")[0];
@@ -115,16 +114,15 @@ const app = new Vue({
                 this.skillFilter = '';
                 this.classFilter = '';
             } else {
-                if (filter.hasOwnProperty('skill')) { 
+                if (filter.hasOwnProperty('skill')) {
                 this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter='+filter.skill+'&';
                 }
 
-                if (filter.hasOwnProperty('class')) { 
+                if (filter.hasOwnProperty('class')) {
                     this.classFilter = (filter.class == 'All') ? '' : 'classFilter='+filter.class+'&';
                 }
             }
 
-            
             this.isLoading=true;
             this.selectedTab='ladder';
             axios.get('api/ladderData?' + this.searchFilter).then((response) => {

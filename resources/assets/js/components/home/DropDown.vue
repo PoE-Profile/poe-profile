@@ -38,7 +38,6 @@
 
 <script type="text/javascript">
 
-import { event } from '../../helpers/eventHub.js';
 
 export default {
     props: {

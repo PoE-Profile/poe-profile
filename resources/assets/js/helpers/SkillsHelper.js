@@ -9,7 +9,7 @@ export var SkillsHelper = function (images) {
         checkTags: function(skill, support){
             var elementTags = ['Fire', 'Cold', 'Lightning', 'Chaos'];
             for (var i = 0; i < support.length; i++) {
-                if (inArray(support[i], elementTags)) {
+                if (_.includes(elementTags,support[i])) {
                     return true;
                 }
             }
@@ -45,24 +45,24 @@ export var SkillsHelper = function (images) {
                     if (skill.socketGroup === support.socketGroup || support.socketGroup == 'unique') {
                         if (support.name === "Cast when Damage Taken Support" &&
                             (support.gem.requirements[0].values[0][0] <= skill.gem.requirements[0].values[0][0] ||
-                            inArray('Aura', skill.tags.split(', ')) )
+                            _.includes(skill.tags.split(', '),'Aura') )
                         ) {
                             return;
                         }
 
 
-                        if (self.checkTags(skill.tags.split(', '), support.tags.split(', ')) || inArray(support.name, supportAll)){
+                        if (self.checkTags(skill.tags.split(', '), support.tags.split(', ')) || _.includes(supportAll,support.name)){
                             skill.supports.push(support);
                             if(support.name=='Blasphemy Support'){
                                 skill.tags=skill.tags.concat(', Aura');
                             }
-                            if (inArray(support.name, ['Spell Totem Support', 'Ranged Attack Totem Support'])) {
+                            if (_.includes(['Spell Totem Support', 'Ranged Attack Totem Support'], support.name)) {
                                 skill.tags = skill.tags.concat(', Totem');
                             }
                             //check if support has tag trigger
                             //call method getTrigerSKills(tempSkills, skill, support)
                             //return array with one or more skill that are linked
-                            if (inArray('Trigger', support.tags.split(', ')) &&
+                            if (_.includes(support.tags.split(', '),'Trigger') &&
                                 support.name !== "Cast when Damage Taken Support"
                             ) {
                                 self.getTrigerSKills(tempSkills, skill, support)
@@ -92,17 +92,17 @@ export var SkillsHelper = function (images) {
                     return
                 }
                 //For Curse on Hit add spell/attack skills that trigger Curses
-                if (!inArray('Curse', skill.tags.split(', ')) && inArray('Curse', support.tags.split(', '))) {
+                if (!_.includes( skill.tags.split(', '),'Curse') && _.includes(support.tags.split(', '),'Curse')) {
                     trigeredSkill.supports.push(skill);
                     return;
                 }
                 //For Cast on Crit add only attack skills that trigger Spell
-                if (inArray('Attack', skill.tags.split(', '))) {
+                if (_.includes(skill.tags.split(', '),'Attack')) {
                     trigeredSkill.supports.push(skill);
                     return;
                 }
                 //For Cast on Chaneling add only Channelling skills that trigger Spell
-                if (inArray('Channelling', skill.tags.split(', '))) {
+                if (_.includes(skill.tags.split(', '),'Channelling')) {
                     trigeredSkill.supports.push(skill);
                     return;
                 }
@@ -116,7 +116,7 @@ export var SkillsHelper = function (images) {
             if (item.name === 'null') {
                 return true;
             }
-            if (!inArray(item.inventoryId, types)) {
+            if (!_.includes(types,item.inventoryId)) {
                 return false;
             }
             return true;
@@ -201,7 +201,7 @@ export var SkillsHelper = function (images) {
 
             tempSupport = itemSupports.filter(function (skill) {
                 // return skill.name === itemsWithSupports[itemName]
-                return inArray(skill.name, itemsWithSupports[itemName])
+                return _.includes(itemsWithSupports[itemName], skill.name)
             });
 
             //TempSupport = ItemSupports['itemName'] Changes At some Point
@@ -246,7 +246,7 @@ export var SkillsHelper = function (images) {
         getReducedMana: function(item, gem){
             var itemName = item.name.replace("<<set:MS>><<set:M>><<set:S>>", "");
             var tags = this.getTags(gem.properties[0].name, gem.typeLine)
-            if (itemName === 'Heretic\'s Veil' && inArray('Curse', tags.split(', '))) {
+            if (itemName === 'Heretic\'s Veil' && _.includes(tags.split(', '),'Curse')) {
                 return 12;
             }
             if (itemName === 'Prism Guardian') {

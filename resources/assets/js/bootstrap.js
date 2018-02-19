@@ -27,8 +27,6 @@ if (token) {
 }
 
 window.Vue = require('vue');
-window.VueClipboard = require('vue-clipboard2');
-Vue.use(VueClipboard);
 
 //For production
 // Vue.config.devtools = false;

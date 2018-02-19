@@ -132,7 +132,7 @@ export default {
             // console.log(skill.name)
             // if skill Curse then is Blasphemy
             var tags=skill.tags.split(', ');
-            if(inArray('Curse', tags)){
+            if(_.includes(tags, 'Curse')){
                 var percent=this.getReducedFor(35, skill.reducedManaItem);
                 this.percentReserved+=percent;
                 return ;

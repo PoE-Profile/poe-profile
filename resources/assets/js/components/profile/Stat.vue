@@ -14,8 +14,6 @@
 
 <script type="text/javascript">
 var favStore = require('../../helpers/FavStore.js');
-import { event } from '../../helpers/eventHub.js';
-
 export default {
 
     props: [

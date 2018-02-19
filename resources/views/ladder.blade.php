@@ -5,22 +5,6 @@
     window.PHP = {
         poe_leagues: "{{ env('POE_LEAGUES') }}"
     }
-
-    Array.prototype.move = function (from, to) {
-       this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    function inArray(needle, haystack) {
-        var length = haystack.length;
-        for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
-        }
-        return false;
-    }
-
-    function range(start, end) {
-      return Array(end - start + 1).fill().map((_, idx) => start + idx)
-    }
 </script>
 @stop
 
@@ -53,7 +37,7 @@
         <div class="text-xs-center1">
             <ul class="nav nav-pills char-nav pull-right" style="background-color: #211F18;opacity: 0.85;">
                 <li class="nav-item" v-for="league in poe_leagues">
-                    <drop-down  v-on:selected="filterListCharacters" :list="leaguesDropDown(league)" 
+                    <drop-down  v-on:selected="filterListCharacters" :list="leaguesDropDown(league)"
                         v-if="isLeagueDropDown(league)" :search="false" style="min-width:200px; padding: 2px;"
                         :lclass="''" :class="[isLeagueDropDownSelected(league)?'active nav-link':'nav-link ']">
                         <span v-if="isLeagueDropDownSelected(league)">@{{selectedLeague}}</span>
@@ -80,18 +64,18 @@
 
             <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
             <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
-            
-            <div class="sss" style="  
-                  left: 0; 
-                  right: 0; 
-                  margin-left: auto; 
-                  margin-right: auto; 
+
+            <div class="sss" style="
+                  left: 0;
+                  right: 0;
+                  margin-left: auto;
+                  margin-right: auto;
                   width: 340px; ">
                 <span v-for="n in pages" >
                     <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
                 </span>
             </div>
-                
+
 
             <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
             <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>

@@ -114,7 +114,6 @@
 <script type="text/javascript">
 
 import { SkillsHelper } from '../../helpers/SkillsHelper.js';
-import { event } from '../../helpers/eventHub.js';
 
 import dropDown from './DropDown.vue';
 Vue.component('modal-twitch', require('./ModalTwitch.vue'));
@@ -263,7 +262,7 @@ export default {
 
             arr.forEach(function(skill){
                 if (!(skill.tags.includes('Curse,') || skill.tags.includes('Aura,') || skill.tags.includes('Warcry,'))
-                    && !inArray(skill.name, filterNoneRepeat)) {
+                    && !_.includes(filterNoneRepeat, skill.name)) {
                     activeSkills.push(skill);
                     filterNoneRepeat.push(skill.name);
                 }
