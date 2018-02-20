@@ -45,14 +45,12 @@
                     </a>
                 </td>
                 <td>
-                    <span v-if="showRank && !char.public">{{char.account.name}}</span>
-                    <a :href="('profile/' + char.account.name + '/')" v-else>{{char.account.name}}</a>
+                    <a :href="('profile/' + char.account.name + '/')" >{{char.account.name}}</a>
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                    <span v-if="showRank && !char.public">{{char.name}}
-                        <span style="color: gray;font-weight: bold;">(private)</span></span>
-                    <a v-else :href="('profile/' + char.account.name + '/' + char.name)">{{char.name}}</a>
+                    <a :href="('profile/' + char.account.name + '/' + char.name)">{{char.name}}</a>
+                    <span v-if="showRank && !char.public" style="color: gray;font-weight: bold;">(private)</span>
                     <span v-if="char.dead" style="color: red; font-weight: bold;">(dead)</span>
                     </span>
                     <span v-else>No Info</span>
