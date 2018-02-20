@@ -339,7 +339,7 @@ $(function () {
               <span class="input-group-btn">
                 <button class="btn btn-outline-secondary btn-outline-warning clipboard" type="button"
                      data-clipboard-target="#pobCode" onclick="$('.po-pob-link').trigger('click')">
-                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                    <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
                 </button>
               </span>
             </div>
