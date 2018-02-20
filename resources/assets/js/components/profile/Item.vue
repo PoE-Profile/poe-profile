@@ -25,7 +25,7 @@
 
     <div :class="computedItemInfoClass" v-if="item.name !== 'null'">
         <gem-info  v-if="showGemInfo && !isAbyss" :gem-info="hoverGem" :show-wiki="false" style="float:left;width:420px;"></gem-info>
-        <item-info v-if="showGemInfo && isAbyss" :item-info="hoverGem"  style="float:left;width:410px;" :show-flask="showFlask" :show-wiki="showInfo"></item-info>
+        <item-info v-if="showGemInfo && isAbyss" :item-info="hoverGem" style="float:left;width:410px;" :show-flask="showFlask" :show-wiki="showInfo"></item-info>
         <item-info v-if="toggleInfo()" :item-info="item" :show-Flask="showFlask" :show-wiki="showInfo"></item-info>
     </div>
 
@@ -40,10 +40,25 @@ import Socket from './Socket.vue';
 
 export default {
 
-    props: [
-        'item', 'showInfo', 'showFlask'
-    ],
-
+    // props: [
+    //     'item', 'showInfo', 'showFlask'
+    // ],
+    props: {
+        showInfo: {
+            type: Boolean,
+            default: false,
+            required: false,
+        },
+        item: {
+            type: Object,
+            required: true
+        },
+        showFlask: {
+            type: Boolean,
+            default: false,
+            required: false,
+        },
+    },
     computed: {
         'name': function() {
             return this.item.name.replace("<<set:MS>><<set:M>><<set:S>>", " ");

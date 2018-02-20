@@ -59,20 +59,20 @@
                 </td>
                 <td class="skill-cell">
                     <ul class="home-list-skills">
-                    <li v-for="(skill, index) in getActiveSkill(char.items_most_sockets)">
-                        <a href="#" @click.prevent="trigerFilterSkills(withEllipsis(skill.name,18))">
-                        <div class="skill-card card card-inverse">
-                            <img v-bind:src="skill.imgUrl">
-                            <div class="caption-overlay">
-                                <p class="card-text">
-                                    {{withEllipsis(skill.name,18)}}
-                                </p>
+                        <li v-for="skill in getActiveSkill(char.items_most_sockets)">
+                            <a href="#" @click.prevent="trigerFilterSkills(withEllipsis(skill.name,18))">
+                            <div class="skill-card card card-inverse">
+                                <img v-bind:src="skill.imgUrl">
+                                <div class="caption-overlay">
+                                    <p class="card-text">
+                                        {{withEllipsis(skill.name,18)}}
+                                    </p>
+                                </div>
+                                <div class="card-backdrop"></div>
                             </div>
-                            <div class="card-backdrop"></div>
-                        </div>
-                        </a>
-                    </li>
-                </ul>
+                            </a>
+                        </li>
+                    </ul>
                 </td>
                 <td>{{char.level}}</td>
                 <td class="twitch-cell" v-if="showTwitch">
@@ -219,6 +219,10 @@ export default {
     methods: {
 
         getActiveSkill: function(items){
+            console.log(items);
+            if(items==null || items.length==0){
+                return;
+            }
             var skills = new SkillsHelper(this.skillImages);
             if (items === null) {
                 return;

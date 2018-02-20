@@ -131,7 +131,7 @@ export default {
             this.current = this.skills[mostLinksSkill.index];
             this.currentIndex = mostLinksSkill.index;
             if (this.current) {
-                // this.fixOverlapping();
+                this.fixOverlapping();
             }
         },
 
@@ -140,8 +140,7 @@ export default {
             this.$nextTick(function() {
                 var lastOffset=0;
                 this.current.supports.forEach(function(skill, index){
-                    var el = vm.$refs.lastgem;
-                    console.log(el.className);
+                    var el = vm.$el.querySelector('.timeline-suport-'+index);
                     var curentOffset=el.offsetTop;
                     var test=curentOffset-lastOffset;
                     if(test<=50){
