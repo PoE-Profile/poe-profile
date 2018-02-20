@@ -8,7 +8,7 @@
          {{name}}
         <br v-if="name.length>0">{{withEllipsis(typeLine,35)}}
     </span>
-    
+
     <span class="item-stats">
 
         <span v-if="showFlask" class="group -textwrap tc -mod">
@@ -16,8 +16,7 @@
                 {{ prop}}<br>
             </span>
         </span>
-
-        <span v-else class="group -textwrap tc -mod" v-if="itemInfo.properties">
+        <span class="group -textwrap tc -mod" v-if="itemInfo.properties">
             <span :style="{listStyleType: 'none', color: 'grey'}" v-for="prop in itemInfo.properties">
                 {{ prop.name }}: <span v-if="prop.values.length > 0" style="color: white;"> {{prop.values[0][0]}}</span><br>
             </span>
@@ -34,7 +33,7 @@
                 :style="{listStyleType: 'none', color: 'grey', display: 'inline'}"
                 v-for="(req, index) in itemInfo.requirements"
             >
-                {{ req.name }} 
+                {{ req.name }}
                 <span v-if="req.values.length > 0" style="color: white;"> {{req.values[0][0]}} {{ index+1 < itemInfo.requirements.length ? ',' : ''}} </span>
             </p>
         </span>
