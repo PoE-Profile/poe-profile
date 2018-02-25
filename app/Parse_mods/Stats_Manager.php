@@ -1,6 +1,9 @@
 <?php
 namespace App\Parse_mods;
 
+use App\Parse_mods\Validate_Mods;
+
+
 //offence
 use App\Parse_mods\offence_stats\Attack_Critical_Chance;
 use App\Parse_mods\offence_stats\Spells_Critical_Chance;
@@ -50,6 +53,7 @@ use App\Parse_mods\base_stats\Strength;
 use App\Parse_mods\base_stats\Intelligence;
 use App\Parse_mods\base_stats\Dexterity;
 //misc
+use App\Parse_mods\misc_stats\Totems;
 use App\Parse_mods\misc_stats\Rarity;
 use App\Parse_mods\misc_stats\Quantity;
 use App\Parse_mods\misc_stats\Skill_Effect_Duration;
@@ -80,11 +84,13 @@ class Stats_Manager
     public $stats = [];
     public $currentItemStats = [];
     public $type = '';
+    public $modValidator = '';
 
     public function __construct()
     {
         $this->stats = [
             'misc' => [
+                new Totems,
                 new Rarity,
                 new Quantity,
                 new Skill_Effect_Duration,
@@ -161,27 +167,31 @@ class Stats_Manager
         ];
     }
 
-    public function addItem($item)
+    public function addItems($items)
     {
-        $this->type = 'item/'.$item['inventoryId'] . '/'. $this->getTypeFromIcon($item['icon']);
-       
+        // dd($items);
+        $this->modValidator = new Validate_Mods($items);
+        foreach ($items as $item) {
+            $this->type = 'item/' . $item['inventoryId'] . '/' . $this->getTypeFromIcon($item['icon']);
 
-        if (isset($item["explicitMods"])) {
-            $this->addMods($item['explicitMods']);
-        }
+            if (isset($item["explicitMods"])) {
+                $this->addMods($item['explicitMods']);
+            }
 
-        if (isset($item['implicitMods'][0])) {
-            $this->addMods($item['implicitMods']);
-        }
+            if (isset($item['implicitMods'][0])) {
+                $this->addMods($item['implicitMods']);
+            }
 
-        if (isset($item['craftedMods'][0])) {
-            $this->addMods($item['craftedMods']);
-        }
+            if (isset($item['craftedMods'][0])) {
+                $this->addMods($item['craftedMods']);
+            }
 
-        if (isset($item['properties'])) {
-            $this->addProps($item['properties']);
+            if (isset($item['properties'])) {
+                $this->addProps($item['properties']);
+            }
+            $this->addAbyssJewels($item);
         }
-        $this->addAbyssJewels($item);
+        
     }
 
     public function addTreeNode($nodes)
@@ -199,14 +209,14 @@ class Stats_Manager
     {
         $this->type = 'base';
         if ($mod) {
-            $this->check($mod);
+            $this->parseMod($mod);
         }
     }
 
     private function addMods($mods)
     {
         foreach ($mods as $mod) {
-            $this->check($mod);
+            $this->parseMod($mod);
         }
     }
 
@@ -215,28 +225,32 @@ class Stats_Manager
         foreach ($props as $prop) {
             if (count($prop['values']) == 0) {
                 if (!isset($prop['type'])) {
-                    $this->check('Weapon type:'.$prop['name']);
+                    $this->parseMod('Weapon type:'.$prop['name']);
                 }
                 continue;
             }
 
             $tempStr = $prop['values'][0][0] . ' ' . $prop['name']; // 800 Armour
-            $this->check($tempStr);
+            $this->parseMod($tempStr);
         }
     }
 
-    private function check($stat)
+    private function parseMod($mod)
     {
+        // if ($this->modValidator) {
+        //     # code...
+        // }
+
         foreach ($this->stats['defense'] as $m) {
-            $m->parse($stat, $this->type);
+            $m->parse($mod, $this->type);
         }
 
         foreach ($this->stats['offense'] as $m) {
-            $m->parse($stat, $this->type);
+            $m->parse($mod, $this->type);
         }
 
         foreach ($this->stats['misc'] as $m) {
-            $m->parse($stat, $this->type);
+            $m->parse($mod, $this->type);
         }
     }
 

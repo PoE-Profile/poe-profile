@@ -67,7 +67,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'HomeController@postProfile']);
     Route::post('/profile/set', ['as' => 'set.profile', 'uses' => 'HomeController@postSetProfile']);
 
-    Route::get('/profile/{acc}/stashes', ['as' => 'get.stashes', 'uses' => 'HomeController@getStashes']);
+    Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'HomeController@getArchive']);
     Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'HomeController@getProfile']);
     Route::get('/profile/{acc}/{char}', 'HomeController@profile');
 });

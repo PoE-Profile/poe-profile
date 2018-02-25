@@ -132,23 +132,7 @@ export default {
         this.getCharacterStats();
     },
 
-    // filters: {
-    //     search: function (value) {
-    //         if (!value) return ''
-    //         value = value.toString()
-    //         return value.charAt(0).toUpperCase() + value.slice(1)
-    //     }
-    // },
-
-
     computed: {
-        'filteredStats': function(){
-            var self = this
-            return;
-            // return self.computedStats.filter(function (user) {
-            //   return computedStats.indexOf(self.searchStat) !== -1
-            // })
-        },
 
         'computedStats': function(){
             var allStats = this.localStore.getAllStats();

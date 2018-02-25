@@ -3,16 +3,20 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
+        account: '',
         poe_leagues: "{{ env('POE_LEAGUES') }}"
     }
 </script>
 @stop
 
 
+@section('title')
+    PoE Profile Info Ladder
+@endsection
+
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>
 @endsection
-
 
 @section('styleSheets')
 @endsection

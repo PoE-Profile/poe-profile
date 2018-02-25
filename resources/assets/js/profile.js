@@ -2,7 +2,11 @@ require('./bootstrap');
 
 Vue.component('item', require('./components/profile/Item.vue'));
 Vue.component('jewel', require('./components/profile/Jewel.vue'));
+//GRID
 Vue.component('list-characters', require('./components/profile/ListCharacters.vue'));
+//LIST
+Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
+
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
 Vue.component('list-skills', require('./components/profile/ListSkills.vue'));
 Vue.component('item-info', require('./components/profile/ItemInfo.vue'));
@@ -65,7 +69,7 @@ new Vue({
         pobXml: '',
         stream: null,
         pobText: 'Copy PoB Code',
-        poContent: ''
+        rankArchives: window.PHP.rankArchives,
     },
 
     created: function () {

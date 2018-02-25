@@ -7,11 +7,13 @@
 </script>
 @stop
 
+@section('title')
+   PoE Profile Info Tutorial
+@endsection
 
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>
 @endsection
-
 
 @section('styleSheets')
 @endsection

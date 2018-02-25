@@ -8,6 +8,9 @@
 </script>
 @stop
 
+@section('title')
+    PoE Profile Info Favorites
+@endsection
 
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>

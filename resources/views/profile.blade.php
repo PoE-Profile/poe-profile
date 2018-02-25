@@ -11,6 +11,10 @@
 </script>
 @stop
 
+@section('title')
+    PoE Profile Info {{$acc}} / {{$char}}
+@endsection
+
 @section('script')
 <script type="text/javascript" src="/js/build/profile.js"></script>
 <script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
@@ -77,6 +81,9 @@ $(function () {
 
     	    <li class="nav-item">
     		    <a class="nav-link active" href="{{route('get.profile',$acc)}}">Characters</a>
+    	    </li>
+            <li class="nav-item">
+    		    <a class="nav-link" href="{{route('profile.ranks', $acc)}}">Ranks</a>
     	    </li>
             <li class="pull-right " style="padding-right:10px;">
                 [<a class="link show-tooltip" target="_blank"
@@ -216,7 +223,6 @@ $(function () {
                     <li style="list-style-type: none;">
                         <!-- <a href="#" class="po-link" @click.prevent="">Bandits</a> -->
                         <a class="btn btn-sm poe-btn show-tooltip po-bandits-link"
-                                @click.prevent="poContent='bandits'"
                                 data-toggle="tooltip" data-placement="right"
                                 title="Select Bandit quest Rewards">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> Bandits

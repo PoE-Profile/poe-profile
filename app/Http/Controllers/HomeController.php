@@ -125,10 +125,14 @@ class HomeController extends CacheController
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
-    public function getStashes($acc){
-        //return view(temp_stashes', compact('acc','stashes'));
-        $stashes=Stash::where('accountName',  $acc )->with('items')->get();
-        return view('stashes', compact('acc','stashes'));
-    }
+    public function getArchive($acc){
 
+        $rankArchives = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$acc) {
+            $query->where('name', '=', $acc);
+        })->get();
+
+        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+
+        return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
+    }
 }

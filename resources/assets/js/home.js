@@ -19,6 +19,7 @@ const app = new Vue({
         classFilter: '',
         skillFilter: '',
         leagueFilter: '',
+        searchFilter: '',
         favStore: favStore,
         skillImages: '',
         favStore: favStore,
@@ -62,8 +63,8 @@ const app = new Vue({
 
     computed: {
 
-        searchFilter: function(){
-            var filter = this.leagueFilter + this.skillFilter + this.classFilter;
+        filters: function(){
+            var filter = this.leagueFilter + this.skillFilter + this.classFilter + this.searchFilter;
             if (filter.charAt(filter.length - 1) === '&') {
                 filter = filter.substring(0, filter.length - 1);
             }
@@ -103,11 +104,18 @@ const app = new Vue({
         if (urlArr[urlArr.length - 1] === 'favorites') {
             this.getFavs();
         }
-
         this.getTwitch();
+
     },
 
     methods: {
+
+        // getArchive: function() {
+        //     var filter = 'archiveFilter=' + window.PHP.account
+        //     axios.get('api/ladderData?' + filter).then((response) => {
+        //         this.archive = response.data;
+        //     });
+        // },
 
         filterListCharacters (filter){
             if (filter === null) {
@@ -121,11 +129,16 @@ const app = new Vue({
                 if (filter.hasOwnProperty('class')) {
                     this.classFilter = (filter.class == 'All') ? '' : 'classFilter='+filter.class+'&';
                 }
+
+                // if (filter.hasOwnProperty('search')) {
+                //     this.skillFilter = (filter.search == '') ? '' : 'searchFilter=' + filter.search + '&';
+                //     // this.leagueFilter = ''
+                // }
             }
 
             this.isLoading=true;
             this.selectedTab='ladder';
-            axios.get('api/ladderData?' + this.searchFilter).then((response) => {
+            axios.get('api/ladderData?' + this.filters).then((response) => {
                 this.ladderPaginate = response.data;
                 this.isLoading=false;
                 this.selectedTab='ladder';
@@ -183,7 +196,6 @@ const app = new Vue({
         },
 
         changePage: function(pageNum){
-            console.log(pageNum);
             var vm = this;
 
             if (pageNum <= 0) {
@@ -192,13 +204,9 @@ const app = new Vue({
             if (pageNum > vm.ladderPaginate.last_page) {
                 pageNum = 1;
             }
-
-            this.ladderPaginate=null;
-            this.isLoading=true;
-
-            axios.get('api/ladderData?'+vm.searchFilter+'&page='+ pageNum).then((response) => {
+            
+            axios.get('api/ladderData?'+vm.filters+'&page='+ pageNum).then((response) => {
                 vm.ladderPaginate = response.data;
-                this.isLoading=false;
             });
         },
 

@@ -72,8 +72,26 @@ class ApiController extends CacheController
 
     public function getLadder(Request $request)
     {
-        //->where('public', '=', 1) -> removed for now
+        
+        if ($request->has('archiveFilter')) {
+            $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
+                $query->where('name', '=', $request->input('archiveFilter'));
+            })->paginate();
+
+            return $respond;
+        }
+
+        if ($request->has('searchFilter')) {
+
+            $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
+                $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
+            })->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')->paginate();
+
+            return $respond;
+        }
+
         if ($request->has('classFilter') && $request->has('skillFilter')) {
+            
             $respond = \App\LadderCharacter::with('account')
                                 ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
                                 ->where('class', '=', $request->input('classFilter'))
@@ -98,13 +116,14 @@ class ApiController extends CacheController
             return $respond;
         }
 
-        if ($request->has('leagueFilter')) {
+        if ($request->has('leagueFilter')) { 
             $respond = \App\LadderCharacter::with('account')->where('league', '=', $request->input('leagueFilter'))
                         ->orderBy('rank', 'asc')->paginate();
             return $respond;
         }
 
-        $respond = \App\LadderCharacter::with('account')->where('league', '=', 'Harbinger')->orderBy('rank', 'asc')->paginate();
+        $currentLeagues = explode(',', env('POE_LEAGUES'));
+        $respond = \App\LadderCharacter::with('account')->where('league', '=', $currentLeagues[0])->orderBy('rank', 'asc')->paginate();
         return $respond;
     }
 

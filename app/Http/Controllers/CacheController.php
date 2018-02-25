@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Parse_mods\TakeMods;
 use App\Parse_mods\Stats_Manager;
 use App\Parse_mods\Base_Stats;
 use App\Parse_mods\CharacterTreePoints;
@@ -93,12 +92,20 @@ class CacheController extends BaseController
                 $banItems = ['Flask', 'Weapon', 'Offhand'];
             }
 
-            foreach ($itemsRes['items'] as $item) {
-                if (in_array($item['inventoryId'], $banItems)) {
-                    continue;
-                }
-                $stManager->addItem($item);
-            }
+            $filterItems = array_filter($itemsRes['items'], function($item) use (&$banItems) {
+                return in_array($item['inventoryId'], $banItems);
+            });
+
+            $stManager->addItems($filterItems);
+
+
+            // foreach ($itemsRes['items'] as $item) {
+            //     if (in_array($item['inventoryId'], $banItems)) {
+            //         continue;
+            //     }
+            //     $stManager->addItem($item);
+            // }
+            
             if ($dbAcc->last_character==$itemsRes['character']['name']) {
                 $dbAcc->updateLastCharInfo($itemsRes);
             }

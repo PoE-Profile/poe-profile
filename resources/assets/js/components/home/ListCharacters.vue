@@ -1,29 +1,43 @@
 <template>
 <div v-if="charData.length > 0">
+
+    <div v-if="showRank && !archive" class="input-group " style="margin-left:auto;margin-right:auto;background:#202624;">
+        <input type="text" name="account" v-model="searchBig" class="form-control" style="border-color: #CCCCCC;" placeholder="Search for Character or Account name" v-on:keyup.enter="search()">
+        <span class="input-group-btn">
+        <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Submit</button>
+        </span>
+    </div>
+
     <table class="table table-hover homapage-table">
         <thead>
             <tr>
                 <!-- <th>#</th> -->
                 <th v-if="showRank">Rank</th>
-                <th>
+                <th v-if="!archive">
                     <drop-down  v-if="showRank"  v-on:selected="trigerFilterClass" :list="classes">
                         <span v-if="selectedClass.length>0">{{selectedClass}}</span>
                         <span v-else>Class</span>
                     </drop-down>
                     <span v-else>Class</span>
                 </th>
+                <th v-else>
+                    <span>Class</span>
+                </th>
                 <th>Account</th>
                 <th>
                     <span v-if="showRank">Character</span>
                     <span v-else>Last Character</span>
                 </th>
-                <th>
+                <th v-if="!archive">
                     <drop-down v-if="showRank" v-on:selected="trigerFilterSkills"
                          style="width:190px; padding: 2px;" :list="skills">
                         <span v-if="selectedSkill.length>0">{{selectedSkill}}</span>
                         <span v-else>Skills</span>
                     </drop-down>
                     <span v-else>Skill</span>
+                </th>
+                <th v-if="archive">
+                    <span>League</span>
                 </th>
                 <th>Level</th>
                 <th v-if="showTwitch">Twitch</th>
@@ -55,7 +69,12 @@
                     </span>
                     <span v-else>No Info</span>
                 </td>
-                <td class="skill-cell">
+                <td class="skill-cell" v-if="archive">
+                    <span>
+                        {{char.league}}
+                    </span>
+                </td>
+                <td class="skill-cell" v-if="!archive">
                     <ul class="home-list-skills">
                         <li v-for="skill in getActiveSkill(char.items_most_sockets)">
                             <a href="#" @click.prevent="trigerFilterSkills(withEllipsis(skill.name,18))">
@@ -124,6 +143,10 @@ export default {
             required: true,
             default: [],
         },
+        archive: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
@@ -140,6 +163,7 @@ export default {
     },
     data: function(){
         return {
+            searchBig: '',
             isModalVisible: false,
             // showRank: false,
             // showTwitch: false,
@@ -174,6 +198,7 @@ export default {
         }
     },
 
+
     computed: {
         showTwitch: function(){
             // return false;
@@ -185,6 +210,7 @@ export default {
                 return true;
             }
         },
+
         showRank: function(){
             // return false;
             if(this.charData.length==0 &&(this.selectedClass.length>0 || this.selectedSkill.length>0)){
@@ -216,8 +242,12 @@ export default {
 
     methods: {
 
+        search: function() {
+            this.$emit('filter-list', {'search': this.searchBig})
+        },
+
         getActiveSkill: function(items){
-            console.log(items);
+            // console.log(items);
             if(items==null || items.length==0){
                 return;
             }
