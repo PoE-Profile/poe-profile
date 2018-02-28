@@ -247,7 +247,7 @@ new Vue({
     methods: {
 
         checkBuilds: function(){
-            return this.isBuild && this.accountCharacters.length === 0
+            return this.accountCharacters.length > 0 || this.favStore.isBuildPublic(this.account);
         },
 
         calcReserved: function(reserved){
@@ -393,13 +393,23 @@ new Vue({
         },
 
         setAccountData: function () {
+            this.account = window.PHP.account;
+
+            // build initialization
             if (window.PHP.chars === null) {
                 this.isBuild = true;
                 this.accountCharacters = this.favStore.favBuilds;
+                if (this.favStore.isBuildPublic(this.account)){
+                    this.accountCharacters = [];
+                    this.character = this.dbAcc.item_data.character;
+                    this.character.buildId = this.account.split('::')[1];
+                    this.character.name = window.PHP.char;
+                    return
+                }
             } else {
                 this.accountCharacters = window.PHP.chars;
             }
-            this.account = window.PHP.account;
+            
             if (window.PHP.char === '') {
                 this.character = this.accountCharacters[0];
                 return;
@@ -502,6 +512,7 @@ new Vue({
             axios.post('/api/builds/default', formData).then((response) => {
                 vm.dbAcc = response.data;
                 vm.items = this.dbAcc.item_data.items
+                vm.account = 'build::' + response.data.id
             });
         },
 

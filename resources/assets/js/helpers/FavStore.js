@@ -63,6 +63,17 @@ module.exports = {
         this.save('favBuilds', this.favBuilds);
     },
 
+    isBuildPublic (account){
+        if (!account.includes('build::')) {
+            return false
+        }
+        var acc = account.split('::');
+        if (_.find(this.favBuilds, { "buildId": parseInt(acc[1])})) {
+            return false
+        }
+        return true;
+    },
+
     getMainAcc (){
         match = document.cookie.match(new RegExp('default-acc=([^;]+)'));
         if (match) return match[1];

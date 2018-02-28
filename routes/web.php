@@ -64,6 +64,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@home']);
     
     Route::get('/builds/{id}/{name}', ['as' => 'show.builds', 'uses' => 'HomeController@showBuild']);
+    Route::get('/builds/{id}', ['as' => 'redirect', function () {
+        flash("You have to provide 'id' and 'name' for Build.")->warning()->important();
+        return redirect()->route('index.builds');
+    }]);
     Route::get('/builds', ['as' => 'index.builds', 'uses' => 'HomeController@indexBuild']);
 
     Route::get('/profile', ['as' => 'view.profile', 'uses' => 'HomeController@profileDefault']);

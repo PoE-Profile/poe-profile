@@ -29,23 +29,18 @@ $(function () {
 
 @section('content')
 <div class="container" v-cloak>
-    @if (session()->has('flash_notification.message'))
-        <div class="alert alert-{{ session('flash_notification.level') }}">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {!! session('flash_notification.message') !!}
-        </div>
-    @endif
+    @include('flash::message')
 
     <div class="alert alert-success" v-if="showAlert">
         <button type="button" class="close" @click.prevent="showAlert=false">&times;</button>
         <span v-html="alertMsg"></span>
     </div>
 
-    <profile-nav :build="isBuild" :account="isBuild ? character : account" :twitch="isBuild ? null : dbAcc" :character="isBuild ? '' : character.name"></profile-nav>
+    <profile-nav :build="isBuild" :account="account" :twitch="isBuild ? null : dbAcc" :character="isBuild ? character : character.name"></profile-nav>
 
     <list-characters :characters="accountCharacters" :current-character="character" :is-build="isBuild"></list-characters>
 
-    <div class="wrap"  v-if="!checkBuilds()">
+    <div class="wrap"  v-if="checkBuilds()">
         <div :class="['row', getCharacterClass()+'-panel']">
             <div class="row">
                 <div class=" all-stats">

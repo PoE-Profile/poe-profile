@@ -58,13 +58,7 @@ $('.show-tooltip').tooltip();
             </a>
         </div>
 
-        @if (session()->has('flash_notification.message'))
-            <div class="alert alert-{{ session('flash_notification.level') }}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
-                {!! session('flash_notification.message') !!}
-            </div>
-        @endif
+         @include('flash::message')
         <br>
 
        <div class="text-xs-center" style="padding-bottom:5px;">

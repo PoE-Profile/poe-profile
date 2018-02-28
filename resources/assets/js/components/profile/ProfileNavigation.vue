@@ -50,8 +50,19 @@
                 :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
             </li>
         </div>
+
+        <div class="public-build" v-else-if="favStore.isBuildPublic(account)">
+            <li class="nav-item" style="display: block;">
+                <div class="input-group " style="display:block;margin-left:auto;margin-right:auto;">
+                    <input type="text" name="account" v-model="buildName" class="form-control" style="display: inline-block;width:80%;margin-left:auto;margin-right:auto;background:#202624; border-color: #CCCCCC;" placeholder="Enter Build name" v-on:keyup.enter="search()">
+                    <span class="input-group-btn" style="display: inline-block;width:20%;">
+                        <button type="submit" class="btn btn-outline-warning" style="display: inline-block;" @click.prevent="saveBuild()">Save</button>
+                    </span>
+                </div>
+            </li>
+        </div>
         
-        <div class="build" v-else>
+        <div class="local-build" v-else>
             <li class="pull-left">
                 <div class="form-group">
                     <h3 style="margin-right:20px;color:#eee;">My Builds</h3>
@@ -172,6 +183,12 @@ export default {
         },
 
         saveBuild: function () {
+            if(this.favStore.isBuildPublic(this.account)){
+                var build = this.character;
+                build.name = this.buildName;
+                this.favStore.addBuild(build);
+                this.redirectBuild(build);
+            }
             var vm = this;
             var formData = new FormData();
             formData.append('account', vm.account);
@@ -181,7 +198,6 @@ export default {
                 // save to favStore Build comming from this response
                 this.favStore.addBuild(response.data);
                 this.redirectBuild(response.data);
-                console.log('saveBuild')
             });
         },
 

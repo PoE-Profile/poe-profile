@@ -152,7 +152,8 @@ class HomeController extends CacheController
     {
         $build = \App\Build::where('id', '=', $id)->where('name', '=', $name)->first();
         if ($build == null) {
-            return redirect()->route('home');
+            flash("Wrong build Name")->warning()->important();
+            return redirect()->route('index.builds');
         }
         
         $acc = 'build::'.$id;

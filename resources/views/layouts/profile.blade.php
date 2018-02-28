@@ -145,7 +145,7 @@
 
 	@yield('script')
 	<script type="text/javascript">
-		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+		$('div.alert').not('.alert-important').delay(2500).fadeOut(350);
 	</script>
 
 	<script>

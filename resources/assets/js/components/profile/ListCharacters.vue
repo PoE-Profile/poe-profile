@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+<div class="row" v-if="characters.length > 0">
     <div :class="['', showAllChars ? 'more-characters' : 'characters']">
 
         <div class="panel-heading" style="padding:2px;padding-top:7px;height:50px;overflow:hidden;">
