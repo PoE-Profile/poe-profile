@@ -1,9 +1,6 @@
 <?php
 namespace App\Parse_mods;
 
-use App\Parse_mods\Validate_Mods;
-
-
 //offence
 use App\Parse_mods\offence_stats\Attack_Critical_Chance;
 use App\Parse_mods\offence_stats\Spells_Critical_Chance;
@@ -169,8 +166,6 @@ class Stats_Manager
 
     public function addItems($items)
     {
-        // dd($items);
-        $this->modValidator = new Validate_Mods($items);
         foreach ($items as $item) {
             $this->type = 'item/' . $item['inventoryId'] . '/' . $this->getTypeFromIcon($item['icon']);
 

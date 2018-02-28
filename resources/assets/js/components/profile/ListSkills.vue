@@ -76,9 +76,14 @@ import GemInfo from './GemInfo.vue';
 
 export default {
 
-    props: [
-        'items'
-    ],
+    props: {
+        items: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+    },
+
     components: {
         'item': Item, 'gemInfo': GemInfo,
     },
@@ -93,9 +98,7 @@ export default {
             localStore: localStore
         }
     },
-    ready: function () {
 
-    },
     computed: {
         'checkSticked': function() {
             if (this.stat.name !== this.sticked.name) {
@@ -112,10 +115,14 @@ export default {
         }
     },
 
+    // mounted: function (){
+    //     this.getSkillImages();
+    // },
+
     watch: {
         'items': function (val, oldVal) {
             this.getSkillImages();
-        },
+        }
     },
 
     methods: {

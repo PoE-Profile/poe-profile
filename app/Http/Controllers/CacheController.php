@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\PoB\Tree;
 
 class CacheController extends BaseController
 {
@@ -71,7 +72,6 @@ class CacheController extends BaseController
 
     protected function getStatsCache($acc, $char)
     {
-
         //get acc from db to get real name
         $dbAcc = \App\Account::where('name', $acc)->first();
         $acc=$dbAcc->name;
@@ -86,6 +86,7 @@ class CacheController extends BaseController
             $stManager = new Stats_Manager;
 
             //add Stats from Items
+
             //filter for secondary items and flasks
             $banItems = ['Flask', 'Weapon2', 'Offhand2'];
             if (isset($_GET['offHand'])) {
@@ -97,14 +98,6 @@ class CacheController extends BaseController
             });
 
             $stManager->addItems($filterItems);
-
-
-            // foreach ($itemsRes['items'] as $item) {
-            //     if (in_array($item['inventoryId'], $banItems)) {
-            //         continue;
-            //     }
-            //     $stManager->addItem($item);
-            // }
             
             if ($dbAcc->last_character==$itemsRes['character']['name']) {
                 $dbAcc->updateLastCharInfo($itemsRes);

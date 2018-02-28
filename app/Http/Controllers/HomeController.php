@@ -125,7 +125,7 @@ class HomeController extends CacheController
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
-    public function getArchive($acc){
+    public function getProfileRanks($acc){
 
         $rankArchives = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$acc) {
             $query->where('name', '=', $acc);
@@ -134,5 +134,33 @@ class HomeController extends CacheController
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
 
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
+    }
+
+    public function indexBuild()
+    {
+
+        $acc = '';
+        $char = '';
+
+        $dbAcc = '[]';
+        $chars = null;
+
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+    }
+
+    public function showBuild($id, $name)
+    {
+        $build = \App\Build::where('id', '=', $id)->where('name', '=', $name)->first();
+        if ($build == null) {
+            return redirect()->route('home');
+        }
+        
+        $acc = 'build::'.$id;
+        $char = $build->name;
+
+        $dbAcc = $build;
+        $chars = null;
+
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 }

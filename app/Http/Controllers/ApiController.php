@@ -10,8 +10,13 @@ class ApiController extends CacheController
 {
     public function getItems(Request $request)
     {
+        
         if (!$request->has('account') && !$request->has('character')) {
             return;
+        }
+        $b = explode('::', $request->input('account'));
+        if($b[0] == 'build'){
+            return \App\Build::find($b[1])->item_data['items'];
         }
         $acc=$request->input('account');
         $char=$request->input('character');
@@ -26,6 +31,11 @@ class ApiController extends CacheController
         }
         $acc=$request->input('account');
         $char=$request->input('character');
+
+        $b = explode('::', $acc);
+        if ($b[0] == 'build') {
+            return \App\Build::find($b[1])->getStats();
+        }
         //getItemsCache() is from parant class CacheController
         return $this->getStatsCache($acc, $char);
     }
@@ -73,16 +83,7 @@ class ApiController extends CacheController
     public function getLadder(Request $request)
     {
         
-        if ($request->has('archiveFilter')) {
-            $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
-                $query->where('name', '=', $request->input('archiveFilter'));
-            })->paginate();
-
-            return $respond;
-        }
-
         if ($request->has('searchFilter')) {
-
             $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
                 $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
             })->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')->paginate();
@@ -91,7 +92,6 @@ class ApiController extends CacheController
         }
 
         if ($request->has('classFilter') && $request->has('skillFilter')) {
-            
             $respond = \App\LadderCharacter::with('account')
                                 ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
                                 ->where('class', '=', $request->input('classFilter'))
@@ -152,22 +152,6 @@ class ApiController extends CacheController
 
         return $online;
     }
-    public function getXMLtest(Request $request, $acc, $char)
-    {
-        // $acc = $request->input('account');
-        // $char = $request->input('char');
-
-        $itemsData = $this->getItemsCache($acc, $char, true);
-        $treeJson = $this->getTreeCache($acc, $char);
-        $pob = new PobXMLBuilder($itemsData, $treeJson);
-        
-
-        // show XML ---->
-        // Header('Content-type: text/xml');
-        // print($pob->getXML());
-        // die();
-        return $pob->encodedXML();
-    }
 
     public function getXML(Request $request)
     {
@@ -184,5 +168,61 @@ class ApiController extends CacheController
         // print($pob->getXML());
         // die();
         return $pob->encodedXML();
+    }
+
+    public function defaultBuild(Request $request)
+    {
+        $id = $request->input('id');
+        $name = $request->input('name');
+
+        $build = \App\Build::where('id', '=', $id)->where('name', '=', $name)->first();
+
+        return $build;
+    }
+
+    public function saveBuild(Request $request)
+    {
+        $client = new \GuzzleHttp\Client();
+        $treeData = $client->request(
+            'GET',
+            'https://www.pathofexile.com/character-window/get-passive-skills',
+            [
+                'query' => [
+                    'accountName' => $request->input('account'),
+                    'character' => $request->input('char')
+                ]
+            ]
+        );
+        $treeData = (string)$treeData->getBody();
+
+        $itemData = $client->request(
+            'GET',
+            'https://www.pathofexile.com/character-window/get-items',
+            [
+                'query' => [
+                    'accountName' => $request->input('account'),
+                    'character' => $request->input('char')
+                ]
+            ]
+        );
+        $itemData = (string)$itemData->getBody();
+
+        $currentLeagues = explode(',', env('POE_LEAGUES'));
+        $buildName = str_replace(' ', '_', $request->input('name'));
+        $build = \App\Build::create([
+            'name' => $buildName,
+            'tree_data' => $treeData,
+            'item_data' => $itemData,
+            'poe_version' => $currentLeagues[0]
+        ]);
+        $build->stats = $build->getStats();
+        $build->save();
+        
+        $favStore = $build->item_data['character'];
+        $favStore['name'] = $buildName;
+        $favStore['league'] = 'localBuild';
+        $favStore['buildId'] = $build->id;
+
+        return $favStore;
     }
 }

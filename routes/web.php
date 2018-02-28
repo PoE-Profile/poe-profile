@@ -62,13 +62,16 @@ Route::group(['middleware' => 'web'], function () {
     //Main Page
     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
     Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@home']);
+    
+    Route::get('/builds/{id}/{name}', ['as' => 'show.builds', 'uses' => 'HomeController@showBuild']);
+    Route::get('/builds', ['as' => 'index.builds', 'uses' => 'HomeController@indexBuild']);
 
     Route::get('/profile', ['as' => 'view.profile', 'uses' => 'HomeController@profileDefault']);
     Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'HomeController@postProfile']);
     Route::post('/profile/set', ['as' => 'set.profile', 'uses' => 'HomeController@postSetProfile']);
-
-    Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'HomeController@getArchive']);
+    Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'HomeController@getProfileRanks']);
     Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'HomeController@getProfile']);
     Route::get('/profile/{acc}/{char}', 'HomeController@profile');
+
 });
 

@@ -185,6 +185,11 @@ export default {
         getCharacterStats: function () {
             var vm = this;
             this.loading=true;
+            if(this.account === ''){
+                var build = favStore.favBuilds[0];
+                vm.account = 'build::'+build.buildId,
+                vm.character = build
+            }
             var formData = new FormData();
             formData.append('account', vm.account);
             formData.append('character', vm.character.name);

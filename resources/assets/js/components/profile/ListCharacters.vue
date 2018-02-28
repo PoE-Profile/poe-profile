@@ -6,7 +6,7 @@
 
         <div class="form-inline" style="margin-bottom: 0;">
             <input type="text" class="form-control pull-right" style="width:190px;"
-            v-model="searchChar" name="" placeholder="Search Name or Class">
+            v-model="searchChar" name="" :placeholder="isBuild ? 'Search Build' : 'Search Name or Class'">
             <ul class="nav nav-pills char-nav">
               <li class="nav-item" v-for="league in leagues">
                   <a href="#" @click.prevent="setLeague(league.name)"
@@ -68,9 +68,23 @@
 <script type="text/javascript">
 
 export default {
-    props: [
-        'characters','currentCharacter'
-    ],
+    props: {
+        characters: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        currentCharacter: {
+            type: Object,
+            required: true,
+            default: {},
+        },
+
+        isBuild: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
     data: function() {
         return {
@@ -104,6 +118,9 @@ export default {
                 {name:'Hardcore',count:0},
                 {name:'Standard',count:0},
             ];
+            if(this.isBuild) {
+                return [{name:'Builds', count:this.characters.length}]
+            }
 
             var count_all=0;
             this.characters.forEach(function(char) {
@@ -144,6 +161,9 @@ export default {
                 domain = "http://"+url.split('/')[2];
             }else {
                 domain = url.split('/')[0];
+            }
+            if (this.isBuild) {
+                return  domain + '/builds/' + char.buildId + '/' + char.name;
             }
             return  domain + '/profile/' + window.PHP.account + '/' + char.name;
         },

@@ -7,6 +7,8 @@ Vue.component('list-characters', require('./components/profile/ListCharacters.vu
 //LIST
 Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
 
+Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
+
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
 Vue.component('list-skills', require('./components/profile/ListSkills.vue'));
 Vue.component('item-info', require('./components/profile/ItemInfo.vue'));
@@ -24,6 +26,8 @@ var localStore = require('./helpers/LocalStore.js');
 new Vue({
     el: '#app',
     data: {
+        dbAcc: window.PHP.dbAcc,
+        isBuild: false,
         isModalVisible: false,
         accountCharacters: '',
         searchAcc: '',
@@ -102,7 +106,7 @@ new Vue({
         characterRank: function(){
             var rank = ''
             var self = this;
-            window.PHP.dbAcc.ladder_chars.forEach(c => {
+            this.dbAcc.ladder_chars.forEach(c => {
                 if (c.name === self.character.name) {
                     rank = '(Rank: ' + c.rank + ')';
                     if (c.league !== self.character.league.toLowerCase()) {
@@ -169,13 +173,6 @@ new Vue({
                 flasks[flask.x] = flask;
             });
             return flasks;
-        },
-
-        favAccButtonText: function (){
-            if(this.favStore.checkAccIsFav(this.account)){
-                return 'Remove from favorites.';
-            }
-            return 'Add to favorites.';
         },
 
         itemJewels: function(){
@@ -248,6 +245,10 @@ new Vue({
     },
 
     methods: {
+
+        checkBuilds: function(){
+            return this.isBuild && this.accountCharacters.length === 0
+        },
 
         calcReserved: function(reserved){
             var allStats = this.localStore.getAllStats();
@@ -392,8 +393,13 @@ new Vue({
         },
 
         setAccountData: function () {
+            if (window.PHP.chars === null) {
+                this.isBuild = true;
+                this.accountCharacters = this.favStore.favBuilds;
+            } else {
+                this.accountCharacters = window.PHP.chars;
+            }
             this.account = window.PHP.account;
-            this.accountCharacters = window.PHP.chars;
             if (window.PHP.char === '') {
                 this.character = this.accountCharacters[0];
                 return;
@@ -401,41 +407,6 @@ new Vue({
             this.character = this.accountCharacters.filter(function(chars){
                 return chars.name === window.PHP.char;
             })[0];
-        },
-
-        hasTwitch: function (){
-            if(window.PHP.dbAcc.streamer!=null){
-                return true;
-            }
-            return false;
-        },
-
-        isTwitchOnline: function (){
-            return window.PHP.dbAcc.streamer.online;
-        },
-
-        playTwitch: function(){
-            this.stream = window.PHP.dbAcc.streamer;
-            this.isModalVisible=true;
-        },
-        closeModal: function() {
-            this.stream = null;
-            this.isModalVisible = false;
-        },
-        toggleFavAcc: function (acc) {
-            this.showAlert=true;
-            if (this.favStore.checkAccIsFav(acc)) {
-                this.favStore.removeAcc(acc);
-                this.alertMsg="Account is removed from favorites .";
-            }else{
-                this.favStore.addAcc(acc);
-                this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/home' class='about-link'>Home</a>\" ";
-            }
-
-            Vue.nextTick(function () {
-                $('.show-tooltip').tooltip('dispose');
-                $('.show-tooltip').tooltip();
-            })
         },
 
         navMoreInfo: function (event) {
@@ -499,6 +470,14 @@ new Vue({
         },
 
         getCharacterItems: function () {
+            if (this.isBuild) {
+                if (this.account === '') {
+                    this.defaultBuild()
+                } else {
+                    this.items = this.dbAcc.item_data.items;
+                }
+                return;
+            }
             var vm = this;
             this.loadingItems=true;
             var formData = new FormData();
@@ -512,6 +491,20 @@ new Vue({
             });
         },
 
+        defaultBuild: function() {
+            var firstBuild = this.favStore.favBuilds[0];
+
+            var vm = this;
+            var formData = new FormData();
+            formData.append('id', firstBuild.buildId);
+            formData.append('name', firstBuild.name);
+
+            axios.post('/api/builds/default', formData).then((response) => {
+                vm.dbAcc = response.data;
+                vm.items = this.dbAcc.item_data.items
+            });
+        },
+
         getPoBCode: function() {
             this.showPoB=true;
             var vm = this;
@@ -521,7 +514,7 @@ new Vue({
             axios.post('/api/getPoBCode', formData).then((response) => {
                 this.pobXml = response.data;
             });
-        }
+        },
 
     }
 });

@@ -63,6 +63,9 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ route('ladders') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Ladder <span class="sr-only">(current)</span></a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ route('index.builds') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Builds <span class="sr-only">(current)</span></a>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="{{ route('favorites') }}">
 					  		<i class="fa fa-star" aria-hidden="true"></i> Favorites
