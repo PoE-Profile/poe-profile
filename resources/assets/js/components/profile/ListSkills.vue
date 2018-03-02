@@ -69,7 +69,7 @@
 </template>
 
 <script type="text/javascript">
-var localStore = require('../../helpers/LocalStore.js');
+var profileStore = require('../../helpers/profileStore.js');
 import {SkillsHelper} from '../../helpers/SkillsHelper.js';
 import Item from './Item.vue';
 import GemInfo from './GemInfo.vue';
@@ -95,7 +95,7 @@ export default {
             current:'',
             currentIndex: 0,
             skills:'',
-            localStore: localStore
+            profileStore: profileStore
         }
     },
 
@@ -172,7 +172,7 @@ export default {
                     skills.addSkills(item);
                 });
                 this.skills = skills.result();
-                this.localStore.setGems(this.skills);
+                this.profileStore.setGems(this.skills);
                 this.skillOnLoad();
             });
         },

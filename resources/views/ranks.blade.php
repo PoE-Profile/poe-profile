@@ -43,64 +43,13 @@ $(function () {
         </div>
     </div>
 
-    <div class="navigation" style="padding-bottom: 0px;padding-top: 10px;background: #190a09;">
-        <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-
-            <li class="pull-left">
-                <h3 style="margin-right:20px;color:#eee;">
-                    <form enctype="multipart/form-data" action="{{route('set.profile')}}"
-                        method="post" class="form-inline">
-                          <div class="form-group">
-                             @{{account}}
-                              <input type="hidden" name="account" :value="account">
-                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                              <button href="#" class="btn btn-sm poe-btn show-tooltip"
-                              data-toggle="tooltip" data-placement="top" v-if="hasTwitch()"
-                              title="Load Twitch Stream" @click.prevent="playTwitch()">
-                                  <span v-if="isTwitchOnline()" style="">
-                                      <i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
-                                      <strong>Live</strong>
-                                      <i class="fa fa-twitch" aria-hidden="true"></i>
-                                  </span>
-                                  <span v-else style="color:gray;">
-                                      <strong>Offline</strong>
-                                      <i class="fa fa-twitch" aria-hidden="true"></i>
-                                  </span>
-                              </button>
-                              <button class=""
-                                  :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
-                                  type="button" data-toggle="tooltip" data-placement="top"
-                                  :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
-                              <i class="fa fa-star" aria-hidden="true"></i></button>
-
-                         </div>
-                    </form>
-                </h3>
-            </li>
-
-    	    <li class="nav-item">
-    		    <a class="nav-link" href="{{route('get.profile',$acc)}}">Characters</a>
-    	    </li>
-            <li class="nav-item">
-    		    <a class="nav-link active" href="#">Ranks</a>
-    	    </li>
-            <li class="pull-right " style="padding-right:10px;">
-                [<a class="link show-tooltip" target="_blank"
-                data-toggle="tooltip" data-placement="top" title="Go to profil on pathofexile.com"
-                :href="'https://www.pathofexile.com/account/view-profile/' + account">PoE profile</a>]
-            </li>
-      </ul>
-
-        @if(count($rankArchives) == 0)
-            <div class="no-ranks">
-                <h3>We don't have indexed ranks for this account from previous leagues!</h3>
-            </div>
-        @endif
-            <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
-    </div>
-
-    
+    <profile-nav :build="isBuild" :account="account" :twitch="isBuild ? null : dbAcc" :character="isBuild ? character : character.name" :ranks="true"></profile-nav>
+    @if(count($rankArchives) == 0)
+        <div class="no-ranks">
+            <h3>We don't have indexed ranks for this account from previous leagues!</h3>
+        </div>
+    @endif
+    <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
 
     
 

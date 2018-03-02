@@ -98,7 +98,7 @@
 
 <script type="text/javascript">
 var favStore = require('../../helpers/FavStore.js');
-var localStore = require('../../helpers/LocalStore.js');
+var profileStore = require('../../helpers/profileStore.js');
 import Stat from './Stat.vue';
 import Loader from '../Loader.vue';
 
@@ -116,7 +116,7 @@ export default {
             searchStat: '',
             selectedStatType: 'main',
             favStore: favStore,
-            localStore: localStore,
+            profileStore: profileStore,
             stickedStat: '',
             hoveredStat: '',
             hoveredStatPos:0,
@@ -135,7 +135,7 @@ export default {
     computed: {
 
         'computedStats': function(){
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if (!Object.keys(allStats).length > 0) {
                 return;
             }
@@ -201,7 +201,7 @@ export default {
             }
             axios.post(url, formData).then((response) => {
                 //stop loading bar for stats
-                vm.localStore.setAllStats(response.data);
+                vm.profileStore.setAllStats(response.data);
                 vm.$emit('stat-loaded');
                 vm.loading=false;
             });

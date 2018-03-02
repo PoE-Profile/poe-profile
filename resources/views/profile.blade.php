@@ -147,16 +147,16 @@ $(function () {
 
             <div v-if="showBubbles">
                 <bubble title='Life'
-                    :auras="localStore.getAuras()"
-                    :reduced="localStore.getReducedManaStat()"
+                    :auras="profileStore.getAuras()"
+                    :reduced="profileStore.getReducedManaStat()"
                     :total="parseInt(moreInfoStats[0].total)"
                     :blood-magic='moreInfoStats[1].total==0'
                     label-position='right'></bubble>
                 <bubble title='Mana'
                     @set-reserved-mana="calcReserved"
                     :total="parseInt(moreInfoStats[1].total)"
-                    :auras="localStore.getAuras()"
-                    :reduced="localStore.getReducedManaStat()"
+                    :auras="profileStore.getAuras()"
+                    :reduced="profileStore.getReducedManaStat()"
                     :blood-magic='moreInfoStats[1].total==0'
                     label-position='left'></bubble>
             </div>

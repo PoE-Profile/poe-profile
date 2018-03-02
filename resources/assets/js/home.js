@@ -7,7 +7,7 @@ Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import { SkillsHelper } from './helpers/SkillsHelper.js';
 var favStore = require('./helpers/FavStore.js');
-var localStore = require('./helpers/LocalStore.js');
+var profileStore = require('./helpers/profileStore.js');
 
 
 const app = new Vue({
@@ -23,7 +23,7 @@ const app = new Vue({
         favStore: favStore,
         skillImages: '',
         favStore: favStore,
-        localStore: localStore,
+        profileStore: profileStore,
         favAccChars: [],
         twitchAccChars: [],
         ladderPaginate: [],

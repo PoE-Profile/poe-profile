@@ -42,5 +42,14 @@ export var poeHelpers  = function() {
         	l = l.replace(/\+/g, "-").replace(/\//g, "_"), (o ? "/fullscreen-passive-skill-tree/" : "/passive-skill-tree/") + l
         	return l;
         },
+        
+        getBaseDomain: function(){
+            var url = window.location.href;
+            //find & remove protocol (http, ftp, etc.) and get domain
+            if (url.indexOf("://") > -1) {
+                return "http://" + url.split('/')[2];
+            } 
+            return url.split('/')[0];
+        }
     };
 };

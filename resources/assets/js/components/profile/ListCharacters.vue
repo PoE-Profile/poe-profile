@@ -67,6 +67,8 @@
 
 <script type="text/javascript">
 
+import {poeHelpers} from '../../helpers/poeHelpers.js';
+
 export default {
     props: {
         characters: {
@@ -154,18 +156,10 @@ export default {
             this.currentLeague=l;
         },
         characterUrl: function(char){
-            var url = window.location.href;
-            var domain;
-            //find & remove protocol (http, ftp, etc.) and get domain
-            if (url.indexOf("://") > -1) {
-                domain = "http://"+url.split('/')[2];
-            }else {
-                domain = url.split('/')[0];
-            }
             if (this.isBuild) {
-                return  domain + '/builds/' + char.buildId + '/' + char.name;
+                return (new poeHelpers).getBaseDomain() + '/builds/' + char.buildId + '/' + char.name;
             }
-            return  domain + '/profile/' + window.PHP.account + '/' + char.name;
+            return (new poeHelpers).getBaseDomain() + '/profile/' + window.PHP.account + '/' + char.name;
         },
 
         withEllipsis: function(text,after){

@@ -20,7 +20,7 @@ Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
-var localStore = require('./helpers/LocalStore.js');
+var profileStore = require('./helpers/profileStore.js');
 
 
 new Vue({
@@ -64,7 +64,7 @@ new Vue({
         loadingItems:false,
         showBandits:false,
         favStore: favStore,
-        localStore: localStore,
+        profileStore: profileStore,
         alertMsg: '',
         showAlert: false,
         skillTreeUrl: '',
@@ -251,7 +251,7 @@ new Vue({
         },
 
         calcReserved: function(reserved){
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if (allStats.defense[12].radiantFaith) {
                 allStats.defense[12].fromRadiantFaith = Math.floor(reserved * 0.15);
                 this.calcTotals();
@@ -281,7 +281,7 @@ new Vue({
 
         calcTotals: function(){
             this.showBubbles = true;
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if(allStats.length === 0){
                 return;
             }
@@ -303,7 +303,7 @@ new Vue({
                     var fromRadiantFaith = Math.floor(allStats.defense[12].fromRadiantFaith * ((allStats.defense[13].total*0.01)+1));
                     stat.total += fromRadiantFaith;
 
-                    tempAura = self.localStore.findAura('Discipline');
+                    tempAura = self.profileStore.findAura('Discipline');
                     if (tempAura) {
                         auraVal = self.withAuraEffectiveness(tempAura.val, stats)
                         flat = (auraVal * percent) / 100 + auraVal;
@@ -322,7 +322,7 @@ new Vue({
                     stat.tooltip=strTooltip;
                 }
                 if (stat.name === 'Evasion') {
-                    tempAura = self.localStore.findAura('Grace');
+                    tempAura = self.profileStore.findAura('Grace');
                     if (tempAura) {
                         auraVal = self.withAuraEffectiveness(tempAura.val, stats)
                         flat = (auraVal * percent) / 100 + auraVal;
@@ -330,7 +330,7 @@ new Vue({
                     }
                 }
                 if (stat.name === 'Armour') {
-                    tempAura = self.localStore.findAura('Determination');
+                    tempAura = self.profileStore.findAura('Determination');
                     if (tempAura) {
                         var totalWithAura =  stat.total + (stat.total*self.withAuraEffectiveness(tempAura.val, stats))/100;
                         stat.aura = 'with Determination ' + tempAura.lvl + ': ' + Math.floor(totalWithAura);

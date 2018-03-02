@@ -94,7 +94,7 @@ class CacheController extends BaseController
             }
 
             $filterItems = array_filter($itemsRes['items'], function($item) use (&$banItems) {
-                return in_array($item['inventoryId'], $banItems);
+                return !in_array($item['inventoryId'], $banItems);
             });
 
             $stManager->addItems($filterItems);

@@ -59,11 +59,11 @@
                     </a>
                 </td>
                 <td>
-                    <a :href="('profile/' + char.account.name + '/')" >{{char.account.name}}</a>
+                    <a :href="ranksUrl(char, true)" >{{char.account.name}}</a>
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                    <a :href="('profile/' + char.account.name + '/' + char.name)">{{char.name}}</a>
+                    <a :href="ranksUrl(char)">{{char.name}}</a>
                     <span v-if="showRank && !char.public" style="color: gray;font-weight: bold;">(private)</span>
                     <span v-if="char.dead" style="color: red; font-weight: bold;">(dead)</span>
                     </span>
@@ -131,7 +131,7 @@
 <script type="text/javascript">
 
 import { SkillsHelper } from '../../helpers/SkillsHelper.js';
-
+import {poeHelpers} from '../../helpers/poeHelpers.js';
 import dropDown from './DropDown.vue';
 Vue.component('modal-twitch', require('./ModalTwitch.vue'));
 
@@ -241,6 +241,14 @@ export default {
     },
 
     methods: {
+
+        ranksUrl: function(char, acc=false){
+            if (acc) {
+                return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name
+            }
+            return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name + '/'+ char.name
+
+        },
 
         search: function() {
             this.$emit('filter-list', {'search': this.searchBig})

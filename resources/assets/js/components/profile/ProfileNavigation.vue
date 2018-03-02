@@ -1,7 +1,7 @@
 <template>
 <div class="navigation" style="padding-bottom: 0px;padding-top: 10px;background: #190a09;">
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-        <div class="profile" v-if="!build">
+        <div class="profile" v-if="!build && !ranks">
             <li class="pull-left" >
                 <h3 style="margin-right:20px;color:#eee;">
                     <div class="form-group">
@@ -43,6 +43,48 @@
                         <button type="submit" class="btn btn-outline-warning" style="display: inline-block;" @click.prevent="saveBuild()">Save</button>
                     </span>
                 </div>
+            </li>
+            <li class="pull-right " style="padding-right:10px;">
+                [<a class="link show-tooltip" target="_blank"
+                data-toggle="tooltip" data-placement="top" title="Go to profil on pathofexile.com"
+                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
+            </li>
+        </div>
+
+        <div class="public-build" v-else-if="ranks">
+            <li class="pull-left" >
+                <h3 style="margin-right:20px;color:#eee;">
+                    <div class="form-group">
+                        {{account}}
+
+                        <button href="#" class="btn btn-sm poe-btn show-tooltip"
+                        data-toggle="tooltip" data-placement="bottom" v-if="twitch.streamer!=null"
+                        title="Load Twitch Stream" @click.prevent="playTwitch()">
+                            <span v-if="isTwitchOnline()" style="">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
+                                <strong>Live</strong>
+                                <i class="fa fa-twitch" aria-hidden="true"></i>
+                            </span>
+                            <span v-else style="color:gray;">
+                                <strong>Offline</strong>
+                                <i class="fa fa-twitch" aria-hidden="true"></i>
+                            </span>
+                        </button>
+
+                        <button class=""
+                            :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
+                            type="button" data-toggle="tooltip" data-placement="bottom"
+                            :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
+                        <i class="fa fa-star" aria-hidden="true"></i></button>
+
+                    </div>
+                </h3>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#">Characters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" :href="'/profile/'+ account + '/ranks'">Ranks</a>
             </li>
             <li class="pull-right " style="padding-right:10px;">
                 [<a class="link show-tooltip" target="_blank"
@@ -94,7 +136,8 @@
 <script type="text/javascript">
 
 var favStore = require('../../helpers/FavStore.js');
-var localStore = require('../../helpers/LocalStore.js');
+var profileStore = require('../../helpers/profileStore.js');
+import {poeHelpers} from '../../helpers/poeHelpers.js';
 
 export default {
 
@@ -122,6 +165,11 @@ export default {
             required: false,
             default: null,
         },
+
+        ranks: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     components: {
@@ -134,7 +182,7 @@ export default {
             buildName: '',
             stream: '',
             favStore: favStore,
-            localStore: localStore,
+            profileStore: profileStore,
             isModalVisible: false,
         }
     },
@@ -201,18 +249,8 @@ export default {
             });
         },
 
-        redirectBuild: function(build) {
-            console.log('redirecting')
-            var url = window.location.href;
-            var domain;
-            //find & remove protocol (http, ftp, etc.) and get domain
-            if (url.indexOf("://") > -1) {
-                domain = "http://"+url.split('/')[2];
-            }else {
-                domain = url.split('/')[0];
-            }
-            
-            location.replace(domain + '/builds/' + build.buildId + '/' + build.name);
+        redirectBuild: function(build) {  
+            location.replace((new poeHelpers).getBaseDomain() + '/builds/' + build.buildId + '/' + build.name);
         }
     }
 

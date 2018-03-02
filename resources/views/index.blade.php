@@ -6,7 +6,6 @@
         account: '',
         csrf_token: "{{ csrf_token() }}",
         poe_leagues: "{{ env('POE_LEAGUES') }}",
-        builds: JSON.parse(localStorage.favBuilds)
     }
 </script>
 @endsection
