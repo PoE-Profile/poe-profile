@@ -3,6 +3,12 @@
 return [
 
     /*
+    | This is seting Caching time in minutes for PoE API
+     */
+    'poe_cache_time' => env('POE_CACHE_TIME', 4),
+
+    'poe_leagues' => env('POE_LEAGUES', 'Standard,Hardcore'),
+    /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------

@@ -28,7 +28,7 @@ class Account extends Model
 
     protected function getNewAccInfo($acc){
         // $html = HtmlDomParser::file_get_html('https://www.pathofexile.com/account/view-profile/'. $acc .'/characters');
-        //problem with HtmlDomParser::file_get_html with php 7.1 
+        //problem with HtmlDomParser::file_get_html with php 7.1
         //get with Guzzle and then str_get_html
         $client = new \GuzzleHttp\Client([
               'base_uri' => 'https://www.pathofexile.com/',
@@ -37,7 +37,7 @@ class Account extends Model
         $response = $client->request('GET', '/account/view-profile/'. $acc .'/characters');
         $body = $response->getBody()->getContents();
         $html = HtmlDomParser::str_get_html($body);
-        
+
 
         //filter for accoutn name
         $name = $html->find('.container-content h2',0);
@@ -79,7 +79,7 @@ class Account extends Model
     private function getLastCharFrom($html){
         if($html==null){
             // $html = HtmlDomParser::file_get_html('https://www.pathofexile.com/account/view-profile/'. $this->name .'/characters');
-            //problem with HtmlDomParser::file_get_html with php 7.1 
+            //problem with HtmlDomParser::file_get_html with php 7.1
             //get with Guzzle and then str_get_html
 
             $client = new \GuzzleHttp\Client([
@@ -136,7 +136,7 @@ class Account extends Model
         //get cahce if no cache get from poe api
         $acc=$this->name;
         $key='items/'.$acc.'/'.$char;
-        $items_response = \Cache::remember($key, 5, function () use ($acc,$char){
+        $items_response = \Cache::remember($key, config('app.poe_cache_time'), function () use ($acc,$char){
             $client = new \GuzzleHttp\Client();
             //make Requests to PathOfExile website to retrieve Character Items
             try {

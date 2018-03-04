@@ -13,16 +13,23 @@ class CreateBuildsTable extends Migration
      */
     public function up()
     {
-        Schema::create('builds', function (Blueprint $table) {
+        Schema::create('snapshots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('hash')->unique();
             $table->text('tree_data');
             $table->text('item_data');
-            $table->text('stats')->nullable();
             $table->string('poe_version');
+            $table->string('original_char')->nullable();
+            $table->string('original_level')->nullable();
             $table->dateTime('last_visit')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('snapshots', function($table) {
+            $table->index('hash');
+            $table->index('original_char');
+        });
+
     }
 
     /**
@@ -32,6 +39,6 @@ class CreateBuildsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('saved_builds');
+        Schema::dropIfExists('snapshots');
     }
 }

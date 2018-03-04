@@ -3,22 +3,24 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        char: '{!! $char !!}',
-        chars: {!! json_encode($chars) !!},
-        account: '{!! $acc !!}',
-        dbAcc: {!! $dbAcc !!},
+        account: '{{ $acc }}',
+        char: '{{ $char or "" }}',
+        chars: {!! $chars or "null" !!},
+        dbAcc: {!! $dbAcc or 'null' !!},
+        loadBuild: {{ $loadBuild or 'false' }},
+        build: {!! $build or "null" !!}
     }
 </script>
 @stop
 
 @section('title')
-    PoE Profile Info {{$acc}} / {{$char}}
+    PoE Profile Info {{$acc or "" }} / {{$char or "" }}
 @endsection
 
 @section('script')
-<script type="text/javascript" src="/js/build/profile.js"></script>
 <script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/build/profile.js"></script>
 <script type="text/javascript">
 $('.show-tooltip').tooltip();
 $(function () {
@@ -36,7 +38,11 @@ $(function () {
         <span v-html="alertMsg"></span>
     </div>
 
-    <profile-nav :build="isBuild" :account="account" :twitch="isBuild ? null : dbAcc" :character="isBuild ? character : character.name"></profile-nav>
+    <profile-nav :build="isBuild"
+                :account="account"
+                :selected-tab="isBuild ? 'builds' : 'profile'"
+                :twitch="isBuild ? null : dbAcc.streamer"
+                :character="character.name"></profile-nav>
 
     <list-characters :characters="accountCharacters" :current-character="character" :is-build="isBuild"></list-characters>
 
@@ -47,20 +53,14 @@ $(function () {
                     <character-stats @toggle-stick="toggleStickStat" @stat-loaded="calcTotals"
                         :character="character" :account="account" :off-hand="showOffHand"></character-stats>
                 </div>
+                <pob-code :account="account" :character="character.name"
+                    class="pull-right" style=""></pob-code>
 
                 <div class="right-panel-info">
                 <div class="row character-info">
                     <h2 v-if="skillTreeReseted" style="color:darkred;background-color: black;opacity: 0.6"> No skill tree data.</h2>
                     <h2 class="name">@{{character.name}}</h2>
-                    <h2 class="info1">Level @{{character.level}} @{{character.class}}
-
-                            <button v-if="!isBuild" class="btn btn-sm poe-btn show-tooltip po-pob-link"
-                                    @click.prevent="getPoBCode()"
-                                    data-toggle="tooltip" data-placement="right"
-                                    title="Generate PoB import code">
-                                <i class="fa fa-share-square-o" aria-hidden="true"></i> PoB Code
-                            </button>
-                    </h2>
+                    <h2 class="info1">Level @{{character.level}} @{{character.class}}</h2>
                     <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</small></h2>
                 </div>
                 <div class="inventory ">
@@ -274,25 +274,6 @@ $(function () {
             <div class="po-body" id="popper-content-bandits">
                 <div>
                     <bandits :show="showBandits"></bandits>
-                </div>
-            </div>
-            <div class="po-body" id="popper-content-pob" >
-                <div class="col-lg-12">
-                    <h4>PoB import Code:
-                        <a href="#" class="pull-right" onclick="$('.po-pob-link').trigger('click')">
-                            <i class="fa fa-times-circle" aria-hidden="true"></i>
-                        </a>
-                    </h4>
-                    <div class="input-group">
-                    <input class="form-control" id="pobCode" placeholder="Generating code ..."
-                    aria-label="" aria-describedby="" :value="pobXml">
-                    <span class="input-group-btn">
-                        <button class="btn btn-outline-secondary btn-outline-warning clipboard" type="button"
-                            data-clipboard-target="#pobCode" onclick="$('.po-pob-link').trigger('click')">
-                            <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
-                        </button>
-                    </span>
-                    </div>
                 </div>
             </div>
         </div>

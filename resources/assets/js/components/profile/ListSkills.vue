@@ -115,12 +115,16 @@ export default {
         }
     },
 
-    // mounted: function (){
-    //     this.getSkillImages();
-    // },
+    mounted: function (){
+        console.log("watch items in list skils");
+        if(this.items.length>0){
+            this.getSkillImages();
+        }
+    },
 
     watch: {
         'items': function (val, oldVal) {
+            console.log("watch items in list skils");
             this.getSkillImages();
         }
     },

@@ -43,7 +43,12 @@ $(function () {
         </div>
     </div>
 
-    <profile-nav :build="isBuild" :account="account" :twitch="isBuild ? null : dbAcc" :character="isBuild ? character : character.name" :ranks="true"></profile-nav>
+    <profile-nav :build="isBuild"
+                :account="account"
+                :twitch="isBuild ? null : dbAcc"
+                selected-tab="ranks"
+                :character="isBuild ? character : character.name">
+    </profile-nav>
     @if(count($rankArchives) == 0)
         <div class="no-ranks">
             <h3>We don't have indexed ranks for this account from previous leagues!</h3>
@@ -51,8 +56,7 @@ $(function () {
     @endif
     <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
 
-    
+
 
 </div>
-<modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
 @endsection

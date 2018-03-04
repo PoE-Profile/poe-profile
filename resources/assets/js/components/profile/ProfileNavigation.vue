@@ -1,134 +1,118 @@
 <template>
 <div class="navigation" style="padding-bottom: 0px;padding-top: 10px;background: #190a09;">
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-        <div class="profile" v-if="!build && !ranks">
+        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks'">
             <li class="pull-left" >
                 <h3 style="margin-right:20px;color:#eee;">
-                    <div class="form-group">
-                        {{account}}
-
-                        <button href="#" class="btn btn-sm poe-btn show-tooltip"
-                        data-toggle="tooltip" data-placement="bottom" v-if="twitch.streamer!=null"
-                        title="Load Twitch Stream" @click.prevent="playTwitch()">
-                            <span v-if="isTwitchOnline()" style="">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
-                                <strong>Live</strong>
-                                <i class="fa fa-twitch" aria-hidden="true"></i>
-                            </span>
-                            <span v-else style="color:gray;">
-                                <strong>Offline</strong>
-                                <i class="fa fa-twitch" aria-hidden="true"></i>
-                            </span>
-                        </button>
-
-                        <button class=""
-                            :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
-                            type="button" data-toggle="tooltip" data-placement="bottom"
-                            :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
-                        <i class="fa fa-star" aria-hidden="true"></i></button>
-
-                    </div>
+                    {{account}}
+                    <button href="#" class="btn btn-sm poe-btn show-tooltip"
+                    data-toggle="tooltip" data-placement="bottom" v-if="twitch!=null"
+                    title="Load Twitch Stream" @click.prevent="playTwitch()">
+                        <span v-if="isTwitchOnline()" style="">
+                            <i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
+                            <strong>Live</strong>
+                            <i class="fa fa-twitch" aria-hidden="true"></i>
+                        </span>
+                        <span v-else style="color:gray;">
+                            <strong>Offline</strong>
+                            <i class="fa fa-twitch" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <button class=""
+                        :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
+                        type="button" data-toggle="tooltip" data-placement="bottom"
+                        :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
+                    <i class="fa fa-star" aria-hidden="true"></i></button>
                 </h3>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#">Characters</a>
+                <a class="nav-link"
+                    v-bind:class="[selectedTab=='profile' ? 'active' : '']"
+                    :href="'/profile/'+ account">Characters</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" :href="'/profile/'+ account + '/ranks'">Ranks</a>
+                <a class="nav-link"
+                    v-bind:class="[selectedTab=='ranks' ? 'active' : '']"
+                    :href="'/profile/'+ account + '/ranks'">Ranks</a>
             </li>
-            <li class="nav-item" style="display: block;">
-                <div class="input-group " style="display:block;margin-left:auto;margin-right:auto;">
-                    <input type="text" name="account" v-model="buildName" class="form-control" style="display: inline-block;width:80%;margin-left:auto;margin-right:auto;background:#202624; border-color: #CCCCCC;" placeholder="Enter Build name" v-on:keyup.enter="search()">
-                    <span class="input-group-btn" style="display: inline-block;width:20%;">
-                        <button type="submit" class="btn btn-outline-warning" style="display: inline-block;" @click.prevent="saveBuild()">Save</button>
-                    </span>
-                </div>
-            </li>
-            <li class="pull-right " style="padding-right:10px;">
+            <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
-                data-toggle="tooltip" data-placement="top" title="Go to profil on pathofexile.com"
-                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
+                data-toggle="tooltip" data-placement="bottom" title="Go to profil on pathofexile.com"
+                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character">PoE profile</a>]
+            </li>
+            <li class="pull-right " v-if="selectedTab=='profile'||favStore.isBuildPublic(account)" style="display: block;">
+                <a href="#" class="btn btn-sm poe-btn po-save-build-link "
+                        @click.prevent="" style="color:white; margin-right:10px;">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Save Build/Snapshot
+                </a>
             </li>
         </div>
 
-        <div class="public-build" v-else-if="ranks">
-            <li class="pull-left" >
-                <h3 style="margin-right:20px;color:#eee;">
-                    <div class="form-group">
-                        {{account}}
 
-                        <button href="#" class="btn btn-sm poe-btn show-tooltip"
-                        data-toggle="tooltip" data-placement="bottom" v-if="twitch.streamer!=null"
-                        title="Load Twitch Stream" @click.prevent="playTwitch()">
-                            <span v-if="isTwitchOnline()" style="">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
-                                <strong>Live</strong>
-                                <i class="fa fa-twitch" aria-hidden="true"></i>
-                            </span>
-                            <span v-else style="color:gray;">
-                                <strong>Offline</strong>
-                                <i class="fa fa-twitch" aria-hidden="true"></i>
-                            </span>
-                        </button>
-
-                        <button class=""
-                            :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
-                            type="button" data-toggle="tooltip" data-placement="bottom"
-                            :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
-                        <i class="fa fa-star" aria-hidden="true"></i></button>
-
-                    </div>
-                </h3>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="#">Characters</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" :href="'/profile/'+ account + '/ranks'">Ranks</a>
-            </li>
-            <li class="pull-right " style="padding-right:10px;">
-                [<a class="link show-tooltip" target="_blank"
-                data-toggle="tooltip" data-placement="top" title="Go to profil on pathofexile.com"
-                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
-            </li>
-        </div>
-
-        <div class="public-build" v-else-if="favStore.isBuildPublic(account)">
-            <li class="nav-item" style="display: block;">
-                <div class="input-group " style="display:block;margin-left:auto;margin-right:auto;">
-                    <input type="text" name="account" v-model="buildName" class="form-control" style="display: inline-block;width:80%;margin-left:auto;margin-right:auto;background:#202624; border-color: #CCCCCC;" placeholder="Enter Build name" v-on:keyup.enter="search()">
-                    <span class="input-group-btn" style="display: inline-block;width:20%;">
-                        <button type="submit" class="btn btn-outline-warning" style="display: inline-block;" @click.prevent="saveBuild()">Save</button>
-                    </span>
-                </div>
-            </li>
-        </div>
-        
-        <div class="local-build" v-else>
+        <!-- For Builds nav -->
+        <div class="local-build" v-if="selectedTab=='builds'">
             <li class="pull-left">
-                <div class="form-group">
-                    <h3 style="margin-right:20px;color:#eee;">My Builds</h3>
-                </div>
+                <h3 style="margin-right:20px;color:#eee;">My Builds</h3>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#">Builds</a>
             </li>
+            <li class="pull-right">
+            </li>
+            <li v-if="favStore.isBuildPublic(account)" class="pull-right" style="display: block;">
+                <a href="#" class="btn btn-sm poe-btn po-save-build-link"
+                        @click.prevent="" style="color:white; margin-right:10px;">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> SaveBuild
+                </a>
+            </li>
+            <li v-else class="pull-right" style="margin-right: 15px">
+                <a href="#" class="btn poe-btn btn-sm pull-right show-tooltip" style="margin-left: 15px;"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Remove current build from local storage" @click.prevent="removeBuild(character)">
+                <i class="fa fa-trash" aria-hidden="true"></i> Remove "{{character}}"</a>
 
-            <li class="nav-item" style="display: block;margin-left: 10px;">
-                <div class="input-group " style="display:block;margin-left:auto;margin-right:auto;">
-                    <input type="text" name="build" :value="buildLink" id="build" class="form-control" 
-                    style="display: inline-block;width:80%;margin-left:auto;margin-right:auto;background:#202624; border-color: #CCCCCC;">
-                    <span class="input-group-btn" style="display: inline-block;width:20%;">
-                        <button type="submit" data-clipboard-target="#build" class="btn btn-outline-warning" style="display: inline-block;" @click.prevent="buildLink">Share</button>
+                <div class="input-group input-group-sm" style="border-color: #ebb16c;width: 75%;">
+                    <span class=" text-white pull-left" id="basic-addon1">Share Build: </span>
+                    <input type="text" id="build" :value="buildLink"
+                        class="form-control" style="width:380px;background:#FFFFFF; ">
+                    <span class="input-group-btn" style="display: inline-block;">
+                        <button type="submit" data-clipboard-target="#build"
+                        class="btn poe-btn clipboard" @click.prevent="">
+                        <i class="fa fa-clipboard" aria-hidden="true"></i>Copy</button>
                     </span>
                 </div>
             </li>
         </div>
-        
+
     </ul>
 
+
+
+    <!-- helpars -->
     <modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
-    
+
+    <div class="po-body" id="popper-save-build" style="display:none;">
+        <div class="col-lg-12" ref="popover" style="width:350px;">
+            <strong>Save Build:
+                <a href="#" class="pull-right" onclick="$('.po-save-build-link').trigger('click')">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </a>
+            </strong>
+            <span>Make snapshot of items and skill tree of "{{character}}" and save to My Builds with name:</span>
+            <div class="input-group">
+                <input class="form-control" placeholder="Build name" v-model="buildName" aria-label="" aria-describedby="">
+                <span class="input-group-btn">
+                    <button class="btn btn-outline-secondary btn-outline-warning clipboard" type="button"
+                        data-clipboard-target="#pobCode"  @click.prevent="saveBuild()">
+                        <i class="fa fa-clipboard" aria-hidden="true"></i> Save
+                    </button>
+                </span>
+            </div>
+            <loader :loading="saving" style="margin-left:auto;margin-right:auto;"></loader>
+            <br>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -147,40 +131,32 @@ export default {
             required: true,
             default: '',
         },
-
         character: {
             type: String,
             required: true,
             default: '',
         },
-
-        build: {
-            type: Boolean,
+        selectedTab: {
+            type: String,
             required: true,
-            default: false,
         },
-
         twitch: {
             type: Object,
             required: false,
             default: null,
         },
-
-        ranks: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     components: {
-        // 'item': Item, 
+        // 'item': Item,
     },
 
     data: function() {
         return {
             buildLink: window.location.href,
             buildName: '',
-            stream: '',
+            stream: {},
+            saving: false,
             favStore: favStore,
             profileStore: profileStore,
             isModalVisible: false,
@@ -197,7 +173,20 @@ export default {
     },
 
     watch: {},
-
+    mounted: function () {
+        $('.po-save-build-link').popover({
+           trigger: 'click',
+           html: true,
+           title: "SaveBuild",
+           content: this.$refs['popover'],
+           container: 'body',
+           placement: 'bottom'
+        });
+        this.$nextTick(function () {
+            $('.show-tooltip').tooltip();
+        })
+        new Clipboard('.clipboard');
+    },
     methods: {
 
         toggleFavAcc: function (acc) {
@@ -217,40 +206,40 @@ export default {
         },
 
         isTwitchOnline: function (){
-            return this.twitch.streamer.online;
+            return this.twitch.online;
         },
 
         playTwitch: function(){
-            this.stream = this.twitch.streamer;
+            this.stream = this.twitch;
             this.isModalVisible=true;
         },
-        
+
         closeModal: function() {
             this.stream = null;
             this.isModalVisible = false;
         },
 
         saveBuild: function () {
-            if(this.favStore.isBuildPublic(this.account)){
-                var build = this.character;
+            this.saving=true;
+            var formData = new FormData();
+            formData.append('account', this.account);
+            formData.append('char', this.character);
+            axios.post('/api/build/save', formData).then((response) => {
+                // save to favStore Build comming from this response
+                var build=response.data;
+                this.saving=false;
                 build.name = this.buildName;
                 this.favStore.addBuild(build);
-                this.redirectBuild(build);
-            }
-            var vm = this;
-            var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('char', vm.character);
-            formData.append('name', vm.buildName);
-            axios.post('/api/saveBuild', formData).then((response) => {
-                // save to favStore Build comming from this response
-                this.favStore.addBuild(response.data);
                 this.redirectBuild(response.data);
             });
         },
 
-        redirectBuild: function(build) {  
-            location.replace((new poeHelpers).getBaseDomain() + '/builds/' + build.buildId + '/' + build.name);
+        removeBuild: function(hash){
+
+        },
+
+        redirectBuild: function(build) {
+            location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
         }
     }
 

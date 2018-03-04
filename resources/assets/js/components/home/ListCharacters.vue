@@ -8,7 +8,7 @@
         </span>
     </div>
 
-    <table class="table table-hover homapage-table">
+    <table class="table table-hover homapage-table" style="color:white">
         <thead>
             <tr>
                 <!-- <th>#</th> -->

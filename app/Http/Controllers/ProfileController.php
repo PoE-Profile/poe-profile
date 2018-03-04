@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Stash;
 use App\Item;
 
-class HomeController extends CacheController
+class ProfileController extends CacheController
 {
     /**
      * Create a new controller instance.
@@ -17,36 +17,6 @@ class HomeController extends CacheController
     public function __construct()
     {
         // $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        if($request->cookie('default-acc')){
-            //return redirect()->route('view.profile');
-        }
-        return view('index');
-    }
-
-    public function home()
-    {
-        return view('index');
-    }
-
-    public function profileDefault(Request $request)
-    {
-        $char = '';
-        $acc = $request->cookie('default-acc');
-        if(!$acc){
-            flash('No main profile .', 'warning');
-            return redirect()->route('home');
-        }
-
-        return redirect()->route('get.profile',$acc);
     }
 
     public function postProfile(Request $request)
@@ -62,16 +32,6 @@ class HomeController extends CacheController
         return redirect()->route('get.profile',$acc);
     }
 
-    //set default-acc for profile
-    public function postSetProfile(Request $request){
-        //session(['default-acc' => $request->input('account')]);
-        $acc=$request->input('account');
-        flash('Аccount '.$acc.' is set as your main profil next time you load '.config('app.url').'/profile is going to load '.$acc, 'success');
-
-        return redirect()->route('get.profile',$acc)
-            ->withCookie(cookie()->forever('default-acc', $acc, null, null, false, false));
-        //return redirect()->route('view.profile');
-    }
     public function getProfile($acc)
     {
         //getCharsCache() is from parant class CacheController
@@ -97,16 +57,16 @@ class HomeController extends CacheController
             $dbAcc->updateViews();
         }
 
+        $chars = collect($chars);
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
-    public function profile($acc, $char)
+    public function getProfileChar($acc, $char)
     {
         //getCharsCache() is from parant class CacheController
         $chars = $this->getCharsCache($acc);
         if(!$chars){
             flash('Аccount is private or does not exist. ', 'warning');
-
             return redirect()->route('home');
         }
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
@@ -121,47 +81,38 @@ class HomeController extends CacheController
             flash('Character with name "'.$char.'" does not exist in account '.$acc.' or is removed.', 'warning');
             return redirect()->route('get.profile',$acc);
         }
-        // json_encode($value [, $options, $depth])
+        $chars = collect($chars);
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
-    public function getProfileRanks($acc){
-
+    public function getProfileRanks($acc)
+    {
         $rankArchives = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$acc) {
             $query->where('name', '=', $acc);
         })->get();
-
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
     }
 
     public function indexBuild()
     {
-
         $acc = '';
-        $char = '';
-
-        $dbAcc = '[]';
-        $chars = null;
-
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+        $build = null;
+        $loadBuild = "true";
+        return view('profile', compact('acc', 'build', 'loadBuild'));
     }
 
-    public function showBuild($id, $name)
+    public function showBuild($hash)
     {
-        $build = \App\Build::where('id', '=', $id)->where('name', '=', $name)->first();
+        $build = \App\Snapshot::where('hash', '=', $hash)->first();
+        $loadBuild = "true";
+        $acc = 'build::'.$hash;
         if ($build == null) {
-            flash("Wrong build Name")->warning()->important();
-            return redirect()->route('index.builds');
+            flash("404 Build snapshot ".$hash." Not Found")->warning()->important();
+            return view('profile', compact('acc', 'build', 'loadBuild'));
         }
-        
-        $acc = 'build::'.$id;
-        $char = $build->name;
-
-        $dbAcc = $build;
-        $chars = null;
-
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+        // $char = "";
+        // $dbAcc = $build;
+        return view('profile', compact('acc', 'build', 'loadBuild'));
     }
 }

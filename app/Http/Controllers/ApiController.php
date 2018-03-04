@@ -10,13 +10,12 @@ class ApiController extends CacheController
 {
     public function getItems(Request $request)
     {
-        
         if (!$request->has('account') && !$request->has('character')) {
             return;
         }
         $b = explode('::', $request->input('account'));
         if($b[0] == 'build'){
-            return \App\Build::find($b[1])->item_data['items'];
+            return \App\Snapshot::where('hash','=',$b[1])->get()->item_data['items'];
         }
         $acc=$request->input('account');
         $char=$request->input('character');
@@ -34,9 +33,13 @@ class ApiController extends CacheController
 
         $b = explode('::', $acc);
         if ($b[0] == 'build') {
-            return \App\Build::find($b[1])->getStats();
+            $build=\App\Snapshot::where('hash','=',$b[1])->first();
+            if(!$build){
+                return [];
+            }
+            return $build->getStats();
         }
-        //getItemsCache() is from parant class CacheController
+        //getStatsCache() is from parant class CacheController
         return $this->getStatsCache($acc, $char);
     }
 
@@ -82,12 +85,11 @@ class ApiController extends CacheController
 
     public function getLadder(Request $request)
     {
-        
+
         if ($request->has('searchFilter')) {
             $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
                 $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
             })->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')->paginate();
-
             return $respond;
         }
 
@@ -116,7 +118,7 @@ class ApiController extends CacheController
             return $respond;
         }
 
-        if ($request->has('leagueFilter')) { 
+        if ($request->has('leagueFilter')) {
             $respond = \App\LadderCharacter::with('account')->where('league', '=', $request->input('leagueFilter'))
                         ->orderBy('rank', 'asc')->paginate();
             return $respond;
@@ -161,7 +163,6 @@ class ApiController extends CacheController
         $itemsData = $this->getItemsCache($acc, $char, true);
         $treeJson = $this->getTreeCache($acc, $char);
         $pob = new PobXMLBuilder($itemsData, $treeJson);
-        
 
         // show XML ---->
         // Header('Content-type: text/xml');
@@ -170,59 +171,42 @@ class ApiController extends CacheController
         return $pob->encodedXML();
     }
 
-    public function defaultBuild(Request $request)
+    public function getBuild($hash)
     {
-        $id = $request->input('id');
-        $name = $request->input('name');
-
-        $build = \App\Build::where('id', '=', $id)->where('name', '=', $name)->first();
-
+        $build = \App\Snapshot::where('hash', '=', $hash)->first();
         return $build;
     }
 
     public function saveBuild(Request $request)
     {
-        $client = new \GuzzleHttp\Client();
-        $treeData = $client->request(
-            'GET',
-            'https://www.pathofexile.com/character-window/get-passive-skills',
-            [
-                'query' => [
-                    'accountName' => $request->input('account'),
-                    'character' => $request->input('char')
-                ]
-            ]
-        );
-        $treeData = (string)$treeData->getBody();
+        $acc=$request->input('account');
+        $char=$request->input('char');
 
-        $itemData = $client->request(
-            'GET',
-            'https://www.pathofexile.com/character-window/get-items',
-            [
-                'query' => [
-                    'accountName' => $request->input('account'),
-                    'character' => $request->input('char')
-                ]
-            ]
-        );
-        $itemData = (string)$itemData->getBody();
+        //getItemsCache() true to get the whole respons
+        $itemData = $this->getItemsCache($acc, $char, true);
+        $itemData = json_encode($itemData);
+        $treeData = $this->getTreeCache($acc, $char);
+        $treeData = json_encode($treeData);
 
-        $currentLeagues = explode(',', env('POE_LEAGUES'));
-        $buildName = str_replace(' ', '_', $request->input('name'));
-        $build = \App\Build::create([
-            'name' => $buildName,
-            'tree_data' => $treeData,
-            'item_data' => $itemData,
-            'poe_version' => $currentLeagues[0]
-        ]);
-        $build->stats = $build->getStats();
-        $build->save();
-        
-        $favStore = $build->item_data['character'];
-        $favStore['name'] = $buildName;
+        $hash = md5($treeData.'/'.$itemData);
+        $snapshot = \App\Snapshot::where('hash', '=', $hash)->first();
+        if(!$snapshot){
+            $version = env('POE_VERSION');
+            $original_char = $acc .'/'. $char;
+            $snapshot = \App\Snapshot::create([
+                'hash' => $hash,
+                'tree_data' => $treeData,
+                'item_data' => $itemData,
+                'original_char' => $original_char,
+                'poe_version' => $version
+            ]);
+            $snapshot->original_level = $snapshot->item_data['character']['level'];
+            $snapshot->save();
+        }
+
+        $favStore = $snapshot->item_data['character'];
         $favStore['league'] = 'localBuild';
-        $favStore['buildId'] = $build->id;
-
+        $favStore['buildId'] = $snapshot->hash;
         return $favStore;
     }
 }

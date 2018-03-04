@@ -2,7 +2,7 @@ module.exports = {
     favAcc: JSON.parse(localStorage.getItem('favAcc')) ? JSON.parse(localStorage.getItem('favAcc')) : [],
     favBuilds: JSON.parse(localStorage.getItem('favBuilds')) ? JSON.parse(localStorage.getItem('favBuilds')) : [],
     favStats: JSON.parse(localStorage.getItem('favStats')) ? JSON.parse(localStorage.getItem('favStats')) : [],
-    
+
     addStat (stat) {
         this.favStats.push(stat)
         this.save('favStats',this.favStats);
@@ -54,6 +54,16 @@ module.exports = {
         this.save('favBuilds', this.favBuilds);
     },
 
+    getBuild(hash){
+        var res=null;
+        for (var i = 0; i < this.favBuilds.length; i++) {
+            if (this.favBuilds[i].buildId === hash) {
+                res=this.favBuilds[i];
+            }
+        }
+        return res;
+    },
+
     removeBuild(name) {
         for (var i = 0; i < this.favBuilds.length; i++) {
             if (this.favBuilds[i] === name) {
@@ -68,7 +78,7 @@ module.exports = {
             return false
         }
         var acc = account.split('::');
-        if (_.find(this.favBuilds, { "buildId": parseInt(acc[1])})) {
+        if (_.find(this.favBuilds, { "buildId": acc[1]})) {
             return false
         }
         return true;

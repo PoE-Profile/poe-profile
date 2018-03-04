@@ -8,13 +8,14 @@ Vue.component('list-characters', require('./components/profile/ListCharacters.vu
 Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
 
 Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
-
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
 Vue.component('list-skills', require('./components/profile/ListSkills.vue'));
 Vue.component('item-info', require('./components/profile/ItemInfo.vue'));
 Vue.component('loader', require('./components/Loader.vue'));
 Vue.component('bubble', require('./components/profile/Bubble.vue'));
 Vue.component('bandits', require('./components/profile/Bandits.vue'));
+Vue.component('pob-code', require('./components/profile/PobCode.vue'));
+
 Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
@@ -70,16 +71,10 @@ new Vue({
         skillTreeUrl: '',
         showOffHand: false,
         skillTreeReseted: false,
-        pobXml: '',
-        stream: null,
-        pobText: 'Copy PoB Code',
         rankArchives: window.PHP.rankArchives,
     },
 
-    created: function () {
-        this.setAccountData();
-        this.getCharacterItems();
-    },
+
 
     mounted: function () {
         $('.po-bandits-link').popover({
@@ -90,15 +85,6 @@ new Vue({
            container: 'body',
            placement: 'top'
         });
-
-        $('.po-pob-link').popover({
-           trigger: 'click',
-           html: true,
-           title: $('.po-title').html(),
-           content: $('#popper-content-pob'),
-           container: 'body',
-           placement: 'bottom'
-       });
     },
 
     computed: {
@@ -244,7 +230,61 @@ new Vue({
         }
     },
 
+    created: function () {
+        if(window.PHP.loadBuild){
+            this.setupBuild();
+            return;
+        }
+        this.setAccountData();
+        this.getCharacterItems();
+    },
+
     methods: {
+
+        // build initialization
+        setupBuild:function(){
+            this.account = window.PHP.account;
+            this.isBuild = true;
+            this.accountCharacters = this.favStore.favBuilds;
+
+            if(this.account==""){
+                var build = _.last(this.favStore.favBuilds);
+                location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
+            }
+
+            var build = window.PHP.build;
+            //if build null snapshot removed from db
+            if(build==null){
+                this.character = this.favStore.getBuild(this.account.split('::')[1]);
+                return;
+            }
+
+            if (this.favStore.isBuildPublic(this.account)){
+                this.accountCharacters = [];
+                this.character = build.item_data.character;
+            }else{
+                this.character = this.favStore.getBuild(build.hash);
+            }
+            this.items = build.item_data.items;
+        },
+
+        setAccountData: function () {
+            this.account = window.PHP.account;
+
+
+            if (window.PHP.chars === null) {
+            } else {
+                this.accountCharacters = window.PHP.chars;
+            }
+
+            if (window.PHP.char === '') {
+                this.character = this.accountCharacters[0];
+                return;
+            }
+            this.character = this.accountCharacters.filter(function(chars){
+                return chars.name === window.PHP.char;
+            })[0];
+        },
 
         checkBuilds: function(){
             return this.accountCharacters.length > 0 || this.favStore.isBuildPublic(this.account);
@@ -392,33 +432,6 @@ new Vue({
             })[0].name;
         },
 
-        setAccountData: function () {
-            this.account = window.PHP.account;
-
-            // build initialization
-            if (window.PHP.chars === null) {
-                this.isBuild = true;
-                this.accountCharacters = this.favStore.favBuilds;
-                if (this.favStore.isBuildPublic(this.account)){
-                    this.accountCharacters = [];
-                    this.character = this.dbAcc.item_data.character;
-                    this.character.buildId = this.account.split('::')[1];
-                    this.character.name = window.PHP.char;
-                    return
-                }
-            } else {
-                this.accountCharacters = window.PHP.chars;
-            }
-            
-            if (window.PHP.char === '') {
-                this.character = this.accountCharacters[0];
-                return;
-            }
-            this.character = this.accountCharacters.filter(function(chars){
-                return chars.name === window.PHP.char;
-            })[0];
-        },
-
         navMoreInfo: function (event) {
             switch (event.target.getAttribute("data-toggle")) {
                 case 'more-info':
@@ -448,6 +461,7 @@ new Vue({
                         self.setTreeUrl();
                         return;
                     }else{
+                        console.log("testSkill-tree");
                         this.getTreeData(function(response){
                             self.treeData=response.data;
                             self.setTreeUrl();
@@ -480,50 +494,14 @@ new Vue({
         },
 
         getCharacterItems: function () {
-            if (this.isBuild) {
-                if (this.account === '') {
-                    this.defaultBuild()
-                } else {
-                    this.items = this.dbAcc.item_data.items;
-                }
-                return;
-            }
-            var vm = this;
+            //start loading bar for items and stats
             this.loadingItems=true;
             var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('character', vm.character.name);
-            //start loading bar for items and stats
-
+            formData.append('account', this.account);
+            formData.append('character', this.character.name);
             axios.post('/api/char/items', formData).then((response) => {
-                vm.items = response.data;
+                this.items = response.data;
                 this.loadingItems=false;
-            });
-        },
-
-        defaultBuild: function() {
-            var firstBuild = this.favStore.favBuilds[0];
-
-            var vm = this;
-            var formData = new FormData();
-            formData.append('id', firstBuild.buildId);
-            formData.append('name', firstBuild.name);
-
-            axios.post('/api/builds/default', formData).then((response) => {
-                vm.dbAcc = response.data;
-                vm.items = this.dbAcc.item_data.items
-                vm.account = 'build::' + response.data.id
-            });
-        },
-
-        getPoBCode: function() {
-            this.showPoB=true;
-            var vm = this;
-            var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('char', vm.character.name);
-            axios.post('/api/getPoBCode', formData).then((response) => {
-                this.pobXml = response.data;
             });
         },
 

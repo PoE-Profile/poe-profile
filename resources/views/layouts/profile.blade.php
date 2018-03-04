@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	
+
 	 <title> @yield('title', 'PoE Profile Info')</title>
 
 	<!-- Latest compiled and minified CSS -->
@@ -58,13 +58,13 @@
             			</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('twitch') }}"><i class="fa fa-twitch" aria-hidden="true"></i> Twitch <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ route('twitch') }}"><i class="fa fa-twitch" aria-hidden="true"></i> Twitch</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('ladders') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Ladder <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ route('ladders') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Ladder</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('index.builds') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Builds <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ route('index.builds') }}"><i class="fa fa-bookmark" aria-hidden="true"></i> My Builds</a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="{{ route('favorites') }}">
@@ -80,11 +80,11 @@
                         </div>
                     </li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ url('/about') }}"><i class="fa fa-info" aria-hidden="true"></i> About<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ url('/about') }}"><i class="fa fa-info" aria-hidden="true"></i> About</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url('/update_notes') }}" style="color: orange">
-							What is New v1.1
+							What is New v1.2
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
