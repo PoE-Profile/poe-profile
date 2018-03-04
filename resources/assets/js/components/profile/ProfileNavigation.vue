@@ -38,7 +38,7 @@
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
                 data-toggle="tooltip" data-placement="bottom" title="Go to profil on pathofexile.com"
-                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character">PoE profile</a>]
+                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
             </li>
             <li class="pull-right " v-if="selectedTab=='profile'||favStore.isBuildPublic(account)" style="display: block;">
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link "
@@ -54,9 +54,9 @@
             <li class="pull-left">
                 <h3 style="margin-right:20px;color:#eee;">My Builds</h3>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link active" href="#">Builds</a>
-            </li>
+            </li> -->
             <li class="pull-right">
             </li>
             <li v-if="favStore.isBuildPublic(account)" class="pull-right" style="display: block;">
@@ -98,7 +98,7 @@
                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                 </a>
             </strong>
-            <span>Make snapshot of items and skill tree of "{{character}}" and save to My Builds with name:</span>
+            <span>Make snapshot of items and skill tree of "{{character.name}}" and save to My Builds with name:</span>
             <div class="input-group">
                 <input class="form-control" placeholder="Build name" v-model="buildName" id="buildName" aria-label="" aria-describedby="" v-on:keyup.enter="saveBuild()">
                 <span class="input-group-btn">
@@ -132,13 +132,13 @@ export default {
             default: '',
         },
         character: {
-            type: String,
+            type: Object,
             required: true,
             default: '',
         },
         selectedTab: {
             type: String,
-            required: true,
+            required: false,
         },
         twitch: {
             type: Object,
@@ -229,10 +229,21 @@ export default {
         },
 
         saveBuild: function () {
+            //if public snapshot to save in local store
+            if(this.buildHash.length>0){
+                var build=this.character;
+                build.name = this.buildName.replace(/ /g,"_");
+                build.league = 'localBuild';
+                build.buildId=this.buildHash;
+                this.favStore.addBuild(build);
+                this.redirectBuild(build);
+                return;
+            }
+
             this.saving=true;
             var formData = new FormData();
             formData.append('account', this.account);
-            formData.append('char', this.character);
+            formData.append('char', this.character.name);
             axios.post('/api/build/save', formData).then((response) => {
                 // save to favStore Build comming from this response
                 var build=response.data;

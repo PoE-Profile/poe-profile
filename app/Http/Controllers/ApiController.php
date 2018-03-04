@@ -174,7 +174,7 @@ class ApiController extends CacheController
     public function getSnapshots($acc, $char)
     {
         $original_char = $original_char = $acc .'/'. $char;
-        $snapshots = \App\Snapshot::where('original_char', '=', $original_char)->get();
+        $snapshots = \App\Snapshot::where('original_char', '=', $original_char)->orderBy('created_at', 'desc')->take(25)->get();
         return $snapshots;
     }
 
@@ -191,11 +191,15 @@ class ApiController extends CacheController
 
         //getItemsCache() true to get the whole respons
         $itemData = $this->getItemsCache($acc, $char, true);
+        $itemsNoFlasks = array_filter($itemData['items'], function ($item){
+            return $item['inventoryId']!="Flask";
+        });
+        $itemsNoFlasks=json_encode($itemsNoFlasks);
         $itemData = json_encode($itemData);
         $treeData = $this->getTreeCache($acc, $char);
         $treeData = json_encode($treeData);
 
-        $hash = md5($treeData.'/'.$itemData);
+        $hash = md5($treeData.'/'.$itemsNoFlasks);
         $snapshot = \App\Snapshot::where('hash', '=', $hash)->first();
         if(!$snapshot){
             $version = config('app.poe_version');

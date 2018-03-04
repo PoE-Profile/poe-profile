@@ -42,7 +42,7 @@ $(function () {
                 :account="account"
                 :selected-tab="isBuild ? 'builds' : 'profile'"
                 :twitch="isBuild ? null : dbAcc.streamer"
-                :character="character.name"></profile-nav>
+                :character="character"></profile-nav>
 
     <list-characters :characters="accountCharacters" :current-character="character" :is-build="isBuild"></list-characters>
 
@@ -53,23 +53,24 @@ $(function () {
                     <character-stats @toggle-stick="toggleStickStat" @stat-loaded="calcTotals"
                         :character="character" :account="account" :off-hand="showOffHand"></character-stats>
                 </div>
-                <pob-code :account="account" :character="character.name" class="pull-right" style=""></pob-code>
+                <div style="padding:4px 4px 0 0;">
+                    <pob-code :account="account" :character="character.name" class="pull-right" style=""></pob-code>
 
-                <button v-if="isBuild" class="btn btn-sm poe-btn show-tooltip pull-right"
-                        style="margin-right: 25px;"
-                        @click.prevent="isSnapshotsVisible = true"
-                        type="submit" data-toggle="tooltip" data-placement="top"
-                        title="Show snapshots">
-                    <i class="fa fa-clone" aria-hidden="true"> Snapshots</i>
-                </button>
-                    
+                    <button class="btn btn-sm poe-btn show-tooltip pull-right"
+                            style="margin-right: 10px;"
+                            @click.prevent="isSnapshotsVisible = true"
+                            data-toggle="tooltip" data-placement="top" title="Show snapshots">
+                        <i class="fa fa-clone" aria-hidden="true"></i> Snapshots
+                    </button>
+                </div>
+
                 <div class="right-panel-info">
                 <div class="row character-info">
                     <h2 v-if="skillTreeReseted" style="color:darkred;background-color: black;opacity: 0.6"> No skill tree data.</h2>
                     <h2 class="name">@{{character.name}}</h2>
                     <h2 class="info1">Level @{{character.level}} @{{character.class}}</h2>
                     <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</small></h2>
-                    <h2 class="info2" v-if="isBuild"> @{{build.created_at}}</small></h2>
+                    <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a> </small></h2>
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">
@@ -287,10 +288,16 @@ $(function () {
         </div>
     </div>
 
-    <div class="no-builds" v-else>
-        <h3>You havent saved any builds yet!</h3>
+    <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
+        <br><br>
+        <h3 >You havent saved any builds yet!</h3>
+        <br><br><br><br><br><br>
     </div>
 
-    <modal-snapshots v-show="isSnapshotsVisible" @close="isSnapshotsVisible = false" @close="closeModal" :build="build"></modal-snapshots>
+    <modal-snapshots v-show="isSnapshotsVisible" :build="build"
+        :load-data="isSnapshotsVisible"
+        @close="isSnapshotsVisible = false"
+        :original-char="original_char">
+    </modal-snapshots>
 
 @endsection

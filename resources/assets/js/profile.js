@@ -75,6 +75,7 @@ new Vue({
         showOffHand: false,
         skillTreeReseted: false,
         rankArchives: window.PHP.rankArchives,
+        original_char: '',
     },
 
 
@@ -243,9 +244,6 @@ new Vue({
     },
 
     methods: {
-        closeModal: function () {
-            this.isSnapshotsVisible = false;
-        },
 
         // build initialization
         setupBuild:function(){
@@ -271,6 +269,7 @@ new Vue({
             }else{
                 this.character = this.favStore.getBuild(build.hash);
             }
+            this.original_char=build.original_char;
             this.items = build.item_data.items;
         },
 
@@ -290,6 +289,7 @@ new Vue({
             this.character = this.accountCharacters.filter(function(chars){
                 return chars.name === window.PHP.char;
             })[0];
+            this.original_char=this.account +"/"+this.character.name;
         },
 
         checkBuilds: function(){

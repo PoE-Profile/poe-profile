@@ -7,12 +7,11 @@
         <div class="modal-body">
 
             <div class="modal-header">
-                <span>SNAPSHOTS</span>
+                <span>SNAPSHOTS : {{originalChar}}</span>
                 <div class="pull-right">
                     <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>
                 </div>
             </div>
-
             <div class="modal-body">
                 <table width="100%">
                     <tr>
@@ -21,16 +20,19 @@
                         <th>Original Level</th>
                         <th>Created at</th>
                     </tr>
-                    <tr v-for="build in snapshots">
-                    
-                        <td><a href="#" @click.prevent="gotoSnapshot(build.hash)">{{build.hash}}</a></td>
-                        <td>{{build.original_char}}</td>
-                        <td>{{build.original_level}}</td>
-                        <td>{{build.created_at}}</td>
+                    <tr v-for="snapshot in snapshots"
+                        v-bind:class="[currentHash==snapshot.hash ? 'current-snap' : '']">
+
+                        <td ><a href="#" @click.prevent="gotoSnapshot(snapshot.hash)">{{snapshot.hash}}</a></td>
+                        <td>{{snapshot.original_char}}</td>
+                        <td>{{snapshot.original_level}}</td>
+                        <td>{{snapshot.created_at}}</td>
                     </tr>
                 </table>
+                <loader :loading="loading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
+
             </div>
-            
+
         </div>
       </div>
     </div>
@@ -44,26 +46,42 @@ import {poeHelpers} from '../../helpers/poeHelpers.js';
 
 export default {
     props: {
+        originalChar: {
+            type: String,
+            default: null,
+        },
         build: {
             type: Object,
             default: null,
+        },
+        loadData: {
+            type: Boolean,
+            default: false,
         },
     },
 
     data: function(){
         return {
             snapshots: {},
+            loading: false,
+            currentHash: '',
         }
     },
     computed: {
-       
+
     },
     watch : {
-        
+        loadData: function (newVal, oldVal) {
+                if(newVal){
+                    this.loadSnapshots();
+                }
+           }
     },
 
     mounted: function() {
-        this.loadSnapshots();
+        if(build){
+            this.currentHash=build.hash;
+        }
     },
 
     methods: {
@@ -72,8 +90,10 @@ export default {
         },
 
         loadSnapshots: function() {
-            axios.get('/api/snapshots/' + this.build.original_char).then((response) => {
+            this.loading=true;
+            axios.get('/api/snapshots/' + this.originalChar).then((response) => {
                 this.snapshots = response.data;
+                this.loading=false;
             });
         },
 
@@ -114,6 +134,9 @@ export default {
   padding: 5px;
 }
 
+.current-snap{
+      background-color: #373a3c;
+}
 
 .modal-body {
   position: relative;
