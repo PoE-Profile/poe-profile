@@ -111,8 +111,6 @@ class ProfileController extends CacheController
             flash("404 Build snapshot ".$hash." Not Found")->warning()->important();
             return view('profile', compact('acc', 'build', 'loadBuild'));
         }
-        // $char = "";
-        // $dbAcc = $build;
         return view('profile', compact('acc', 'build', 'loadBuild'));
     }
 }

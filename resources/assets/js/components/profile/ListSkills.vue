@@ -116,7 +116,6 @@ export default {
     },
 
     mounted: function (){
-        console.log("watch items in list skils");
         if(this.items.length>0){
             this.getSkillImages();
         }
@@ -124,7 +123,6 @@ export default {
 
     watch: {
         'items': function (val, oldVal) {
-            console.log("watch items in list skils");
             this.getSkillImages();
         }
     },

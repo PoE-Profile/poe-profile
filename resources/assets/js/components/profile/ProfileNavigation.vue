@@ -68,8 +68,8 @@
             <li v-else class="pull-right" style="margin-right: 15px">
                 <a href="#" class="btn poe-btn btn-sm pull-right show-tooltip" style="margin-left: 15px;"
                     data-toggle="tooltip" data-placement="bottom"
-                    title="Remove current build from local storage" @click.prevent="removeBuild(character)">
-                <i class="fa fa-trash" aria-hidden="true"></i> Remove "{{character}}"</a>
+                    title="Remove current build from local storage" @click.prevent="removeBuild(buildHash)">
+                <i class="fa fa-trash" aria-hidden="true"></i> Remove Build</a>
 
                 <div class="input-group input-group-sm" style="border-color: #ebb16c;width: 75%;">
                     <span class=" text-white pull-left" id="basic-addon1">Share Build: </span>
@@ -88,7 +88,7 @@
 
 
 
-    <!-- helpars -->
+    <!-- helpers -->
     <modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
 
     <div class="po-body" id="popper-save-build" style="display:none;">
@@ -100,7 +100,7 @@
             </strong>
             <span>Make snapshot of items and skill tree of "{{character}}" and save to My Builds with name:</span>
             <div class="input-group">
-                <input class="form-control" placeholder="Build name" v-model="buildName" aria-label="" aria-describedby="">
+                <input class="form-control" placeholder="Build name" v-model="buildName" id="buildName" aria-label="" aria-describedby="" v-on:keyup.enter="saveBuild()">
                 <span class="input-group-btn">
                     <button class="btn btn-outline-secondary btn-outline-warning clipboard" type="button"
                         data-clipboard-target="#pobCode"  @click.prevent="saveBuild()">
@@ -170,6 +170,13 @@ export default {
             }
             return 'Add to favorites.';
         },
+
+        buildHash: function() {
+            if (!this.account.includes('build::')) {
+                return '';
+            }
+            return this.account.split('::')[1];
+        }
     },
 
     watch: {},
@@ -181,6 +188,8 @@ export default {
            content: this.$refs['popover'],
            container: 'body',
            placement: 'bottom'
+        }).on('shown.bs.popover	', function () {
+            $("#buildName").focus();
         });
         this.$nextTick(function () {
             $('.show-tooltip').tooltip();
@@ -228,14 +237,19 @@ export default {
                 // save to favStore Build comming from this response
                 var build=response.data;
                 this.saving=false;
-                build.name = this.buildName;
+                build.name = this.buildName.replace(/ /g,"_");
                 this.favStore.addBuild(build);
                 this.redirectBuild(response.data);
             });
         },
 
         removeBuild: function(hash){
-
+            this.favStore.removeBuild(hash);
+            var lastBuild = _.last(this.favStore.favBuilds);
+            if (lastBuild) {
+                location.replace((new poeHelpers).getBaseDomain() + '/build/' + lastBuild.buildId);
+            }
+            location.replace((new poeHelpers).getBaseDomain() + '/builds/');
         },
 
         redirectBuild: function(build) {

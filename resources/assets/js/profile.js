@@ -17,6 +17,7 @@ Vue.component('bandits', require('./components/profile/Bandits.vue'));
 Vue.component('pob-code', require('./components/profile/PobCode.vue'));
 
 Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
+Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import {poeHelpers} from './helpers/poeHelpers.js';
@@ -28,8 +29,10 @@ new Vue({
     el: '#app',
     data: {
         dbAcc: window.PHP.dbAcc,
+        build: window.PHP.build,
         isBuild: false,
         isModalVisible: false,
+        isSnapshotsVisible: false,
         accountCharacters: '',
         searchAcc: '',
         account: '',
@@ -240,6 +243,9 @@ new Vue({
     },
 
     methods: {
+        closeModal: function () {
+            this.isSnapshotsVisible = false;
+        },
 
         // build initialization
         setupBuild:function(){

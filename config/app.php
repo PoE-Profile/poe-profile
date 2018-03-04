@@ -8,6 +8,8 @@ return [
     'poe_cache_time' => env('POE_CACHE_TIME', 4),
 
     'poe_leagues' => env('POE_LEAGUES', 'Standard,Hardcore'),
+    'poe_version' => env('POE_VERSION', '3.2'),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Name

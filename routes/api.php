@@ -12,6 +12,7 @@ Route::group(['middleware' => 'api'], function () {
 	Route::post('getPoBCode', 'ApiController@getXML');
 	Route::post('/build/save', 'ApiController@saveBuild');
 	Route::get('/build/{hash}', 'ApiController@getBuild');
+	Route::get('/snapshots/{acc}/{char}', 'ApiController@getSnapshots');
 
 	// Route::get('/getBuild', function() {
 	// 	$build = \App\Build::find(3);

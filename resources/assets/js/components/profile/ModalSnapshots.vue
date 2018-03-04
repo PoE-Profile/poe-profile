@@ -4,25 +4,33 @@
 <div class="modal-backdrop2">
     <div class="modal2 bd-example-modal-lg2" style="top: 70px;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog2 modal-lg2" role="document">
-        <div v-if="loadStream" class="modal-body">
+        <div class="modal-body">
 
-          <div class="modal-header">
-              <div class="pull-right">
-                  <span v-if="stream.account">
-                      <a :href="('/profile/' + stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
-                  </span>
-                  <a :href="('https://www.twitch.tv/' + stream.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Twitch</a>
-                  <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>
-              </div>
-              {{stream.status}}
-          </div>
+            <div class="modal-header">
+                <span>SNAPSHOTS</span>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>
+                </div>
+            </div>
 
-          <div class="modal-body">
-            <iframe :src="streamUrl"
-                frameborder="0" allowfullscreen="true" scrolling="no"
-                height="550" width="100%"></iframe>
-          </div>
-
+            <div class="modal-body">
+                <table width="100%">
+                    <tr>
+                        <th>Hash</th>
+                        <th>Original Character</th>
+                        <th>Original Level</th>
+                        <th>Created at</th>
+                    </tr>
+                    <tr v-for="build in snapshots">
+                    
+                        <td><a href="#" @click.prevent="gotoSnapshot(build.hash)">{{build.hash}}</a></td>
+                        <td>{{build.original_char}}</td>
+                        <td>{{build.original_level}}</td>
+                        <td>{{build.created_at}}</td>
+                    </tr>
+                </table>
+            </div>
+            
         </div>
       </div>
     </div>
@@ -32,10 +40,11 @@
 </template>
 
 <script type="text/javascript">
+import {poeHelpers} from '../../helpers/poeHelpers.js';
 
 export default {
     props: {
-        stream: {
+        build: {
             type: Object,
             default: null,
         },
@@ -43,41 +52,34 @@ export default {
 
     data: function(){
         return {
-            loadStream: false,
-            isModalVisible: false,
-            streamUrl:"",
+            snapshots: {},
         }
     },
     computed: {
-        profileUrl: function(){
-            if(stream.account)
-            return '/profile/' + stream.account.name;
-        },
+       
     },
     watch : {
-        stream : function (val) {
-            if(val==null){
-                console.log("watch stream");
-                return;
-            }
-            console.log("watch stream");
-            this.streamUrl='https://player.twitch.tv/?channel=' + this.stream.name;
-            this.loadStream=true;
-        },
-        loadStream : function (value) {
-            // console.log("loadStream change to "+value);
-        },
+        
     },
 
     mounted: function() {
+        this.loadSnapshots();
     },
 
     methods: {
         close:function(event) {
-            this.loadStream=false;
-            this.streamUrl='';
             this.$emit('close');
         },
+
+        loadSnapshots: function() {
+            axios.get('/api/snapshots/' + this.build.original_char).then((response) => {
+                this.snapshots = response.data;
+            });
+        },
+
+        gotoSnapshot: function(hash){
+            location.replace((new poeHelpers).getBaseDomain() + '/build/' + hash);
+        }
     },
 };
 

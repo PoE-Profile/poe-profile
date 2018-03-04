@@ -171,6 +171,13 @@ class ApiController extends CacheController
         return $pob->encodedXML();
     }
 
+    public function getSnapshots($acc, $char)
+    {
+        $original_char = $original_char = $acc .'/'. $char;
+        $snapshots = \App\Snapshot::where('original_char', '=', $original_char)->get();
+        return $snapshots;
+    }
+
     public function getBuild($hash)
     {
         $build = \App\Snapshot::where('hash', '=', $hash)->first();
@@ -191,7 +198,7 @@ class ApiController extends CacheController
         $hash = md5($treeData.'/'.$itemData);
         $snapshot = \App\Snapshot::where('hash', '=', $hash)->first();
         if(!$snapshot){
-            $version = env('POE_VERSION');
+            $version = config('app.poe_version');
             $original_char = $acc .'/'. $char;
             $snapshot = \App\Snapshot::create([
                 'hash' => $hash,

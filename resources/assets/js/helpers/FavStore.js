@@ -64,9 +64,9 @@ module.exports = {
         return res;
     },
 
-    removeBuild(name) {
+    removeBuild(hash) {
         for (var i = 0; i < this.favBuilds.length; i++) {
-            if (this.favBuilds[i] === name) {
+            if (this.favBuilds[i].buildId === hash) {
                 this.favBuilds.splice(i, 1);
             }
         }
