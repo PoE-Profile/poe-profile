@@ -41,6 +41,7 @@
                 :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
             </li>
             <li class="pull-right " v-if="selectedTab=='profile'||favStore.isBuildPublic(account)" style="display: block;">
+                <span class="badge badge-success" style="background-color: #f0ad4e;color: black;">New</span>
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link "
                         @click.prevent="" style="color:white; margin-right:10px;">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> Save Build/Snapshot
@@ -61,7 +62,7 @@
             </li>
             <li v-if="favStore.isBuildPublic(account)" class="pull-right" style="display: block;">
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link"
-                        @click.prevent="" style="color:white; margin-right:10px;">
+                        @click.prevent="" style="color:white; margin-right:10px;"> 
                     <i class="fa fa-plus-square" aria-hidden="true"></i> SaveBuild
                 </a>
             </li>

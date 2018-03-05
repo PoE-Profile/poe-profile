@@ -83,8 +83,9 @@
 						<a class="nav-link" href="{{ url('/about') }}"><i class="fa fa-info" aria-hidden="true"></i> About</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ url('/update_notes') }}" style="color: orange">
-							What is New v1.2
+						<a class="nav-link" href="{{ url('/update_notes') }}">
+							<i class="fa fa-history" aria-hidden="true" style="color: orange;"></i>
+							Changelog
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
@@ -118,6 +119,12 @@
 							</li>
 							@endif
 						</ul>
+					</li>
+					<li class="nav-item float-lg-right">
+						<a href="https://github.com/PoE-Profile/poe-profile">
+							<i class="fa fa-github fa-4" aria-hidden="true" style="font-size: 25px;"></i>
+							Github
+						</a>
 					</li>
 					<li class="nav-item float-lg-right">
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="form-inline" target="_top">

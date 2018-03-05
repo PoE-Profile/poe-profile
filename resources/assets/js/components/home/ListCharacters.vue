@@ -1,8 +1,13 @@
 <template>
-<div v-if="charData.length > 0">
+<div>
 
     <div v-if="showRank && !archive" class="input-group " style="margin-left:auto;margin-right:auto;background:#202624;">
-        <input type="text" name="account" v-model="searchBig" class="form-control" style="border-color: #CCCCCC;" placeholder="Search for Character or Account name" v-on:keyup.enter="search()">
+    
+        <input type="text" name="account" v-model="searchBig" class="form-control" 
+        style="border-color: #CCCCCC;" 
+        placeholder="Search for Character or Account name" 
+        v-on:keyup.enter="search()">
+
         <span class="input-group-btn">
         <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Submit</button>
         </span>
@@ -158,6 +163,8 @@ export default {
             if(!this.trigerChangeFromFilter){
                 this.clearFilters(false);
             }
+            this.noResults = val.length==0;
+
             this.trigerChangeFromFilter=false;
         },
     },
@@ -165,7 +172,7 @@ export default {
         return {
             searchBig: '',
             isModalVisible: false,
-            // showRank: false,
+            noResults: false,
             // showTwitch: false,
             trigerChangeFromFilter:false,
             skillImages: '',
@@ -225,15 +232,14 @@ export default {
                 return true;
             }
         },
-        noResults: function(){
-            if(this.charData.length==0 &&
-                (this.selectedClass.length>0 || this.selectedSkill.length>0))
-            {
-                return true;
-            }else{
-                return false;
-            }
-        }
+        // noResults: function(){
+        //     if(this.charData.length==0)
+        //     {
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // }
     },
 
     mounted: function() {

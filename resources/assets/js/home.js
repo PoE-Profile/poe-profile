@@ -110,17 +110,11 @@ const app = new Vue({
 
     methods: {
 
-        // getArchive: function() {
-        //     var filter = 'archiveFilter=' + window.PHP.account
-        //     axios.get('api/ladderData?' + filter).then((response) => {
-        //         this.archive = response.data;
-        //     });
-        // },
-
         filterListCharacters (filter){
             if (filter === null) {
                 this.skillFilter = '';
                 this.classFilter = '';
+                this.searchFilter = "";
             } else {
                 if (filter.hasOwnProperty('skill')) {
                 this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter='+filter.skill+'&';
@@ -130,13 +124,14 @@ const app = new Vue({
                     this.classFilter = (filter.class == 'All') ? '' : 'classFilter='+filter.class+'&';
                 }
 
-                // if (filter.hasOwnProperty('search')) {
-                //     this.skillFilter = (filter.search == '') ? '' : 'searchFilter=' + filter.search + '&';
-                //     // this.leagueFilter = ''
-                // }
+                if (filter.hasOwnProperty('search')) {
+                    // this.leagueFilter = ''
+                    this.searchFilter = (filter.search == '') ? '' : 'searchFilter=' + filter.search + '&';
+                }
             }
 
             this.isLoading=true;
+            this.ladderPaginate= [];
             this.selectedTab='ladder';
             axios.get('api/ladderData?' + this.filters).then((response) => {
                 this.ladderPaginate = response.data;

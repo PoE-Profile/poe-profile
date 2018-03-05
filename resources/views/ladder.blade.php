@@ -1,4 +1,4 @@
-@extends('layouts.profile')
+@extends('layouts.main')
 
 @section('jsData')
 <script type="text/javascript">
@@ -57,6 +57,8 @@
             <h3 class="" style="padding:7px;">Ladders</h3>
         </div>
         <list-characters v-on:filter-list="filterListCharacters" :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"></list-characters>
+        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
+        
 
         <div class="" v-if="ladderPaginate==null" style="height:100%;">
             <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>

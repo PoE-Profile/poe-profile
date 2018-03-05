@@ -85,11 +85,16 @@ class ApiController extends CacheController
 
     public function getLadder(Request $request)
     {
-
+        $take = 30;
         if ($request->has('searchFilter')) {
-            $respond = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$request) {
-                $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
-            })->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')->paginate();
+            $respond = \App\LadderCharacter::with('account')
+                ->where('league', '=', $request->input('leagueFilter'))
+                ->whereHas('account', function ($query) use (&$request) {
+                    $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
+                })
+                ->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')
+                ->paginate($take);
+
             return $respond;
         }
 
@@ -98,14 +103,14 @@ class ApiController extends CacheController
                                 ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
                                 ->where('class', '=', $request->input('classFilter'))
                                 ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                                ->paginate();
+                                ->paginate($take);
             return $respond;
         }
         if ($request->has('classFilter')) {
             $respond = \App\LadderCharacter::with('account')
                 ->where('class', '=', $request->input('classFilter'))
                 ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                ->paginate();
+                ->paginate($take);
             return $respond;
         }
 
@@ -114,18 +119,18 @@ class ApiController extends CacheController
             $respond = \App\LadderCharacter::with('account')
                         ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
                         ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                        ->paginate();
+                        ->paginate($take);
             return $respond;
         }
 
         if ($request->has('leagueFilter')) {
             $respond = \App\LadderCharacter::with('account')->where('league', '=', $request->input('leagueFilter'))
-                        ->orderBy('rank', 'asc')->paginate();
+                        ->orderBy('rank', 'asc')->paginate($take);
             return $respond;
         }
 
         $currentLeagues = explode(',', env('POE_LEAGUES'));
-        $respond = \App\LadderCharacter::with('account')->where('league', '=', $currentLeagues[0])->orderBy('rank', 'asc')->paginate();
+        $respond = \App\LadderCharacter::with('account')->where('league', '=', $currentLeagues[0])->orderBy('rank', 'asc')->paginate($take);
         return $respond;
     }
 
