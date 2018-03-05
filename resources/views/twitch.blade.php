@@ -1,25 +1,16 @@
-@extends('layouts.profile')
+@extends('layouts.main')
 
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
         poe_leagues: "{{ env('POE_LEAGUES') }}"
     }
-
-    Array.prototype.move = function (from, to) {
-       this.splice(to, 0, this.splice(from, 1)[0]);
-    };
-
-    function inArray(needle, haystack) {
-        var length = haystack.length;
-        for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
-        }
-        return false;
-    }
 </script>
 @stop
 
+@section('title')
+   PoE Profile Info Twitch
+@endsection
 
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>

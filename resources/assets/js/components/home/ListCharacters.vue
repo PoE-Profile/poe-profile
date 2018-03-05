@@ -1,29 +1,48 @@
 <template>
-<div v-if="charData.length > 0">
-    <table class="table table-hover homapage-table">
+<div>
+
+    <div v-if="showRank && !archive" class="input-group " style="margin-left:auto;margin-right:auto;background:#202624;">
+    
+        <input type="text" name="account" v-model="searchBig" class="form-control" 
+        style="border-color: #CCCCCC;" 
+        placeholder="Search for Character or Account name" 
+        v-on:keyup.enter="search()">
+
+        <span class="input-group-btn">
+        <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Submit</button>
+        </span>
+    </div>
+
+    <table class="table table-hover homapage-table" style="color:white">
         <thead>
             <tr>
                 <!-- <th>#</th> -->
                 <th v-if="showRank">Rank</th>
-                <th>
+                <th v-if="!archive">
                     <drop-down  v-if="showRank"  v-on:selected="trigerFilterClass" :list="classes">
                         <span v-if="selectedClass.length>0">{{selectedClass}}</span>
                         <span v-else>Class</span>
                     </drop-down>
                     <span v-else>Class</span>
                 </th>
+                <th v-else>
+                    <span>Class</span>
+                </th>
                 <th>Account</th>
                 <th>
                     <span v-if="showRank">Character</span>
                     <span v-else>Last Character</span>
                 </th>
-                <th>
+                <th v-if="!archive">
                     <drop-down v-if="showRank" v-on:selected="trigerFilterSkills"
                          style="width:190px; padding: 2px;" :list="skills">
                         <span v-if="selectedSkill.length>0">{{selectedSkill}}</span>
                         <span v-else>Skills</span>
                     </drop-down>
                     <span v-else>Skill</span>
+                </th>
+                <th v-if="archive">
+                    <span>League</span>
                 </th>
                 <th>Level</th>
                 <th v-if="showTwitch">Twitch</th>
@@ -45,17 +64,22 @@
                     </a>
                 </td>
                 <td>
-                    <a :href="('profile/' + char.account.name + '/')" >{{char.account.name}}</a>
+                    <a :href="ranksUrl(char, true)" >{{char.account.name}}</a>
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                    <a :href="('profile/' + char.account.name + '/' + char.name)">{{char.name}}</a>
+                    <a :href="ranksUrl(char)">{{char.name}}</a>
                     <span v-if="showRank && !char.public" style="color: gray;font-weight: bold;">(private)</span>
                     <span v-if="char.dead" style="color: red; font-weight: bold;">(dead)</span>
                     </span>
                     <span v-else>No Info</span>
                 </td>
-                <td class="skill-cell">
+                <td class="skill-cell" v-if="archive">
+                    <span>
+                        {{char.league}}
+                    </span>
+                </td>
+                <td class="skill-cell" v-if="!archive">
                     <ul class="home-list-skills">
                         <li v-for="skill in getActiveSkill(char.items_most_sockets)">
                             <a href="#" @click.prevent="trigerFilterSkills(withEllipsis(skill.name,18))">
@@ -112,7 +136,7 @@
 <script type="text/javascript">
 
 import { SkillsHelper } from '../../helpers/SkillsHelper.js';
-
+import {poeHelpers} from '../../helpers/poeHelpers.js';
 import dropDown from './DropDown.vue';
 Vue.component('modal-twitch', require('./ModalTwitch.vue'));
 
@@ -123,6 +147,10 @@ export default {
             type: Array,
             required: true,
             default: [],
+        },
+        archive: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -135,13 +163,16 @@ export default {
             if(!this.trigerChangeFromFilter){
                 this.clearFilters(false);
             }
+            this.noResults = val.length==0;
+
             this.trigerChangeFromFilter=false;
         },
     },
     data: function(){
         return {
+            searchBig: '',
             isModalVisible: false,
-            // showRank: false,
+            noResults: false,
             // showTwitch: false,
             trigerChangeFromFilter:false,
             skillImages: '',
@@ -174,6 +205,7 @@ export default {
         }
     },
 
+
     computed: {
         showTwitch: function(){
             // return false;
@@ -185,6 +217,7 @@ export default {
                 return true;
             }
         },
+
         showRank: function(){
             // return false;
             if(this.charData.length==0 &&(this.selectedClass.length>0 || this.selectedSkill.length>0)){
@@ -199,15 +232,14 @@ export default {
                 return true;
             }
         },
-        noResults: function(){
-            if(this.charData.length==0 &&
-                (this.selectedClass.length>0 || this.selectedSkill.length>0))
-            {
-                return true;
-            }else{
-                return false;
-            }
-        }
+        // noResults: function(){
+        //     if(this.charData.length==0)
+        //     {
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // }
     },
 
     mounted: function() {
@@ -216,8 +248,20 @@ export default {
 
     methods: {
 
+        ranksUrl: function(char, acc=false){
+            if (acc) {
+                return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name
+            }
+            return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name + '/'+ char.name
+
+        },
+
+        search: function() {
+            this.$emit('filter-list', {'search': this.searchBig})
+        },
+
         getActiveSkill: function(items){
-            console.log(items);
+            // console.log(items);
             if(items==null || items.length==0){
                 return;
             }

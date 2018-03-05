@@ -10,7 +10,12 @@ Route::group(['middleware' => 'api'], function () {
 	Route::get('favorites/chars', 'ApiController@getFavsChars');
 	Route::get('twitch', 'ApiController@getTwitchChars');
 	Route::post('getPoBCode', 'ApiController@getXML');
-	Route::get('getPoBCode/{acc}/{char}', 'ApiController@getXMLtest');
+	Route::post('/build/save', 'ApiController@saveBuild');
+	Route::get('/build/{hash}', 'ApiController@getBuild');
+	Route::get('/snapshots/{acc}/{char}', 'ApiController@getSnapshots');
+
+	// Route::get('/getBuild', function() {
+	// 	$build = \App\Build::find(3);
+	// 	return $build;
+	// });
 });
-
-

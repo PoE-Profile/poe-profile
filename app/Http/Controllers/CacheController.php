@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Parse_mods\TakeMods;
 use App\Parse_mods\Stats_Manager;
 use App\Parse_mods\Base_Stats;
 use App\Parse_mods\CharacterTreePoints;
@@ -12,6 +11,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\PoB\Tree;
 
 class CacheController extends BaseController
 {
@@ -20,7 +20,7 @@ class CacheController extends BaseController
     //get chars for acc from cache if no get from poe site
     protected function getCharsCache($acc)
     {
-        $chars = \Cache::remember($acc, 5, function () use ($acc) {
+        $chars = \Cache::remember($acc, config('app.poe_cache_time'), function () use ($acc) {
             $client = new \GuzzleHttp\Client();
             try {
                 $response = $client->request(
@@ -57,7 +57,6 @@ class CacheController extends BaseController
         return $chars;
     }
 
-
     //get items for acc/char from cache if no get from poe site
     protected function getItemsCache($acc, $char, $response=false)
     {
@@ -72,7 +71,6 @@ class CacheController extends BaseController
 
     protected function getStatsCache($acc, $char)
     {
-
         //get acc from db to get real name
         $dbAcc = \App\Account::where('name', $acc)->first();
         $acc=$dbAcc->name;
@@ -84,42 +82,10 @@ class CacheController extends BaseController
         }
         // dd(config('app.poe_cache_time'));
         $stats = \Cache::remember($key, config('app.poe_cache_time'), function () use ($acc,$dbAcc,$char,$itemsRes) {
-            $stManager = new Stats_Manager;
-
-            //add Stats from Items
-            //filter for secondary items and flasks
-            $banItems = ['Flask', 'Weapon2', 'Offhand2'];
-            if (isset($_GET['offHand'])) {
-                $banItems = ['Flask', 'Weapon', 'Offhand'];
-            }
-
-            foreach ($itemsRes['items'] as $item) {
-                if (in_array($item['inventoryId'], $banItems)) {
-                    continue;
-                }
-                $stManager->addItem($item);
-            }
             if ($dbAcc->last_character==$itemsRes['character']['name']) {
                 $dbAcc->updateLastCharInfo($itemsRes);
             }
-            //end Stats from Items
-
-            //add Stats from Tree
-            //make Requests to PathOfExile website to retrieve Pasive Tree
-
-            $treeNodesJewels = new CharacterTreePoints;
-            $nodes = $treeNodesJewels->getPoints($this->getTreeCache($acc, $char));
-            $stManager->addTreeNode($nodes);
-
-            //add Stats Base for Class and Level
-            $character = $itemsRes['character'];
-            $baseStat = new Base_Stats;
-            $baseStat = $baseStat->getStats($character['level'], $character['classId']);
-            foreach ($baseStat as $stat) {
-                $stManager->addBaseMods($stat);
-            }
-            //end Stats Base
-
+            $stManager = new Stats_Manager($itemsRes, $this->getTreeCache($acc, $char));
             return $stManager->getStats();
         });
 
@@ -142,15 +108,10 @@ class CacheController extends BaseController
                             ]
                         ]
                     );
-                    
+
             return json_decode((string)$responseTree->getBody(), true);
         });
     }
 
-    protected function getLocalItems(Request $request)
-    {
-        $jsonAcc = \Storage::disk('accounts')->get($request->input('accName') . '.txt');
-        $acc = json_decode($jsonAcc);
-        return response()->json($acc);
-    }
+
 }

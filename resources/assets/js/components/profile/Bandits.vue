@@ -59,7 +59,7 @@
 </template>
 
 <script type="text/javascript">
-var localStore = require('./../../helpers/LocalStore.js');
+var profileStore = require('./../../helpers/profileStore.js');
 
 export default {
     //type life ot mana
@@ -74,7 +74,7 @@ export default {
     },
     data: function() {
         return {
-            localStore: localStore,
+            profileStore: profileStore,
             account: '',
             char: '',
             loaded: false,
@@ -157,7 +157,7 @@ export default {
             this.saveSelection();
         },
         setOakReward: function(setTo){
-            var stats=this.localStore.getAllStats()
+            var stats=this.profileStore.getAllStats()
 
             //if setTo true add reward
             if(setTo){
@@ -173,7 +173,7 @@ export default {
             this.selectReward['oak']=setTo;
         },
         setKraitynReward: function(setTo){
-            var stats=this.localStore.getAllStats()
+            var stats=this.profileStore.getAllStats()
 
             if(setTo){
                 // 6% increased Attack and Cast Speed
@@ -191,7 +191,7 @@ export default {
             this.selectReward['kraityn']=setTo;
         },
         setAliraReward: function(setTo){
-            var stats=this.localStore.getAllStats()
+            var stats=this.profileStore.getAllStats()
 
             if(setTo){
                 //+15% to all Elemental Resistances

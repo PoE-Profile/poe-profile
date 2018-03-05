@@ -69,16 +69,21 @@
 </template>
 
 <script type="text/javascript">
-var localStore = require('../../helpers/LocalStore.js');
+var profileStore = require('../../helpers/profileStore.js');
 import {SkillsHelper} from '../../helpers/SkillsHelper.js';
 import Item from './Item.vue';
 import GemInfo from './GemInfo.vue';
 
 export default {
 
-    props: [
-        'items'
-    ],
+    props: {
+        items: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+    },
+
     components: {
         'item': Item, 'gemInfo': GemInfo,
     },
@@ -90,12 +95,10 @@ export default {
             current:'',
             currentIndex: 0,
             skills:'',
-            localStore: localStore
+            profileStore: profileStore
         }
     },
-    ready: function () {
 
-    },
     computed: {
         'checkSticked': function() {
             if (this.stat.name !== this.sticked.name) {
@@ -112,10 +115,16 @@ export default {
         }
     },
 
+    mounted: function (){
+        if(this.items.length>0){
+            this.getSkillImages();
+        }
+    },
+
     watch: {
         'items': function (val, oldVal) {
             this.getSkillImages();
-        },
+        }
     },
 
     methods: {
@@ -165,7 +174,7 @@ export default {
                     skills.addSkills(item);
                 });
                 this.skills = skills.result();
-                this.localStore.setGems(this.skills);
+                this.profileStore.setGems(this.skills);
                 this.skillOnLoad();
             });
         },

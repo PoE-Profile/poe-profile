@@ -16,7 +16,7 @@ class TakeLadderCharacters extends Command
      * @var string
      * get:characters --limit=5 --pages=10 --queue
      */
-    protected $signature = 'poe:ladder {--league=} {--total=} {--update}';
+    protected $signature = 'poe:ladder {--select} {--total=} {--update} {--debug}';
 
     /**
      * The console command description.
@@ -25,6 +25,10 @@ class TakeLadderCharacters extends Command
      */
     protected $description = 'Take all characters from specific League';
 
+    private $laddersPages = [];
+    private $totalIndexedRanks = 3000;
+    private $take=200;
+    private $selectedLeague="";
     /**
      * Create a new command instance.
      *
@@ -40,109 +44,140 @@ class TakeLadderCharacters extends Command
      *
      * @return mixed
      */
+
     public function handle()
     {
-        $currentLeagues = [
-            'Harbinger',
-            'Hardcore Harbinger',
-            'Standard',
-            'Hardcore',
-            'SSF Harbinger',
-            'SSF Harbinger HC',
-            'SSF Standard',
-            'SSF Hardcore'
-        ];
+        if($this->option('select')){
+            $this->selectLeague();
+        }
+        $this->buildUrls();
+        $this->info("Start Indexing:");
+        $bar = $this->output->createProgressBar(count($this->laddersPages));
+        foreach ($this->laddersPages as $page) {
+            $this->indexCharsFrom($page);
+            $bar->advance();
+        }
+        $bar->finish();
+        //clear above total and afetr to remove to stop repeats on last rank
+        $this->clearAboveTotal();
+
+        $this->info("Finish");
+    }
+
+    public function buildUrls(){
         $currentLeagues = explode(',',config('app.poe_leagues'));
+        foreach ($currentLeagues as $league) {
+            if(strlen($this->selectedLeague)>0 && $this->selectedLeague!=$league){
+                continue;
+            }
+            //+ 1 page to get above total and afetr to remove to stop repeats on last rank
+            $pages=floor($this->totalIndexedRanks/$this->take)+1;
+            for ($i=0; $i < $pages; $i++) {
+                $offset = $i*$this->take;
+                $base='http://api.pathofexile.com/leagues/';
+                $url = $base.$league.'?ladder=1&ladderOffset='.$offset.'&ladderLimit='.$this->take;
+                $this->laddersPages[] = (Object)array(
+                                            'url' => $url,
+                                            'league' => $league,
+                                        );
 
+            }
+            if($this->option('debug')){
+                dump($pages);
+            }
+        }
+    }
+
+    public function indexCharsFrom($page){
+        if($this->option('debug')){
+            $this->info("start request");
+        }
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
-        $league = $this->option('league');
-        $total = $this->option('total');
+        $response = $client->get($page->url);
+        $response = json_decode($response->getBody(), true);
+        $chars = array_map(function($entry) use(&$page){
+            $twitch = null;
+            if (array_key_exists('twitch', $entry['account'])) {
+                $twitch = $entry['account']['twitch']['name'];
+            }
+            return [
+                'league' => strtolower($page->league),
+                'rank' => $entry['rank'],
+                'dead' => $entry['dead'],
+                'name' => $entry['account']['name'],
+                'twitch' => $twitch,
+                'charName' => $entry['character']['name'],
+                'class' => $entry['character']['class'],
+                'level' => $entry['character']['level']
+            ];
+        }, $response['ladder']['entries']);
 
-        for ($i=0; $i < round($total/200); $i++) {
-            $offset = $i*200;
-            $url='http://api.pathofexile.com/leagues/'.$league.'?ladder=1&ladderOffset='.$offset.'&ladderLimit=200';
-            // dd($url);
-            $this->info('Next api request '. $url. '!');
-            $response = $client->get($url);
-            $response = json_decode($response->getBody(), true);
-            // dd($response);
+        foreach ($chars as $char) {
+            $this->indexChar($char);
+        }
+    }
 
-            // if (empty($response['ladder'])) {
-            //     continue;
-            // }
+    public function indexChar($char){
+        $ladderCharacter = LadderCharacter::where('name', '=', $char['charName'])->first();
+        if ($ladderCharacter !== null) {
+            //update char
+            //$this->info($char['rank'].' character '. $char['charName']. ' updated!');
+            $ladderCharacter->rank = $char['rank'];
+            $ladderCharacter->level = $char['level'];
+            $ladderCharacter->dead = $char['dead'];
+            $ladderCharacter->class = $char['class'];
+            $ladderCharacter->save();
+        } else {
+            //add new
+            // $this->info($char['rank'].' character '. $char['charName']. ' added!');
+            $acc=Account::where('name', '=', $char['name'])->first();
 
-            //take all accounts
-            $this->info('start array_map response!');
-            $accounts = array_map(function($entry) use(&$league){
-                $twitch = null;
-                if (array_key_exists('twitch', $entry['account'])) {
-                    $twitch = $entry['account']['twitch']['name'];
-                }
-                return [
-                    'league' => strtolower($league),
-                    'rank' => $entry['rank'],
-                    'dead' => $entry['dead'],
-                    'name' => $entry['account']['name'],
-                    'twitch' => $twitch,
-                    'charName' => $entry['character']['name'],
-                    'class' => $entry['character']['class'],
-                    'level' => $entry['character']['level']
-                ];
-            }, $response['ladder']['entries']);
-
-            $this->info('end array_map response!');
-
-            foreach ($accounts as $acc) {
-                // dd($acc);
-                
-                $ladderCharacter = LadderCharacter::where('name', '=', $acc['charName'])->first();
-                if ($ladderCharacter !== null) {
-                    $this->info($acc['rank'].' character '. $acc['charName']. ' updated!');
-                    $ladderCharacter->rank = $acc['rank'];
-                    $ladderCharacter->level = $acc['level'];
-                    $ladderCharacter->dead = $acc['dead'];
-                    $ladderCharacter->class = $acc['class'];
-                    $ladderCharacter->save();
-                } else {
-                    $this->info($acc['rank'].' character '. $acc['charName']. ' added!');
-
-                    $accID = null;
-                    if (Account::where('name', '=', $acc['name'])->count() > 0) {
-                        $accID = Account::where('name', '=', $acc['name'])->first()->id;
-                    } else {
-                        $newAcc = Account::create(['name' => $acc['name']]);
-                        $accID = $newAcc->id;
-                    }
-
-                    if ($acc['twitch'] != null) {
-                        if (TwitchStreamer::where('name', '=', $acc['twitch'])->first() === null) {
-                            $newStreamer = TwitchStreamer::create([
-                                'name' => $acc['twitch'],
-                                'account_id' => $accID
-                            ]);
-                        }
-                    }
-                    $ladderCharacter = LadderCharacter::create([
-                        'rank' => $acc['rank'],
-                        'league' => $acc['league'],
-                        'name' => $acc['charName'],
-                        'class' => $acc['class'],
-                        'level' => $acc['level'],
-                        'account_id' => $accID,
-                        'dead' => $acc['dead'],
+            //if no acc create new
+            if (!$acc) {
+                $acc = Account::create(['name' => $char['name']]);
+            }
+            //if has twitch add to db
+            if ($char['twitch'] != null) {
+                if (TwitchStreamer::where('name', '=', $char['twitch'])->first() === null) {
+                    $newStreamer = TwitchStreamer::create([
+                        'name' => $char['twitch'],
+                        'account_id' => $acc->id
                     ]);
                 }
-
-                if($this->option('update')){
-                    // dd($ladderCharacter->id);
-                    $job = (new \App\Jobs\UpdateLadderStatus($ladderCharacter->id));
-                    dispatch($job);
-                }
-
-                
             }
-            //add timeout after evry FOR cicle
-            sleep(3);
+            $ladderCharacter = LadderCharacter::create([
+                'rank' => $char['rank'],
+                'league' => $char['league'],
+                'name' => $char['charName'],
+                'class' => $char['class'],
+                'level' => $char['level'],
+                'account_id' => $acc->id,
+                'dead' => $char['dead'],
+                'public' => true
+            ]);
         }
+
+        if($this->option('update')){
+            // dd($ladderCharacter->id);
+            $job = (new \App\Jobs\UpdateLadderStatus($ladderCharacter->id));
+            dispatch($job);
+            //add timeout for ratelimit
+            sleep(1);
+        }
+    }
+
+    public function clearAboveTotal(){
+        \DB::table('ladder_characters')->where('rank', '>', $this->totalIndexedRanks)->delete();
+    }
+
+    public function selectLeague(){
+        $currentLeagues = explode(',',config('app.poe_leagues'));
+        $index=1;
+        foreach ($currentLeagues as $league) {
+            $this->info($index.".".$league);
+            $index++;
+        }
+        $index= $this->ask('What league ?(int):');
+        $this->selectedLeague=$currentLeagues[$index-1];
     }
 }

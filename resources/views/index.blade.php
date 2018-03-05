@@ -1,10 +1,11 @@
-@extends('layouts.profile')
+@extends('layouts.main')
 
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
+        account: '',
         csrf_token: "{{ csrf_token() }}",
-        poe_leagues: "{{ env('POE_LEAGUES') }}"
+        poe_leagues: "{{ env('POE_LEAGUES') }}",
     }
 </script>
 @endsection
@@ -15,7 +16,6 @@
 $('.show-tooltip').tooltip();
 </script>
 @endsection
-
 
 @section('content')
 <div class="container text-center" style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;" v-cloak>
@@ -57,13 +57,7 @@ $('.show-tooltip').tooltip();
             </a>
         </div>
 
-        @if (session()->has('flash_notification.message'))
-            <div class="alert alert-{{ session('flash_notification.level') }}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
-                {!! session('flash_notification.message') !!}
-            </div>
-        @endif
+         @include('flash::message')
         <br>
 
        <div class="text-xs-center" style="padding-bottom:5px;">
@@ -124,10 +118,27 @@ $('.show-tooltip').tooltip();
                 </div>
             </div>
             <div class="prevNext text-xs-center" v-if="selectedTab=='ladder' && ladderPaginate.total > 15">
-                <a class="page-link poe-btn" href="#" @click.prevent="changePage(-1)">Previous</a>
-                <span>Total:@{{ladderPaginate.total}} | Page @{{ladderPaginate.current_page}} of @{{ladderPaginate.last_page}}</span>
-                <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(1)">Next</a>
+
+                <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
+                <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
+
+                <div class="sss" style="
+                    left: 0;
+                    right: 0;
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 360px; ">
+                    <span v-for="n in pages" >
+                        <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
+                    </span>
+                </div>
+
+
+                <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
+                <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>
+
             </div>
+
 
         </div>
 

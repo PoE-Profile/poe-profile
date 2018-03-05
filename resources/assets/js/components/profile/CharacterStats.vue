@@ -98,7 +98,7 @@
 
 <script type="text/javascript">
 var favStore = require('../../helpers/FavStore.js');
-var localStore = require('../../helpers/LocalStore.js');
+var profileStore = require('../../helpers/profileStore.js');
 import Stat from './Stat.vue';
 import Loader from '../Loader.vue';
 
@@ -116,7 +116,7 @@ export default {
             searchStat: '',
             selectedStatType: 'main',
             favStore: favStore,
-            localStore: localStore,
+            profileStore: profileStore,
             stickedStat: '',
             hoveredStat: '',
             hoveredStatPos:0,
@@ -132,26 +132,10 @@ export default {
         this.getCharacterStats();
     },
 
-    // filters: {
-    //     search: function (value) {
-    //         if (!value) return ''
-    //         value = value.toString()
-    //         return value.charAt(0).toUpperCase() + value.slice(1)
-    //     }
-    // },
-
-
     computed: {
-        'filteredStats': function(){
-            var self = this
-            return;
-            // return self.computedStats.filter(function (user) {
-            //   return computedStats.indexOf(self.searchStat) !== -1
-            // })
-        },
 
         'computedStats': function(){
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if (!Object.keys(allStats).length > 0) {
                 return;
             }
@@ -201,6 +185,11 @@ export default {
         getCharacterStats: function () {
             var vm = this;
             this.loading=true;
+            if(this.account === ''){
+                var build = favStore.favBuilds[0];
+                vm.account = 'build::'+build.buildId,
+                vm.character = build
+            }
             var formData = new FormData();
             formData.append('account', vm.account);
             formData.append('character', vm.character.name);
@@ -212,7 +201,7 @@ export default {
             }
             axios.post(url, formData).then((response) => {
                 //stop loading bar for stats
-                vm.localStore.setAllStats(response.data);
+                vm.profileStore.setAllStats(response.data);
                 vm.$emit('stat-loaded');
                 vm.loading=false;
             });

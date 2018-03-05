@@ -1,12 +1,12 @@
 <template>
-<div class="row">
+<div class="row" v-if="characters.length > 0">
     <div :class="['', showAllChars ? 'more-characters' : 'characters']">
 
         <div class="panel-heading" style="padding:2px;padding-top:7px;height:50px;overflow:hidden;">
 
         <div class="form-inline" style="margin-bottom: 0;">
             <input type="text" class="form-control pull-right" style="width:190px;"
-            v-model="searchChar" name="" placeholder="Search Name or Class">
+            v-model="searchChar" name="" :placeholder="isBuild ? 'Search Build' : 'Search Name or Class'">
             <ul class="nav nav-pills char-nav">
               <li class="nav-item" v-for="league in leagues">
                   <a href="#" @click.prevent="setLeague(league.name)"
@@ -67,10 +67,26 @@
 
 <script type="text/javascript">
 
+import {poeHelpers} from '../../helpers/poeHelpers.js';
+
 export default {
-    props: [
-        'characters','currentCharacter'
-    ],
+    props: {
+        characters: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        currentCharacter: {
+            type: Object,
+            required: true,
+            default: {},
+        },
+
+        isBuild: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
     data: function() {
         return {
@@ -104,6 +120,9 @@ export default {
                 {name:'Hardcore',count:0},
                 {name:'Standard',count:0},
             ];
+            if(this.isBuild) {
+                return [{name:'Builds', count:this.characters.length}]
+            }
 
             var count_all=0;
             this.characters.forEach(function(char) {
@@ -137,15 +156,10 @@ export default {
             this.currentLeague=l;
         },
         characterUrl: function(char){
-            var url = window.location.href;
-            var domain;
-            //find & remove protocol (http, ftp, etc.) and get domain
-            if (url.indexOf("://") > -1) {
-                domain = "http://"+url.split('/')[2];
-            }else {
-                domain = url.split('/')[0];
+            if (this.isBuild) {
+                return (new poeHelpers).getBaseDomain() + '/build/' + char.buildId + '/';
             }
-            return  domain + '/profile/' + window.PHP.account + '/' + char.name;
+            return (new poeHelpers).getBaseDomain() + '/profile/' + window.PHP.account + '/' + char.name;
         },
 
         withEllipsis: function(text,after){

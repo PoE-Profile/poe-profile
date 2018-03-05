@@ -1,17 +1,14 @@
 <?php
 
-// use DB;
-use App\ApiPages;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use GuzzleHttp\Client;
-
 // \DB::listen(function($sql) {
 //     var_dump($sql->sql);
 // });
 
 Route::group(['middleware' => 'web'], function () {
-
+    //Main Page
+    Route::get('/', ['as' => 'home', 'uses' => function () {
+        return view('index');
+    }]);
     Route::get('/ladders', ['as' => 'ladders', 'uses' => function () {
         return view('ladder');
     }]);
@@ -19,33 +16,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/twitch', ['as' => 'twitch', 'uses' => function () {
         return view('twitch');
     }]);
-    
+
     Route::get('/favorites', ['as' => 'favorites', 'uses' => function () {
         return view('favorites');
     }]);
-
-    Route::get('/passive-skill-tree/{any}', function () {
-        return view('tree');
-    });
-
-    Route::get('/character-window/get-passive-skills', function () {
-        $client = new \GuzzleHttp\Client();
-        $dbAcc = \App\Account::where('name', $_GET['accountName'])->first();
-        $acc=$dbAcc->name;
-
-        $responseThree = $client->request(
-            'GET',
-            'https://www.pathofexile.com/character-window/get-passive-skills',
-            [
-            'query' => [
-                'accountName' => $acc,
-                'character' => $_GET['character']
-            ]
-        ]
-        );
-
-        return json_decode((string)$responseThree->getBody(), true);
-    });
 
     Route::get('/about', function () {
         return view('about');
@@ -59,16 +33,21 @@ Route::group(['middleware' => 'web'], function () {
         return view('profile_tutorial');
     });
 
-    //Main Page
-    Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
-    Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@home']);
+    // saved Builds/Snapshots
+    Route::get('/builds', ['as' => 'index.builds', 'uses' => 'ProfileController@indexBuild']);
+    Route::get('/build/{hash}', ['as' => 'show.build', 'uses' => 'ProfileController@showBuild']);
 
-    Route::get('/profile', ['as' => 'view.profile', 'uses' => 'HomeController@profileDefault']);
-    Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'HomeController@postProfile']);
-    Route::post('/profile/set', ['as' => 'set.profile', 'uses' => 'HomeController@postSetProfile']);
+    //profile routes
+    Route::get('/profile', ['as' => 'view.profile', 'uses' => 'ProfileController@profileDefault']);
+    Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'ProfileController@postProfile']);
+    Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'ProfileController@getProfileRanks']);
+    Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'ProfileController@getProfile']);
+    Route::get('/profile/{acc}/{char}', ['as' => 'get.profile.char', 'uses' => 'ProfileController@getProfileChar']);
 
-    Route::get('/profile/{acc}/stashes', ['as' => 'get.stashes', 'uses' => 'HomeController@getStashes']);
-    Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'HomeController@getProfile']);
-    Route::get('/profile/{acc}/{char}', 'HomeController@profile');
+    // routes for passive-skill-tree
+    Route::get('/passive-skill-tree/{any}',
+            ['as' => 'profile.tree', 'uses' => 'SkillTreeController@showSkillTree']);
+    Route::get('/character-window/get-passive-skills',
+            ['as' => 'profile.tree.passives', 'uses' => 'SkillTreeController@getPassiveSkills']);
+
 });
-

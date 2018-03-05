@@ -1,7 +1,8 @@
 module.exports = {
     favAcc: JSON.parse(localStorage.getItem('favAcc')) ? JSON.parse(localStorage.getItem('favAcc')) : [],
+    favBuilds: JSON.parse(localStorage.getItem('favBuilds')) ? JSON.parse(localStorage.getItem('favBuilds')) : [],
     favStats: JSON.parse(localStorage.getItem('favStats')) ? JSON.parse(localStorage.getItem('favStats')) : [],
-    
+
     addStat (stat) {
         this.favStats.push(stat)
         this.save('favStats',this.favStats);
@@ -28,6 +29,7 @@ module.exports = {
         this.favAcc.push(acc);
         this.save('favAcc',this.favAcc);
     },
+
     removeAcc (name) {
         for(var i = 0; i < this.favAcc.length; i++) {
             if(this.favAcc[i] === name) {
@@ -36,6 +38,7 @@ module.exports = {
         }
         this.save('favAcc',this.favAcc);
     },
+
     checkAccIsFav (name){
         for(var i = 0; i < this.favAcc.length; i++) {
             if(this.favAcc[i].toLowerCase() === name.toLowerCase()) {
@@ -43,6 +46,42 @@ module.exports = {
             }
         }
         return false;
+    },
+
+    //Builds
+    addBuild(build) {
+        this.favBuilds.push(build);
+        this.save('favBuilds', this.favBuilds);
+    },
+
+    getBuild(hash){
+        var res=null;
+        for (var i = 0; i < this.favBuilds.length; i++) {
+            if (this.favBuilds[i].buildId === hash) {
+                res=this.favBuilds[i];
+            }
+        }
+        return res;
+    },
+
+    removeBuild(hash) {
+        for (var i = 0; i < this.favBuilds.length; i++) {
+            if (this.favBuilds[i].buildId === hash) {
+                this.favBuilds.splice(i, 1);
+            }
+        }
+        this.save('favBuilds', this.favBuilds);
+    },
+
+    isBuildPublic (account){
+        if (!account.includes('build::')) {
+            return false
+        }
+        var acc = account.split('::');
+        if (_.find(this.favBuilds, { "buildId": acc[1]})) {
+            return false
+        }
+        return true;
     },
 
     getMainAcc (){

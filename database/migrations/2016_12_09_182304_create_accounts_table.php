@@ -14,7 +14,7 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->nullable();
             $table->string('name');
             $table->string('guild')->default('');
             $table->string('poe_avatar_url')->default('');

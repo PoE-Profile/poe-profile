@@ -76,11 +76,8 @@ export default {
         close:function(event) {
             this.loadStream=false;
             this.streamUrl='';
-            console.log(this.stream);
             this.$emit('close');
         },
-
-
     },
 };
 

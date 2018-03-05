@@ -3,7 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>PoE Profile Info</title>
+
+	 <title> @yield('title', 'PoE Profile Info')</title>
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -57,10 +58,13 @@
             			</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('twitch') }}"><i class="fa fa-twitch" aria-hidden="true"></i> Twitch <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ route('twitch') }}"><i class="fa fa-twitch" aria-hidden="true"></i> Twitch</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('ladders') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Ladder <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ route('ladders') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Ladder</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ route('index.builds') }}"><i class="fa fa-bookmark" aria-hidden="true"></i> My Builds</a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="{{ route('favorites') }}">
@@ -76,11 +80,12 @@
                         </div>
                     </li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ url('/about') }}"><i class="fa fa-info" aria-hidden="true"></i> About<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ url('/about') }}"><i class="fa fa-info" aria-hidden="true"></i> About</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ url('/update_notes') }}" style="color: orange">
-							What is New v1.1
+						<a class="nav-link" href="{{ url('/update_notes') }}">
+							<i class="fa fa-history" aria-hidden="true" style="color: orange;"></i>
+							Changelog
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
@@ -116,6 +121,12 @@
 						</ul>
 					</li>
 					<li class="nav-item float-lg-right">
+						<a href="https://github.com/PoE-Profile/poe-profile">
+							<i class="fa fa-github fa-4" aria-hidden="true" style="font-size: 25px;"></i>
+							Github
+						</a>
+					</li>
+					<li class="nav-item float-lg-right">
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="form-inline" target="_top">
                         <input type="hidden" name="cmd" value="_s-xclick">
                         <input type="hidden" name="hosted_button_id" value="XUWHT2H9SSMLE">
@@ -141,7 +152,7 @@
 
 	@yield('script')
 	<script type="text/javascript">
-		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+		$('div.alert').not('.alert-important').delay(2500).fadeOut(350);
 	</script>
 
 	<script>

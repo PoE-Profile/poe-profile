@@ -1,4 +1,4 @@
-@extends('layouts.profile')
+@extends('layouts.main')
 
 @section('jsData')
 <script type="text/javascript">
@@ -7,11 +7,13 @@
 </script>
 @stop
 
+@section('title')
+   PoE Profile Info About
+@endsection
 
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>
 @endsection
-
 
 @section('styleSheets')
 @endsection

@@ -7,7 +7,7 @@ Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import { SkillsHelper } from './helpers/SkillsHelper.js';
 var favStore = require('./helpers/FavStore.js');
-var localStore = require('./helpers/LocalStore.js');
+var profileStore = require('./helpers/profileStore.js');
 
 
 const app = new Vue({
@@ -19,10 +19,11 @@ const app = new Vue({
         classFilter: '',
         skillFilter: '',
         leagueFilter: '',
+        searchFilter: '',
         favStore: favStore,
         skillImages: '',
         favStore: favStore,
-        localStore: localStore,
+        profileStore: profileStore,
         favAccChars: [],
         twitchAccChars: [],
         ladderPaginate: [],
@@ -62,8 +63,8 @@ const app = new Vue({
 
     computed: {
 
-        searchFilter: function(){
-            var filter = this.leagueFilter + this.skillFilter + this.classFilter;
+        filters: function(){
+            var filter = this.leagueFilter + this.skillFilter + this.classFilter + this.searchFilter;
             if (filter.charAt(filter.length - 1) === '&') {
                 filter = filter.substring(0, filter.length - 1);
             }
@@ -103,8 +104,8 @@ const app = new Vue({
         if (urlArr[urlArr.length - 1] === 'favorites') {
             this.getFavs();
         }
-
         this.getTwitch();
+
     },
 
     methods: {
@@ -113,6 +114,7 @@ const app = new Vue({
             if (filter === null) {
                 this.skillFilter = '';
                 this.classFilter = '';
+                this.searchFilter = "";
             } else {
                 if (filter.hasOwnProperty('skill')) {
                 this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter='+filter.skill+'&';
@@ -121,11 +123,17 @@ const app = new Vue({
                 if (filter.hasOwnProperty('class')) {
                     this.classFilter = (filter.class == 'All') ? '' : 'classFilter='+filter.class+'&';
                 }
+
+                if (filter.hasOwnProperty('search')) {
+                    // this.leagueFilter = ''
+                    this.searchFilter = (filter.search == '') ? '' : 'searchFilter=' + filter.search + '&';
+                }
             }
 
             this.isLoading=true;
+            this.ladderPaginate= [];
             this.selectedTab='ladder';
-            axios.get('api/ladderData?' + this.searchFilter).then((response) => {
+            axios.get('api/ladderData?' + this.filters).then((response) => {
                 this.ladderPaginate = response.data;
                 this.isLoading=false;
                 this.selectedTab='ladder';
@@ -183,7 +191,6 @@ const app = new Vue({
         },
 
         changePage: function(pageNum){
-            console.log(pageNum);
             var vm = this;
 
             if (pageNum <= 0) {
@@ -192,13 +199,9 @@ const app = new Vue({
             if (pageNum > vm.ladderPaginate.last_page) {
                 pageNum = 1;
             }
-
-            this.ladderPaginate=null;
-            this.isLoading=true;
-
-            axios.get('api/ladderData?'+vm.searchFilter+'&page='+ pageNum).then((response) => {
+            
+            axios.get('api/ladderData?'+vm.filters+'&page='+ pageNum).then((response) => {
                 vm.ladderPaginate = response.data;
-                this.isLoading=false;
             });
         },
 

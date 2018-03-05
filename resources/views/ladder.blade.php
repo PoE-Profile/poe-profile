@@ -1,18 +1,22 @@
-@extends('layouts.profile')
+@extends('layouts.main')
 
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
+        account: '',
         poe_leagues: "{{ env('POE_LEAGUES') }}"
     }
 </script>
 @stop
 
 
+@section('title')
+    PoE Profile Info Ladder
+@endsection
+
 @section('script')
 <script type="text/javascript" src="/js/build/home.js"></script>
 @endsection
-
 
 @section('styleSheets')
 @endsection
@@ -53,6 +57,8 @@
             <h3 class="" style="padding:7px;">Ladders</h3>
         </div>
         <list-characters v-on:filter-list="filterListCharacters" :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"></list-characters>
+        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
+        
 
         <div class="" v-if="ladderPaginate==null" style="height:100%;">
             <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
@@ -70,7 +76,7 @@
                   right: 0;
                   margin-left: auto;
                   margin-right: auto;
-                  width: 340px; ">
+                  width: 360px; ">
                 <span v-for="n in pages" >
                     <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
                 </span>

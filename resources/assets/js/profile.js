@@ -2,25 +2,37 @@ require('./bootstrap');
 
 Vue.component('item', require('./components/profile/Item.vue'));
 Vue.component('jewel', require('./components/profile/Jewel.vue'));
+//GRID
 Vue.component('list-characters', require('./components/profile/ListCharacters.vue'));
+//LIST
+Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
+
+Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
 Vue.component('list-skills', require('./components/profile/ListSkills.vue'));
 Vue.component('item-info', require('./components/profile/ItemInfo.vue'));
 Vue.component('loader', require('./components/Loader.vue'));
 Vue.component('bubble', require('./components/profile/Bubble.vue'));
 Vue.component('bandits', require('./components/profile/Bandits.vue'));
+Vue.component('pob-code', require('./components/profile/PobCode.vue'));
+
 Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
+Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
 import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
-var localStore = require('./helpers/LocalStore.js');
+var profileStore = require('./helpers/profileStore.js');
 
 
 new Vue({
     el: '#app',
     data: {
+        dbAcc: window.PHP.dbAcc,
+        build: window.PHP.build,
+        isBuild: false,
         isModalVisible: false,
+        isSnapshotsVisible: false,
         accountCharacters: '',
         searchAcc: '',
         account: '',
@@ -56,22 +68,17 @@ new Vue({
         loadingItems:false,
         showBandits:false,
         favStore: favStore,
-        localStore: localStore,
+        profileStore: profileStore,
         alertMsg: '',
         showAlert: false,
         skillTreeUrl: '',
         showOffHand: false,
         skillTreeReseted: false,
-        pobXml: '',
-        stream: null,
-        pobText: 'Copy PoB Code',
-        poContent: ''
+        rankArchives: window.PHP.rankArchives,
+        original_char: '',
     },
 
-    created: function () {
-        this.setAccountData();
-        this.getCharacterItems();
-    },
+
 
     mounted: function () {
         $('.po-bandits-link').popover({
@@ -82,15 +89,6 @@ new Vue({
            container: 'body',
            placement: 'top'
         });
-
-        $('.po-pob-link').popover({
-           trigger: 'click',
-           html: true,
-           title: $('.po-title').html(),
-           content: $('#popper-content-pob'),
-           container: 'body',
-           placement: 'bottom'
-       });
     },
 
     computed: {
@@ -98,7 +96,7 @@ new Vue({
         characterRank: function(){
             var rank = ''
             var self = this;
-            window.PHP.dbAcc.ladder_chars.forEach(c => {
+            this.dbAcc.ladder_chars.forEach(c => {
                 if (c.name === self.character.name) {
                     rank = '(Rank: ' + c.rank + ')';
                     if (c.league !== self.character.league.toLowerCase()) {
@@ -165,13 +163,6 @@ new Vue({
                 flasks[flask.x] = flask;
             });
             return flasks;
-        },
-
-        favAccButtonText: function (){
-            if(this.favStore.checkAccIsFav(this.account)){
-                return 'Remove from favorites.';
-            }
-            return 'Add to favorites.';
         },
 
         itemJewels: function(){
@@ -243,10 +234,70 @@ new Vue({
         }
     },
 
+    created: function () {
+        if(window.PHP.loadBuild){
+            this.setupBuild();
+            return;
+        }
+        this.setAccountData();
+        this.getCharacterItems();
+    },
+
     methods: {
 
+        // build initialization
+        setupBuild:function(){
+            this.account = window.PHP.account;
+            this.isBuild = true;
+            this.accountCharacters = this.favStore.favBuilds;
+
+            if(this.account==""){
+                var build = _.last(this.favStore.favBuilds);
+                location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
+            }
+
+            var build = window.PHP.build;
+            //if build null snapshot removed from db
+            if(build==null){
+                this.character = this.favStore.getBuild(this.account.split('::')[1]);
+                return;
+            }
+
+            if (this.favStore.isBuildPublic(this.account)){
+                this.accountCharacters = [];
+                this.character = build.item_data.character;
+            }else{
+                this.character = this.favStore.getBuild(build.hash);
+            }
+            this.original_char=build.original_char;
+            this.items = build.item_data.items;
+        },
+
+        setAccountData: function () {
+            this.account = window.PHP.account;
+
+
+            if (window.PHP.chars === null) {
+            } else {
+                this.accountCharacters = window.PHP.chars;
+            }
+
+            if (window.PHP.char === '') {
+                this.character = this.accountCharacters[0];
+                return;
+            }
+            this.character = this.accountCharacters.filter(function(chars){
+                return chars.name === window.PHP.char;
+            })[0];
+            this.original_char=this.account +"/"+this.character.name;
+        },
+
+        checkBuilds: function(){
+            return this.accountCharacters.length > 0 || this.favStore.isBuildPublic(this.account);
+        },
+
         calcReserved: function(reserved){
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if (allStats.defense[12].radiantFaith) {
                 allStats.defense[12].fromRadiantFaith = Math.floor(reserved * 0.15);
                 this.calcTotals();
@@ -276,7 +327,7 @@ new Vue({
 
         calcTotals: function(){
             this.showBubbles = true;
-            var allStats = this.localStore.getAllStats();
+            var allStats = this.profileStore.getAllStats();
             if(allStats.length === 0){
                 return;
             }
@@ -298,7 +349,7 @@ new Vue({
                     var fromRadiantFaith = Math.floor(allStats.defense[12].fromRadiantFaith * ((allStats.defense[13].total*0.01)+1));
                     stat.total += fromRadiantFaith;
 
-                    tempAura = self.localStore.findAura('Discipline');
+                    tempAura = self.profileStore.findAura('Discipline');
                     if (tempAura) {
                         auraVal = self.withAuraEffectiveness(tempAura.val, stats)
                         flat = (auraVal * percent) / 100 + auraVal;
@@ -317,7 +368,7 @@ new Vue({
                     stat.tooltip=strTooltip;
                 }
                 if (stat.name === 'Evasion') {
-                    tempAura = self.localStore.findAura('Grace');
+                    tempAura = self.profileStore.findAura('Grace');
                     if (tempAura) {
                         auraVal = self.withAuraEffectiveness(tempAura.val, stats)
                         flat = (auraVal * percent) / 100 + auraVal;
@@ -325,7 +376,7 @@ new Vue({
                     }
                 }
                 if (stat.name === 'Armour') {
-                    tempAura = self.localStore.findAura('Determination');
+                    tempAura = self.profileStore.findAura('Determination');
                     if (tempAura) {
                         var totalWithAura =  stat.total + (stat.total*self.withAuraEffectiveness(tempAura.val, stats))/100;
                         stat.aura = 'with Determination ' + tempAura.lvl + ': ' + Math.floor(totalWithAura);
@@ -387,53 +438,6 @@ new Vue({
             })[0].name;
         },
 
-        setAccountData: function () {
-            this.account = window.PHP.account;
-            this.accountCharacters = window.PHP.chars;
-            if (window.PHP.char === '') {
-                this.character = this.accountCharacters[0];
-                return;
-            }
-            this.character = this.accountCharacters.filter(function(chars){
-                return chars.name === window.PHP.char;
-            })[0];
-        },
-
-        hasTwitch: function (){
-            if(window.PHP.dbAcc.streamer!=null){
-                return true;
-            }
-            return false;
-        },
-
-        isTwitchOnline: function (){
-            return window.PHP.dbAcc.streamer.online;
-        },
-
-        playTwitch: function(){
-            this.stream = window.PHP.dbAcc.streamer;
-            this.isModalVisible=true;
-        },
-        closeModal: function() {
-            this.stream = null;
-            this.isModalVisible = false;
-        },
-        toggleFavAcc: function (acc) {
-            this.showAlert=true;
-            if (this.favStore.checkAccIsFav(acc)) {
-                this.favStore.removeAcc(acc);
-                this.alertMsg="Account is removed from favorites .";
-            }else{
-                this.favStore.addAcc(acc);
-                this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/home' class='about-link'>Home</a>\" ";
-            }
-
-            Vue.nextTick(function () {
-                $('.show-tooltip').tooltip('dispose');
-                $('.show-tooltip').tooltip();
-            })
-        },
-
         navMoreInfo: function (event) {
             switch (event.target.getAttribute("data-toggle")) {
                 case 'more-info':
@@ -463,6 +467,7 @@ new Vue({
                         self.setTreeUrl();
                         return;
                     }else{
+                        console.log("testSkill-tree");
                         this.getTreeData(function(response){
                             self.treeData=response.data;
                             self.setTreeUrl();
@@ -495,29 +500,16 @@ new Vue({
         },
 
         getCharacterItems: function () {
-            var vm = this;
+            //start loading bar for items and stats
             this.loadingItems=true;
             var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('character', vm.character.name);
-            //start loading bar for items and stats
-
+            formData.append('account', this.account);
+            formData.append('character', this.character.name);
             axios.post('/api/char/items', formData).then((response) => {
-                vm.items = response.data;
+                this.items = response.data;
                 this.loadingItems=false;
             });
         },
-
-        getPoBCode: function() {
-            this.showPoB=true;
-            var vm = this;
-            var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('char', vm.character.name);
-            axios.post('/api/getPoBCode', formData).then((response) => {
-                this.pobXml = response.data;
-            });
-        }
 
     }
 });
