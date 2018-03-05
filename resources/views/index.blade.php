@@ -127,7 +127,7 @@ $('.show-tooltip').tooltip();
                     right: 0;
                     margin-left: auto;
                     margin-right: auto;
-                    width: 340px; ">
+                    width: 360px; ">
                     <span v-for="n in pages" >
                         <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
                     </span>

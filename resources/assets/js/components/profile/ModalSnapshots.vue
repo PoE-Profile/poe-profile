@@ -79,8 +79,8 @@ export default {
     },
 
     mounted: function() {
-        if(build){
-            this.currentHash=build.hash;
+        if(this.build){
+            this.currentHash=this.build.hash;
         }
     },
 

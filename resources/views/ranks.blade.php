@@ -45,7 +45,7 @@ $(function () {
 
     <profile-nav :build="isBuild"
                 :account="account"
-                :twitch="isBuild ? null : dbAcc"
+                :twitch="isBuild ? null : dbAcc.streamer"
                 selected-tab="ranks"
                 :character="isBuild ? character : character.name">
     </profile-nav>

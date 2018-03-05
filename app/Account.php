@@ -8,7 +8,7 @@ use Sunra\PhpSimple\HtmlDomParser;
 class Account extends Model
 {
     protected $fillable = [
-        'name', 'guild', 'challenges_completed', 'poe_avatar_url', 'last_character', 'last_character_info'
+        'name', 'user_id', 'guild', 'challenges_completed', 'poe_avatar_url', 'last_character', 'last_character_info'
     ];
 
 
