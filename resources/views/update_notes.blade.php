@@ -23,14 +23,15 @@
         <h2>What is new <small>(version 2.0)</small> </h2>
         <ul>
             <li>Project updated to Laralve 5.5 using Vuejs 2.x</li>
-            <li>We are now on <a href="https://github.com/PoE-Profile/poe-profile" target="_blank" class="about-link">GITHUB</a> if you wanna contribue you are welcome</li>
+            <li>We are now on <a href="https://github.com/PoE-Profile/poe-profile" target="_blank" class="about-link">GITHUB</a> if you wanna contribute you are welcome</li>
             <li>Added new feature Builds, you can save Snapshot of gear and skill tree (saved build can be shared)</li>
-            <li>Added Ranks tab in Profile so you can see privious league Ranks </li>
+            <li>Added Ranks tab in Profile so you can see previous league Ranks </li>
             <li>Improvements on Ladders</li>
             <li>Fixed major bug. Since we moved to github two weeks ago, we were not able to load any new public accounts that are not already in our database.</li>
     	</ul>
         <h4>
-            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a> post.
+            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
+            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">redit</a> posts.
         </h4>
         <br><br>
 
