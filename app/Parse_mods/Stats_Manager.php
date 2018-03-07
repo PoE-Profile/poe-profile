@@ -40,7 +40,7 @@ class Stats_Manager
                 new misc_stats\Frenzy_Charges_Duration,
             ],
             'defense' => [
-                new defense_stats\Resist_Cold,
+                new defense_stats\Resist_Fire,
                 new defense_stats\Resist_Cold,
                 new defense_stats\Resist_Lightning,
                 new defense_stats\Resist_Chaos,

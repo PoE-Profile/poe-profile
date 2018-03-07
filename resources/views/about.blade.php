@@ -46,18 +46,6 @@ https://www.pathofexile.com/character-window/get-passive-skills?character=[Charn
     			</ul>
     		</li>
     		<li>
-                You can browse into the public stashes from selected account. <br>
-    			We are using Path of Exile's <a href="http://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs" class="about-link">Public Stash Tab API</a>, to keep track of account public stashes.
-    			<ul>
-    				<li>
-    					You can filter by multiple tags.
-    				</li>
-					<li>
-						After the tag you can add ">{num}" and if the tag is found on item will combine numbers of all mods that contain tag and compare to initial {num}.
-					</li>
-    			</ul>
-    		</li>
-    		<li>
                 Add multiple favorite accounts and easily switch between them.
     		</li>
     		<li>
@@ -124,7 +112,7 @@ https://www.pathofexile.com/character-window/get-passive-skills?character=[Charn
 		<br>
 		<h4>
 			If you see problems or bugs with the site you can report on our
-			<a href="https://www.reddit.com/r/pathofexile/comments/5nzuxa/tool_poeprofile_the_ultimate_profile_page/" target="_blank" class="about-link">reddit</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a> post.
+			<a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" target="_blank" class="about-link">reddit</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a> post.
 		</h4>
 		<br>
 		<h4>You can support us by using the button below.</h4>
