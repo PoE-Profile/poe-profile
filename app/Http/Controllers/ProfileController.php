@@ -94,6 +94,14 @@ class ProfileController extends CacheController
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
     }
 
+    public function getProfileSnapshots($acc)
+    {
+        $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')->groupBy('original_char')->get();
+
+        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        return view('snapshots', compact('acc', 'snapshots', 'dbAcc'));
+    }
+
     public function indexBuild()
     {
         $acc = '';

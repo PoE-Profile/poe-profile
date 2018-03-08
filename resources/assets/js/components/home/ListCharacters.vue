@@ -9,7 +9,7 @@
         v-on:keyup.enter="search()">
 
         <span class="input-group-btn">
-        <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Submit</button>
+        <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Search</button>
         </span>
     </div>
 

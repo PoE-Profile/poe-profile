@@ -22,18 +22,18 @@
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
 
-        <h4>How to change your profile characters tab to public</h3>
+        <h4>How to save a build</h3>
         <ol>
             <li style="margin: 10px">
-                First go to: https://www.pathofexile.com/account/view-profile/{YourProfileName}
+                First visit any profile page: https://www.poe-profile.info/profile/{pickAccount}
                 
             </li>
             <li style="margin: 10px">
-                Click on Privacy Settings
+                Click on Save Build/Snapshot
                 <img src="/imgs/public_account/step1.jpg" alt="">
             </li>
             <li style="margin: 10px">
-                Make sure your "Hide characters tab" is unchecked
+                Pick a name for your snapshot/build
                 <img src="/imgs/public_account/step2.jpg" alt="">
             </li>
         </ol>

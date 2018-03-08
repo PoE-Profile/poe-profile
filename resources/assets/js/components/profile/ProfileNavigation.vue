@@ -1,7 +1,11 @@
 <template>
 <div class="navigation" style="padding-bottom: 0px;padding-top: 10px;background: #190a09;">
+     <div class="alert alert-success" v-if="showAlert">
+        <button type="button" class="close" @click.prevent="showAlert=false">&times;</button>
+        <span v-html="alertMsg"></span>
+    </div>
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks'">
+        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots'">
             <li class="pull-left" >
                 <h3 style="margin-right:20px;color:#eee;">
                     {{account}}
@@ -22,7 +26,7 @@
                         :class="['btn btn-sm poe-btn form-inline show-tooltip', favStore.checkAccIsFav(account) ? 'active' : '']"
                         type="button" data-toggle="tooltip" data-placement="bottom"
                         :title="favAccButtonText" @click.prevent="toggleFavAcc(account)">
-                    <i class="fa fa-star" aria-hidden="true"></i></button>
+                    <i :class="[favStore.checkAccIsFav(account) ? favIcon.is : favIcon.not]" aria-hidden="true"></i></button>
                 </h3>
             </li>
             <li class="nav-item">
@@ -34,6 +38,11 @@
                 <a class="nav-link"
                     v-bind:class="[selectedTab=='ranks' ? 'active' : '']"
                     :href="'/profile/'+ account + '/ranks'">Ranks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                    v-bind:class="[selectedTab=='snapshots' ? 'active' : '']"
+                    :href="'/profile/'+ account + '/snapshots'">Snapshots</a>
             </li>
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
@@ -161,6 +170,12 @@ export default {
             favStore: favStore,
             profileStore: profileStore,
             isModalVisible: false,
+            favIcon: {
+                is:'fa fa-star',
+                not:'fa fa-star-o'
+            },
+            alertMsg: '',
+            showAlert: false,
         }
     },
 
@@ -203,10 +218,10 @@ export default {
             this.showAlert=true;
             if (this.favStore.checkAccIsFav(acc)) {
                 this.favStore.removeAcc(acc);
-                // this.alertMsg="Account is removed from favorites .";
+                this.alertMsg="Account is removed from favorites .";
             }else{
                 this.favStore.addAcc(acc);
-                // this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/home' class='about-link'>Home</a>\" ";
+                this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/home' class='about-link'>Home</a>\" ";
             }
 
             Vue.nextTick(function () {
@@ -250,8 +265,18 @@ export default {
                 var build=response.data;
                 this.saving=false;
                 build.name = this.buildName.replace(/ /g,"_");
-                this.favStore.addBuild(build);
-                this.redirectBuild(response.data);
+
+                if (this.favStore.isBuildPublic('build::'+build.buildId)) {
+                    this.favStore.addBuild(build);
+                    this.redirectBuild(response.data);
+                } else {
+                    $('.po-save-build-link').trigger('click')
+                    this.showAlert=true;
+                    var localBuild = this.favStore.getBuild(build.buildId);
+                    this.alertMsg="You have this shanpshot already added in 'My builds' with name " + localBuild.name;
+                    setTimeout(function(){ this.showAlert=false; }.bind(this), 3000);
+                }
+                
             });
         },
 

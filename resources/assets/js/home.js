@@ -5,7 +5,6 @@ Vue.component('loader', require('./components/Loader.vue'));
 Vue.component('list-characters', require('./components/home/ListCharacters.vue'));
 Vue.component('drop-down', require('./components/home/DropDown.vue'));
 
-import { SkillsHelper } from './helpers/SkillsHelper.js';
 var favStore = require('./helpers/FavStore.js');
 var profileStore = require('./helpers/profileStore.js');
 

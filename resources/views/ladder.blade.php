@@ -15,7 +15,7 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="/js/build/home.js"></script>
+<script type="text/javascript" src="{{ mix('/js/build/home.js') }}"></script>
 @endsection
 
 @section('styleSheets')
@@ -58,7 +58,6 @@
         </div>
         <list-characters v-on:filter-list="filterListCharacters" :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"></list-characters>
         <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
-        
 
         <div class="" v-if="ladderPaginate==null" style="height:100%;">
             <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>

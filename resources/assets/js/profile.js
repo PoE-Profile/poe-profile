@@ -69,8 +69,6 @@ new Vue({
         showBandits:false,
         favStore: favStore,
         profileStore: profileStore,
-        alertMsg: '',
-        showAlert: false,
         skillTreeUrl: '',
         showOffHand: false,
         skillTreeReseted: false,

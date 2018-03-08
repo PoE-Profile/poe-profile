@@ -21,7 +21,7 @@ class Resist_Cold extends Stat
     public function parse($mod, $type)
     {
         $this->setType($type);
-        $this->name ='% Cold Resistance';
+        $this->name = '% Cold Resistance';
         $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
@@ -34,6 +34,9 @@ class Resist_Cold extends Stat
         if ( $modName === '-#% to Cold Resistance' || $modName === '-#% to all Elemental Resistances') {
             $this->setVal($modValue);
         }
+
+        // $this->name = $this->total . '% Cold Resistance';
+        
     }
 
 }

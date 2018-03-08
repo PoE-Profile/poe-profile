@@ -20,7 +20,7 @@
 @section('script')
 <script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
-<script type="text/javascript" src="/js/build/profile.js"></script>
+<script type="text/javascript" src="{{ mix('/js/build/profile.js') }}"></script>
 <script type="text/javascript">
 $('.show-tooltip').tooltip();
 $(function () {
@@ -32,11 +32,6 @@ $(function () {
 @section('content')
 <div class="container" v-cloak>
     @include('flash::message')
-
-    <div class="alert alert-success" v-if="showAlert">
-        <button type="button" class="close" @click.prevent="showAlert=false">&times;</button>
-        <span v-html="alertMsg"></span>
-    </div>
 
     <profile-nav :build="isBuild"
                 :account="account"
@@ -291,6 +286,7 @@ $(function () {
     <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
         <br><br>
         <h3 >You havent saved any builds yet!</h3>
+        <span> <a href="/build_tutorial">How to save a build</a></span>
         <br><br><br><br><br><br>
     </div>
 

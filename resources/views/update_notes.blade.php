@@ -9,7 +9,7 @@
 
 
 @section('script')
-<script type="text/javascript" src="/js/build/home.js"></script>
+<script type="text/javascript" src="{{ mix('/js/build/home.js') }}"></script>
 @endsection
 
 
@@ -31,7 +31,7 @@
     	</ul>
         <h4>
             If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
-            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">redit</a> posts.
+            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">reddit</a> posts.
         </h4>
         <br><br>
 
