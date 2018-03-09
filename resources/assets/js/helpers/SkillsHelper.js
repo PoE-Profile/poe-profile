@@ -329,7 +329,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/IncreasedPhysicalDamage.png?scale=1&w=1&h=1&v=217781293d9d65ecc9e283feacadd2323',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Melee, Support, Attack' },
+                { name: 'Melee, Support, Attack', values: [['']]  },
                 { name: 'Level', values: [['18']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -349,7 +349,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/FasterAttacks.png?scale=1&w=1&h=1&v=c14203f7b19650861907a30a92e3b6fe3',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Attack, Support' },
+                { name: 'Attack, Support', values: [['']]  },
                 { name: 'Level', values: [['12']] },
                 { name: 'Mana Multiplier', values: [['115%']] },
             ],
@@ -369,7 +369,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Blind.png?scale=1&w=1&h=1&v=6d0203ad79f828033ba912d5f3e5e29d3',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support' },
+                { name: 'Support', values: [['']]  },
                 { name: 'Level', values: [['6']] },
             ],
             explicitMods: [
@@ -389,7 +389,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/ConcentratedAOE.png?scale=1&w=1&h=1&v=e93b8c61b7fc1c64a3fd41a058d660a33',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support, AoE' },
+                { name: 'Support, AoE', values: [['']]  },
                 { name: 'Level', values: [['20']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -410,7 +410,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/AddedLightningDamage.png?scale=1&w=1&h=1&v=9228c011d886459c66e66caa1d3e6fb13',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Lightning, Support' },
+                { name: 'Lightning, Support', values: [['']]  },
                 { name: 'Level', values: [['18']] },
                 { name: 'Mana Multiplier', values: [['130%']] },
             ],
@@ -430,7 +430,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Knockback.png?scale=1&w=1&h=1&v=f4c5ecc35abb51eb0c9254f635f11e2a3',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support' },
+                { name: 'Support', values: [['']]  },
                 { name: 'Level', values: [['10']] },
             ],
             explicitMods: [
@@ -450,7 +450,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Trap.png?scale=1&w=1&h=1&v=f31015c2707ca14c04404a605d73c07a3',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support, Trap, Duration' },
+                { name: 'Support, Trap, Duration', values: [['']]  },
                 { name: 'Level', values: [['8']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -471,7 +471,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Trap.png?scale=1&w=1&h=1&v=f31015c2707ca14c04404a605d73c07a3',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support, Trap, Duration' },
+                { name: 'Support, Trap, Duration', values: [['']]  },
                 { name: 'Level', values: [['11']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -492,7 +492,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/GenerositySupport.png?scale=1&w=1&h=1&v=21d383fa0220142a71ad3d37af58c1533',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Support, Aura' },
+                { name: 'Support, Aura', values: [['']]  },
                 { name: 'Level', values: [['30']] },
             ],
             explicitMods: [
@@ -512,7 +512,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/AddedFireDamage.png?scale=1&w=1&h=1&v=c5fbf989cfca77fcbbc4c9438fbbcf273',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Fire, Support' },
+                { name: 'Fire, Support', values: [['']]  },
                 { name: 'Level', values: [['10']] },
                 { name: 'Mana Multiplier', values: [['120%']] },
             ],
@@ -532,7 +532,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/EnduranceChargeStun.png?scale=1&w=1&h=1&v=cfa0987c3df7eb55365015fb6faebfbc3',
             properties: [
                 { name: 'From Item Mod' , values: [['']] },
-                { name: 'Support, Melee, Attack' },
+                { name: 'Support, Melee, Attack', values: [['']]  },
                 { name: 'Level', values: [['20']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -553,7 +553,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/IncreasedAOE.png?scale=1&w=1&h=1&v=f0accbe4733628f443cd691574b3f6043',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Support, AoE' },
+                { name: 'Support, AoE', values: [['']]  },
                 { name: 'Level', values: [['15']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -573,7 +573,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/IronWill.png?scale=1&w=1&h=1&v=afb1f20cfad22f41efd4474e238b669a3',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Spell, Support' },
+                { name: 'Spell, Support', values: [['']]  },
                 { name: 'Level', values: [['10']] },
             ],
             explicitMods: [
@@ -593,7 +593,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/FirePenetration.png?scale=1&w=1&h=1&v=71763309c9c93e038fdf49738e121e443',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Fire, Support' },
+                { name: 'Fire, Support', values: [['']]  },
                 { name: 'Level', values: [['10']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -613,7 +613,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/FortifyGem.png?scale=1&w=1&h=1&v=6a69853aaf7278667bde43531541ef7d3',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Attack, Support, Melee' },
+                { name: 'Attack, Support, Melee', values: [['']]  },
                 { name: 'Level', values: [['12']] },
                 { name: 'Mana Multiplier', values: [['110%']] },
             ],
@@ -635,7 +635,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Totem.png?scale=1&w=1&h=1&v=55108fd68db92b2f2c1ea638306754b43',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Support, Totem, Duration' },
+                { name: 'Support, Totem, Duration', values: [['']]  },
                 { name: 'Level', values: [['20']] },
                 { name: 'Mana Multiplier', values: [['200']] },
             ],
@@ -657,7 +657,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Aurify.png?scale=1&w=1&h=1&v=86f299cfe5955d46e447ac2bbf8785bd3',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Support, Curse, Aura' },
+                { name: 'Support, Curse, Aura', values: [['']]  },
                 { name: 'Level', values: [['22']] },
                 { name: 'Mana Reservation Override', values: [['35%']] },
             ],
@@ -678,7 +678,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Pierce.png?scale=1&w=1&h=1&v=3adf8484c5565e2f4b02dc1db98cd9db3',
             properties: [
                 { name: 'From Item Mod', values: [['']]  },
-                { name: 'Support, Projectile' },
+                { name: 'Support, Projectile', values: [['']]  },
                 { name: 'Level', values: [['15']] },
                 { name: 'Mana Multiplier', values: [['130']] },
             ],
@@ -699,7 +699,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Echo.png?scale=1&w=1&h=1&v=8c687a9247eff1393e4fe35d69838f723',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Spell, Support' },
+                { name: 'Spell, Support', values: [['']]  },
                 { name: 'Level', values: [['30']] },
                 { name: 'Mana Multiplier', values: [['140']] },
             ],
@@ -721,7 +721,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Echo.png?scale=1&w=1&h=1&v=8c687a9247eff1393e4fe35d69838f723',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Spell, Support' },
+                { name: 'Spell, Support', values: [['']]  },
                 { name: 'Level', values: [['1']] },
                 { name: 'Mana Multiplier', values: [['140']] },
             ],
@@ -743,7 +743,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/ElementalProliferation.png?scale=1&w=1&h=1&v=e7ee8a5ac2a22cbec33c7eb55ad82cf13',
             properties: [
                 { name: 'From Item Mod', values: [['']] },
-                { name: 'Cold, Fire, Lightning, Support, AoE' },
+                { name: 'Cold, Fire, Lightning, Support, AoE', values: [['']]  },
                 { name: 'Level', values: [['20']] },
                 { name: 'Mana Multiplier', values: [['140%']] },
             ],
@@ -766,7 +766,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/Splash.png?scale=1&w=1&h=1&v=afa90bab1663bcefcbabff20d7479a043',
             properties: [
                 { name: 'From Item Mod', values: [['']]},
-                { name: 'Support, Melee, Attack, AoE' },
+                { name: 'Support, Melee, Attack, AoE', values: [['']]  },
                 { name: 'Level', values: [['25']] },
                 { name: 'Mana Multiplier', values: [['160']] },
             ],
@@ -788,7 +788,7 @@ var itemSupports = [
             icon: 'https://web.poecdn.com/image/Art/2DItems/Gems/Support/BloodMagic.png?scale=1&w=1&h=1&v=cddb11c579c3422bd85a7c989dc60cbc3',
             properties: [
                 { name: 'From Item Mod', values: [['']]},
-                { name: 'Support' },
+                { name: 'Support', values: [['']]  },
                 { name: 'Mana Multiplier', values: [['100%']] },
             ],
             explicitMods: [

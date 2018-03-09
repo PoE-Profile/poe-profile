@@ -31,6 +31,7 @@ class Resist_Fire extends Stat
         if ( $modName === '-#% to Fire Resistance' || $modName === '-#% to all Elemental Resistances') {
             $this->setVal($modValue);
         }
-    }
 
+        $this->text = ($this->total - 60) . '% (' . $this->total . ') Fire Resistance';
+    }
 }

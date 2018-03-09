@@ -11,6 +11,7 @@ class Stat implements ModParse
     public $treeVal = 0;
     public $jewVal = 0;
     public $name = '';
+    public $text = '';
 
     public $items = [];
 

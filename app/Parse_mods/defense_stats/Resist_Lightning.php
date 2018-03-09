@@ -32,6 +32,6 @@ class Resist_Lightning extends Stat
         if ( $modName === '-#% to Lightning Resistance' || $modName === '-#% to all Elemental Resistances') {
             $this->setVal($modValue);
         }
+        $this->text = ($this->total - 60) . '% (' . $this->total . ') Lightning Resistance';
     }
-
 }

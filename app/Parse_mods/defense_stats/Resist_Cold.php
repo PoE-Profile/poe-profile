@@ -35,8 +35,7 @@ class Resist_Cold extends Stat
             $this->setVal($modValue);
         }
 
-        // $this->name = $this->total . '% Cold Resistance';
+        $this->text = ($this->total - 60) . '% (' . $this->total . ') Cold Resistance';
         
     }
-
 }

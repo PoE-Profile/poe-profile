@@ -92,8 +92,7 @@ $(function () {
                                 <a href="#" @click.prevent="showStat=false" class="pull-right">
                                     <i class="fa fa-times-circle" style="font-size: 1em;" aria-hidden="true"></i>
                                 </a>
-                                @{{hoveredStat.total}} @{{hoveredStat.name}}
-
+                                @{{hoveredStat.text !== '' ? hoveredStat.text : hoveredStat.total+' '+hoveredStat.name}}
                             </span>
                             <span class="item-stats" style="max-width: 350px;">
                                 <span class="group -textwrap tc -stat" v-if="hoveredStat.itemVal > 0">
