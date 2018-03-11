@@ -4,16 +4,15 @@
 <script type="text/javascript">
     window.PHP = {
         account: '{!! $acc !!}',
-        rankArchives: {!! $rankArchives !!},
         poe_leagues: "{{ env('POE_LEAGUES') }}",
         dbAcc: {!! $dbAcc !!},
-        build: {!! $build or "null" !!}
+        build: {!! $build or "null" !!},
     }
 </script>
 @stop
 
 @section('title')
-    PoE Profile Info Ranks / {{$acc}}
+    PoE Profile Info Snapshots / {{$acc}}
 @endsection
 
 @section('script')
@@ -47,19 +46,33 @@ $(function () {
     <profile-nav :build="isBuild"
                 :account="account"
                 :twitch="isBuild ? null : dbAcc.streamer"
-                selected-tab="ranks"
+                selected-tab="stashes"
                 :character="isBuild ? character : character.name">
     </profile-nav>
 
-    <div class="noRanks bottom-info-content" style="text-align:center;" v-if="rankArchives.length ===0">
-        @if(count($rankArchives) == 0)
+    @if(count($results) == 0)
+        <div class="noSnapshots bottom-info-content" style="text-align:center;">
             <br><br>
-            <h3 >We have't have indexed ranks for this account from previous leagues!</h3>
+            <h1 >No public stashes results from pathofexile.com/trade/!</h1>
             <br><br><br><br><br><br>
-        @endif
-    </div>
-    <div class="list-ranks" v-else>
-        <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
-    </div>
+        </div>
+    @else
+            <div class="bottom-info-content">
+                <br><br>
+                <h2 style="color: #eee;text-align:center;">Results From Current Leagues:</h4>
+                @foreach($results as $league)
+                    <div class="list-group-item" style="color: #eee;background-color: #211F18;">
+                        <h4>{{$league->league}} found {{$league->result->total}} items
+                        <a href="https://www.pathofexile.com/trade/search/{{$league->league}}/{{$league->result->id}}"
+                            class="btn btn-outline-warning pull-right" target="_blank">
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
+                            Open results in pathofexile.com/trade</a>
+                        </h2>
+                    </div>
+                @endforeach
+                <br><br><br><br><br><br>
+            </div>
+    @endif
+
 </div>
 @endsection

@@ -48,7 +48,7 @@ class UpdateAccount extends Command
             $this->info("update ".$acc->name);
             $acc->updateLastChar();
             $this->comment("update updateLastCharInfo");
-            $acc->updateLastCharInfo(null);
+            $acc->updateLastCharInfo();
         }
     }
 

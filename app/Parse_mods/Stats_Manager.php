@@ -8,7 +8,7 @@ class Stats_Manager
     public $type = '';
     public $modValidator = '';
 
-    public function __construct($items,$treeData)
+    public function __construct($items,$treeData,$offHand=false)
     {
         $character = $items['character'];
         $this->stats = [
@@ -91,7 +91,7 @@ class Stats_Manager
 
         //items
         $banItems = ['Flask', 'Weapon2', 'Offhand2'];
-        if (isset($_GET['offHand'])) {
+        if ($offHand) {
             $banItems = ['Flask', 'Weapon', 'Offhand'];
         }
 

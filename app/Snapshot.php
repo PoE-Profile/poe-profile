@@ -14,6 +14,7 @@ class Snapshot extends Model
     // Tree_Data Mutator & Accessor
     public function setTreeDataAttribute($value)
     {
+        $value=json_encode($value);
         $tree_data = gzcompress($value);
         $tree_data = base64_encode($tree_data);
         $this->attributes['tree_data'] = $tree_data;
@@ -30,6 +31,7 @@ class Snapshot extends Model
     // Item_Data Mutator & Accessor
     public function setItemDataAttribute($value)
     {
+        $value=json_encode($value);
         $item_data = gzcompress($value);
         $item_data = base64_encode($item_data);
         $this->attributes['item_data'] = $item_data;
@@ -48,4 +50,28 @@ class Snapshot extends Model
         $stManager = new Stats_Manager($this->item_data,$this->tree_data);
         return $stManager->getStats();
     }
+
+    static public function create($acc, $char){
+        $itemsData = PoeApi::getItemsData($acc, $char);
+        $treeData = PoeApi::getTreeData($acc, $char);
+
+        if (!array_key_exists('items', $itemsData)) {
+            return;
+        }
+        $itemsNoFlasks = array_filter($itemsData['items'], function ($item){
+            return $item['inventoryId']!="Flask";
+        });
+        $itemsNoFlasks=json_encode($itemsNoFlasks);
+        $hash = md5(json_encode($treeData).'/'.$itemsNoFlasks);
+
+        $snapshot = \App\Snapshot::firstOrNew(['hash' => $hash]);
+        $snapshot->item_data = $itemsData;
+        $snapshot->tree_data = $treeData;
+        $snapshot->original_char = $acc .'/'. $char;
+        $snapshot->poe_version = config('app.poe_version');
+        $snapshot->original_level = $itemsData['character']['level'];
+        $snapshot->save();
+        return $snapshot;
+    }
+
 }

@@ -33,6 +33,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('profile_tutorial');
     });
 
+    Route::get('/build_tutorial', function () {
+        return view('build_tutorial');
+    });
+
     // saved Builds/Snapshots
     Route::get('/builds', ['as' => 'index.builds', 'uses' => 'ProfileController@indexBuild']);
     Route::get('/build/{hash}', ['as' => 'show.build', 'uses' => 'ProfileController@showBuild']);
@@ -41,6 +45,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/profile', ['as' => 'view.profile', 'uses' => 'ProfileController@profileDefault']);
     Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'ProfileController@postProfile']);
     Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'ProfileController@getProfileRanks']);
+    Route::get('/profile/{acc}/snapshots', ['as' => 'profile.snapshots', 'uses' => 'ProfileController@getProfileSnapshots']);
+    Route::get('/profile/{acc}/stashes', ['as' => 'profile.stashes', 'uses' => 'ProfileController@getStashs']);
     Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'ProfileController@getProfile']);
     Route::get('/profile/{acc}/{char}', ['as' => 'get.profile.char', 'uses' => 'ProfileController@getProfileChar']);
 

@@ -4,16 +4,15 @@
 <script type="text/javascript">
     window.PHP = {
         account: '{!! $acc !!}',
-        rankArchives: {!! $rankArchives !!},
         poe_leagues: "{{ env('POE_LEAGUES') }}",
         dbAcc: {!! $dbAcc !!},
-        build: {!! $build or "null" !!}
+        build: {!! $build or "null" !!},
     }
 </script>
 @stop
 
 @section('title')
-    PoE Profile Info Ranks / {{$acc}}
+    PoE Profile Info Snapshots / {{$acc}}
 @endsection
 
 @section('script')
@@ -47,19 +46,36 @@ $(function () {
     <profile-nav :build="isBuild"
                 :account="account"
                 :twitch="isBuild ? null : dbAcc.streamer"
-                selected-tab="ranks"
+                selected-tab="snapshots"
                 :character="isBuild ? character : character.name">
     </profile-nav>
 
-    <div class="noRanks bottom-info-content" style="text-align:center;" v-if="rankArchives.length ===0">
-        @if(count($rankArchives) == 0)
+    @if(count($snapshots) == 0)
+        <div class="noSnapshots bottom-info-content" style="text-align:center;">
             <br><br>
             <h3 >We have't have indexed ranks for this account from previous leagues!</h3>
             <br><br><br><br><br><br>
-        @endif
-    </div>
-    <div class="list-ranks" v-else>
-        <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
-    </div>
+        </div>
+    @else
+        <div class="list-snapshots">
+            <table width="100%" class="table table-hover homapage-table" style="color:white">
+                <tr>
+                    <th>Hash</th>
+                    <th>Original Character</th>
+                    <th>Original Level</th>
+                    <th>Created at</th>
+                </tr>
+                @foreach($snapshots as $snap)
+                    <tr>
+                        <td ><a href="/build/{{$snap->hash}}">{{ $snap->hash }}</a></td>
+                        <td>{{ $snap->original_char }}</td>
+                        <td>{{ $snap->original_level }}</td>
+                        <td>{{ $snap->created_at }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+    @endif
+
 </div>
 @endsection

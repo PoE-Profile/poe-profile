@@ -26,6 +26,8 @@ class Resist_Chaos extends Stat
 		if ( $modName === '-#% to Chaos Resistance') {
             $this->setVal($modValue);
         }
+
+        $this->text = ($this->total - 60) . '% (' . $this->total .') Chaos Resistance';
     }
 
 }

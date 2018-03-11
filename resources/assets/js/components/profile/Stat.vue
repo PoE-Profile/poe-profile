@@ -7,7 +7,7 @@
 
 <template>
 <a :class="['list-group-item list-group-item-action flexing', checkSticked ? 'stick' : '']" href="#">
-  {{stat.total}} {{stat.name }}
+    {{stat.text !== '' ? stat.text : stat.total+' '+stat.name}}
   <i :class="[store.checkStatIsFav(stat.name) ? favIcon.is : favIcon.not]" aria-hidden="true" @click.prevent="makeFavorite"></i>
 </a>
 </template>

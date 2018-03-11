@@ -23,7 +23,7 @@
                     <tr v-for="snapshot in snapshots"
                         v-bind:class="[currentHash==snapshot.hash ? 'current-snap' : '']">
 
-                        <td ><a href="#" @click.prevent="gotoSnapshot(snapshot.hash)">{{snapshot.hash}}</a></td>
+                        <td ><a :href="'/build/'+snapshot.hash" >{{snapshot.hash}}</a></td>
                         <td>{{snapshot.original_char}}</td>
                         <td>{{snapshot.original_level}}</td>
                         <td>{{snapshot.created_at}}</td>
@@ -96,10 +96,6 @@ export default {
                 this.loading=false;
             });
         },
-
-        gotoSnapshot: function(hash){
-            location.replace((new poeHelpers).getBaseDomain() + '/build/' + hash);
-        }
     },
 };
 

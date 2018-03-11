@@ -63,7 +63,7 @@
     </div>
 
     <div class="mod-info stat-info" v-show="showStatInfo" :style="{position:'absolute', left:'332px', top: hoveredStatPos+'px'}">
-        <span class="mod-header">{{hoveredStat.total}} {{hoveredStat.name}}</span>
+        <span class="mod-header">{{hoveredStat.text !== '' ? hoveredStat.text : hoveredStat.total+' '+hoveredStat.name}}</span>
         <span class="item-stats">
             <span class="group -textwrap tc -stat" v-if="hoveredStat.itemVal > 0">
                 <span class="title">From Items: </span>{{hoveredStat.itemVal}}
@@ -168,7 +168,7 @@ export default {
                 );
             } else {
                 return allStats[this.selectedStatType].filter(function(s){
-                    return s.total>0;
+                    return s.total>0 || s.text.includes("Resist");
                 });
             }
 

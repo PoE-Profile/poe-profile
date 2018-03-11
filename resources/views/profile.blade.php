@@ -20,7 +20,7 @@
 @section('script')
 <script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
-<script type="text/javascript" src="/js/build/profile.js"></script>
+<script type="text/javascript" src="{{ mix('/js/build/profile.js') }}"></script>
 <script type="text/javascript">
 $('.show-tooltip').tooltip();
 $(function () {
@@ -33,9 +33,18 @@ $(function () {
 <div class="container" v-cloak>
     @include('flash::message')
 
-    <div class="alert alert-success" v-if="showAlert">
-        <button type="button" class="close" @click.prevent="showAlert=false">&times;</button>
-        <span v-html="alertMsg"></span>
+    <div class="text-xs-center" style="padding-bottom:4px;">
+        <div style="margin: 0 auto;height: 91px;width: 971px;border: 1px solid #FFF;">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- exile_profile_big -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:970px;height:90px"
+                 data-ad-client="ca-pub-5347674045883414"
+                 data-ad-slot="8430954096"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
     </div>
 
     <profile-nav :build="isBuild"
@@ -97,8 +106,7 @@ $(function () {
                                 <a href="#" @click.prevent="showStat=false" class="pull-right">
                                     <i class="fa fa-times-circle" style="font-size: 1em;" aria-hidden="true"></i>
                                 </a>
-                                @{{hoveredStat.total}} @{{hoveredStat.name}}
-
+                                @{{hoveredStat.text !== '' ? hoveredStat.text : hoveredStat.total+' '+hoveredStat.name}}
                             </span>
                             <span class="item-stats" style="max-width: 350px;">
                                 <span class="group -textwrap tc -stat" v-if="hoveredStat.itemVal > 0">
@@ -138,7 +146,7 @@ $(function () {
                             </span>
                         </div>
                 </div>
-                <div class="ad-main-pole">
+                <div class="ad-main-pole" style="border: 1px solid #FFF;">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <!-- exileMainAd -->
                     <ins class="adsbygoogle"
@@ -291,6 +299,7 @@ $(function () {
     <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
         <br><br>
         <h3 >You havent saved any builds yet!</h3>
+        <span> <a href="/build_tutorial">How to save a build</a></span>
         <br><br><br><br><br><br>
     </div>
 

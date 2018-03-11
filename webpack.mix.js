@@ -11,6 +11,23 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/home.js', 'public/js/build');
-mix.js('resources/assets/js/profile.js', 'public/js/build');
+mix.js('resources/assets/js/home.js', 'public/js/build')
+mix.js('resources/assets/js/profile.js', 'public/js/build')
+	
+
+if (mix.inProduction()) {
+    mix.version().disableNotifications();
+} else {
+    // mix.browserSync({
+    //     proxy: process.env.APP_URL,
+    //     files: [
+    //         'app/**/*.php',
+    //         'resources/views/**/*.php',
+    //         'public/js/build/*.js',
+    //         'public/css/**/*.css'
+    //     ]
+    // })
+}
+
+
 // mix.sass('resources/assets/sass/app.scss', 'public/css');
