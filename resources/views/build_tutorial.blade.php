@@ -25,20 +25,20 @@
         <h4>How to save a build</h3>
         <ol>
             <li style="margin: 10px">
-                First visit any profile page: https://www.poe-profile.info/profile/{pickAccount}
-                
+                First visit any public profile character page: https://www.poe-profile.info/profile/{account}/{character}
+
             </li>
             <li style="margin: 10px">
                 Click on Save Build/Snapshot
-                <img src="/imgs/public_account/step1.jpg" alt="">
+                <img src="/imgs/build_tutorial/build_step1.png" style="width:80%" alt="">
             </li>
-            <li style="margin: 10px">
-                Pick a name for your snapshot/build
-                <img src="/imgs/public_account/step2.jpg" alt="">
+            <li style="margin: 10px"><br>
+                <img src="/imgs/build_tutorial/build_step2.png" style="width:80%" alt="">
             </li>
+            <li>After save you will be redirected to "My Builds"</li>
         </ol>
-        
-        
+
+
 
     </div>
 </div>

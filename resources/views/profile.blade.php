@@ -33,6 +33,20 @@ $(function () {
 <div class="container" v-cloak>
     @include('flash::message')
 
+    <div class="text-xs-center" style="padding-bottom:4px;">
+        <div style="margin: 0 auto;height: 91px;width: 971px;border: 1px solid #FFF;">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- exile_profile_big -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:970px;height:90px"
+                 data-ad-client="ca-pub-5347674045883414"
+                 data-ad-slot="8430954096"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
     <profile-nav :build="isBuild"
                 :account="account"
                 :selected-tab="isBuild ? 'builds' : 'profile'"
@@ -132,7 +146,7 @@ $(function () {
                             </span>
                         </div>
                 </div>
-                <div class="ad-main-pole">
+                <div class="ad-main-pole" style="border: 1px solid #FFF;">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <!-- exileMainAd -->
                     <ins class="adsbygoogle"

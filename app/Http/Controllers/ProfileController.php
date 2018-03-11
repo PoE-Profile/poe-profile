@@ -42,12 +42,12 @@ class ProfileController extends Controller
 
     public function getProfileChar($acc, $char)
     {
-        $chars = collect(PoeApi::getCharsData($acc));
+        $chars = PoeApi::getCharsData($acc);
         if(!$chars){
             return redirect()->route('home');
         }
+        $chars = collect($chars);
         $dbAcc = $this->getDbAcc($acc);
-
         if(!$chars->contains('name', $char)){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');

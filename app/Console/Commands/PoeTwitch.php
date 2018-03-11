@@ -166,6 +166,7 @@ class PoeTwitch extends Command
                 }
             }
         }
+        \Cache::forget('OnlineStreamers');
     }
 
 

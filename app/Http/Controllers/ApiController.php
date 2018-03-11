@@ -27,9 +27,7 @@ class ApiController extends Controller
         }
         $itemsData=PoeApi::getItemsData($acc, $char);
         $acc=$dbAcc->name;
-        if ($dbAcc->last_character==$itemsData['character']['name']) {
-            $dbAcc->updateLastCharInfo($itemsData);
-        }
+        $dbAcc->updateLastCharInfo($itemsData);
         return $itemsData['items'];
     }
 
@@ -149,29 +147,32 @@ class ApiController extends Controller
 
     public function getTwitchChars()
     {
-        $online = \App\TwitchStreamer::with('account')->where('online', true)
-                            ->orderBy('viewers', 'desc')->get();
-        $online = $online->map(function ($streamerItem, $key) {
-            $char=[];
-            if ($streamerItem->account->last_character_info) {
-                $char=$streamerItem->account->last_character_info;
-            } else {
-                $char=[
-                    'league'=>'',
-                    'name'=>'',
-                    'class'=>'',
-                    'level'=>'',
-                    'items_most_sockets'=>'',
+        $streamers = \Cache::remember('OnlineStreamers', 15, function () {
+            $online = \App\TwitchStreamer::with('account')->where('online', true)
+                                ->orderBy('viewers', 'desc')->get();
+            $online = $online->map(function ($streamerItem, $key) {
+                $char=[];
+                if ($streamerItem->account->last_character_info) {
+                    $char=$streamerItem->account->last_character_info;
+                } else {
+                    $char=[
+                        'league'=>'',
+                        'name'=>'',
+                        'class'=>'',
+                        'level'=>'',
+                        'items_most_sockets'=>'',
+                    ];
+                }
+                $char['account']=[
+                    'name'=>$streamerItem->account->name,
                 ];
-            }
-            $char['account']=[
-                'name'=>$streamerItem->account->name,
-            ];
-            $char['twitch']=$streamerItem;
-            return $char;
+                $char['twitch']=$streamerItem;
+                return $char;
+            });
+            return $online;
         });
 
-        return $online;
+        return $streamers;
     }
 
     public function getXML(Request $request)

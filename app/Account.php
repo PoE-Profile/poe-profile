@@ -65,16 +65,26 @@ class Account extends Model
                 $items_most_sockets[] = $item;
             }
         }
-        $lastChar=[
-            'league'=>$itemsData['character']['league'],
-            'name'=>$itemsData['character']['name'],
-            'class'=>$itemsData['character']['class'],
-            'level'=>$itemsData['character']['level'],
-            'items_most_sockets'=>$items_most_sockets,
-        ];
 
-        $this->last_character_info=$lastChar;
-        $this->save();
+        if ($this->last_character==$itemsData['character']['name']) {
+            $lastChar=[
+                'league'=>$itemsData['character']['league'],
+                'name'=>$itemsData['character']['name'],
+                'class'=>$itemsData['character']['class'],
+                'level'=>$itemsData['character']['level'],
+                'items_most_sockets'=>$items_most_sockets,
+            ];
+            $this->last_character_info=$lastChar;
+            $this->save();
+        }
+
+        $ladder_char=$this->ladderChars()->where('name', $this->last_character)->first();
+        if($ladder_char){
+            $ladder_char->items_most_sockets=$items_most_sockets;
+            $ladder_char->public=true;
+            $ladder_char->save();
+        }
+
     }
 
 
