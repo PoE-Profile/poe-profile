@@ -5,7 +5,7 @@
         <span v-html="alertMsg"></span>
     </div>
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots'">
+        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots' ||selectedTab=='stashes'">
             <li class="pull-left" >
                 <h3 style="margin-right:20px;color:#eee;">
                     {{account}}
@@ -44,6 +44,11 @@
                     v-bind:class="[selectedTab=='snapshots' ? 'active' : '']"
                     :href="'/profile/'+ account + '/snapshots'">Snapshots</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                    v-bind:class="[selectedTab=='stashes' ? 'active' : '']"
+                    :href="'/profile/'+ account + '/stashes/'">Public Stash</a>
+            </li>
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
                 data-toggle="tooltip" data-placement="bottom" title="Go to profil on pathofexile.com"
@@ -71,7 +76,7 @@
             </li>
             <li v-if="favStore.isBuildPublic(account)" class="pull-right" style="display: block;">
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link"
-                        @click.prevent="" style="color:white; margin-right:10px;"> 
+                        @click.prevent="" style="color:white; margin-right:10px;">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> SaveBuild
                 </a>
             </li>
@@ -276,7 +281,7 @@ export default {
                     this.alertMsg="You have this shanpshot already added in 'My builds' with name " + localBuild.name;
                     setTimeout(function(){ this.showAlert=false; }.bind(this), 3000);
                 }
-                
+
             });
         },
 

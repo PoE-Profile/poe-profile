@@ -2,9 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\PoeApi;
 use Illuminate\Http\Request;
 
-class SkillTreeController extends CacheController
+class SkillTreeController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,7 +31,7 @@ class SkillTreeController extends CacheController
         $dbAcc = \App\Account::where('name', $_GET['accountName'])->first();
         $acc=$dbAcc->name;
         $char=$_GET['character'];
-        $responseThree = $this->getTreeCache($acc, $char);
+        $responseThree = PoeApi::getTreeData($acc, $char);
         return $responseThree;
     }
 }

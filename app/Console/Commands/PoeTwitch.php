@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\Account;
+use App\Snapshot;
 
 class PoeTwitch extends Command
 {
@@ -110,14 +111,13 @@ class PoeTwitch extends Command
         foreach ($this->twitchChannels as $key => $value) {
             $dbAcc = \App\Account::where('name', $key)->first();
             if(!$dbAcc){
-                $newAcc=\App\Account::getNewAccInfo($key);
-                $newAcc = \App\Account::create($newAcc);
-                $newAcc->updateLastCharInfo(null);
+                $newAcc = \App\Account::create(['name' => $key]);
+                $newAcc->updateLastCharInfo();
                 $this->info('add acc:'.$key);
                 $dbAcc = $newAcc;
             } else {
                 $dbAcc->updateLastChar();
-                $dbAcc->updateLastCharInfo(null);
+                $dbAcc->updateLastCharInfo();
                 $this->info('update acc:'.$key);
             }
             if(!$dbAcc->streamer){
@@ -158,7 +158,12 @@ class PoeTwitch extends Command
                 $dbStreamer->save();
 
                 $dbStreamer->account->updateLastChar();
-                $dbStreamer->account->updateLastCharInfo(null);
+                $dbStreamer->account->updateLastCharInfo();
+                if($dbStreamer->isForSnapshot()){
+                    $acc = $dbStreamer->account->name;
+                    $char = $dbStreamer->account->last_character;
+                    Snapshot::create($acc, $char);
+                }
             }
         }
     }

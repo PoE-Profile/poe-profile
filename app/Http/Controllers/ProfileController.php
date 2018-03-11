@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\PoeApi;
 use Illuminate\Http\Request;
 use App\Stash;
 use App\Item;
 
-class ProfileController extends CacheController
+class ProfileController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         // $this->middleware('auth');
@@ -22,81 +19,87 @@ class ProfileController extends CacheController
     public function postProfile(Request $request)
     {
         $acc = $request->input('account');
-
-        //getCharsCache() is from parant class CacheController
-        $chars = $this->getCharsCache($acc);
-        if(!$chars){
-            // flash('Аccount is private or does not exist. ', 'warning');
-            return redirect()->route('home');
-        }
         return redirect()->route('get.profile',$acc);
     }
 
     public function getProfile($acc)
     {
-        //getCharsCache() is from parant class CacheController
-        $chars = $this->getCharsCache($acc);
-
+        $chars = PoeApi::getCharsData($acc);
         if(!$chars){
             return redirect()->route('home');
         }
+        $chars = collect($chars);
 
+        $dbAcc = $this->getDbAcc($acc);
+        //select chars check if last_character exist in $chars cache and set as $char
         $char = $chars[0]->name;
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        //if acc try to get last char and update views
-        if($dbAcc){
-            //check if last_character exist in $chars cache and set as $char
-            $last=$dbAcc->last_character;
-            $tempCheck=array_filter($chars, function($c) use($last){
-                return $c->name==$last;
-            });
-            if(count($tempCheck)>0){
-                $char=$last;
-            }
-
-            $dbAcc->updateViews();
+        if($chars->contains('name', $dbAcc->last_character)){
+            $char = $dbAcc->last_character;
         }
 
-        $chars = collect($chars);
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
     public function getProfileChar($acc, $char)
     {
-        //getCharsCache() is from parant class CacheController
-        $chars = $this->getCharsCache($acc);
+        $chars = collect(PoeApi::getCharsData($acc));
         if(!$chars){
-            flash('Аccount is private or does not exist. ', 'warning');
             return redirect()->route('home');
         }
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        if($dbAcc){
-            $dbAcc->updateViews();
-        }
+        $dbAcc = $this->getDbAcc($acc);
 
-        $tempCheck=array_filter($chars, function($c) use($char){
-            return $c->name==$char;
-        });
-        if(count($tempCheck)==0){
-            flash('Character with name "'.$char.'" does not exist in account '.$acc.' or is removed.', 'warning');
-            return redirect()->route('get.profile',$acc);
+        if(!$chars->contains('name', $char)){
+            flash('Character with name "'.$char.'" does not exist in account '
+                    .$acc.' or is removed.', 'warning');
+            $char = $chars[0]->name;
         }
-        $chars = collect($chars);
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+    }
+
+    private function getDbAcc($acc){
+        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        if(!$dbAcc){
+            $last_character = PoeApi::getLastCharacter($acc);
+            \App\Account::create(['name' => $acc, 'last_character' => $last_character]);
+            $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        }
+        $dbAcc->updateLastChar();
+        $dbAcc->updateViews();
+        return $dbAcc;
     }
 
     public function getProfileRanks($acc)
     {
-        $rankArchives = \App\LadderCharacter::with('account')->whereHas('account', function ($query) use (&$acc) {
-            $query->where('name', '=', $acc);
-        })->get();
+        $rankArchives = \App\LadderCharacter::with('account')
+                ->whereHas('account', function ($query) use (&$acc) {
+                    $query->where('name', '=', $acc);
+                })->get();
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
     }
 
+    public function getStashs($acc)
+    {
+        $results=[];
+        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        $currentLeagues = explode(',',config('app.poe_leagues'));
+        array_splice($currentLeagues, 2);
+        foreach ($currentLeagues as $league) {
+            $publicStash = $dbAcc->getPublicStash($league);
+            if($publicStash->total>0){
+                $results[]=(Object)array(
+                    'league'=> $league,
+                    'result'=>$publicStash
+                );
+            }
+        }
+        return view('public_stash', compact('acc', 'results', 'dbAcc'));
+    }
+
     public function getProfileSnapshots($acc)
     {
-        $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')->groupBy('original_char')->get();
+        $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')
+                                    ->groupBy('original_char')->get();
 
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('snapshots', compact('acc', 'snapshots', 'dbAcc'));

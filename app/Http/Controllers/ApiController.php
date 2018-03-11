@@ -5,42 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\PoB\PobXMLBuilder;
+use App\PoeApi;
+use App\Snapshot;
+use App\Parse_mods\Stats_Manager;
 
-class ApiController extends CacheController
+class ApiController extends Controller
 {
     public function getItems(Request $request)
     {
-        if (!$request->has('account') && !$request->has('character')) {
-            return;
-        }
-        $b = explode('::', $request->input('account'));
-        if($b[0] == 'build'){
-            return \App\Snapshot::where('hash','=',$b[1])->get()->item_data['items'];
-        }
         $acc=$request->input('account');
         $char=$request->input('character');
-        //getItemsCache() is from parant class CacheController
-        return $this->getItemsCache($acc, $char);
+
+        $b = explode('::', $acc);
+        if($b[0] == 'build'){
+            return Snapshot::where('hash','=',$b[1])->get()->item_data['items'];
+        }
+
+        $dbAcc = \App\Account::where('name', $acc)->first();
+        if(!$dbAcc){
+            return;
+        }
+        $itemsData=PoeApi::getItemsData($acc, $char);
+        $acc=$dbAcc->name;
+        if ($dbAcc->last_character==$itemsData['character']['name']) {
+            $dbAcc->updateLastCharInfo($itemsData);
+        }
+        return $itemsData['items'];
     }
 
     public function getStats(Request $request)
     {
-        if (!$request->has('account') && !$request->has('character')) {
-            return;
-        }
         $acc=$request->input('account');
         $char=$request->input('character');
 
         $b = explode('::', $acc);
         if ($b[0] == 'build') {
-            $build=\App\Snapshot::where('hash','=',$b[1])->first();
+            $build=Snapshot::where('hash','=',$b[1])->first();
             if(!$build){
                 return [];
             }
             return $build->getStats();
         }
-        //getStatsCache() is from parant class CacheController
-        return $this->getStatsCache($acc, $char);
+
+        //get acc from db to get real name
+        $dbAcc = \App\Account::where('name', $acc)->first();
+        $acc = $dbAcc->name;
+        $itemsRes = PoeApi::getItemsData($acc, $char);
+        $tree = PoeApi::getTreeData($acc, $char);
+        $stManager = new Stats_Manager($itemsRes, $tree, isset($_GET['offHand']));
+        return $stManager->getStats();
     }
 
     public function getFavsChars()
@@ -136,7 +149,8 @@ class ApiController extends CacheController
 
     public function getTwitchChars()
     {
-        $online = \App\TwitchStreamer::with('account')->where('online', true)->orderBy('viewers', 'desc')->get();
+        $online = \App\TwitchStreamer::with('account')->where('online', true)
+                            ->orderBy('viewers', 'desc')->get();
         $online = $online->map(function ($streamerItem, $key) {
             $char=[];
             if ($streamerItem->account->last_character_info) {
@@ -165,8 +179,16 @@ class ApiController extends CacheController
         $acc = $request->input('account');
         $char = $request->input('char');
 
-        $itemsData = $this->getItemsCache($acc, $char, true);
-        $treeJson = $this->getTreeCache($acc, $char);
+        $b = explode('::', $request->input('account'));
+        if($b[0] == 'build'){
+            $snapshot = Snapshot::where('hash','=',$b[1])->first();
+            $itemsData = $snapshot->item_data;
+            $treeJson = $snapshot->tree_data;
+        }else{
+            $itemsData = PoeApi::getItemsData($acc, $char);
+            $treeJson = PoeApi::getTreeData($acc, $char);
+        }
+
         $pob = new PobXMLBuilder($itemsData, $treeJson);
 
         // show XML ---->
@@ -179,13 +201,14 @@ class ApiController extends CacheController
     public function getSnapshots($acc, $char)
     {
         $original_char = $original_char = $acc .'/'. $char;
-        $snapshots = \App\Snapshot::where('original_char', '=', $original_char)->orderBy('created_at', 'desc')->take(25)->get();
+        $snapshots = Snapshot::where('original_char', '=', $original_char)
+                                ->orderBy('created_at', 'desc')->take(25)->get();
         return $snapshots;
     }
 
     public function getBuild($hash)
     {
-        $build = \App\Snapshot::where('hash', '=', $hash)->first();
+        $build = Snapshot::where('hash', '=', $hash)->first();
         return $build;
     }
 
@@ -193,32 +216,7 @@ class ApiController extends CacheController
     {
         $acc=$request->input('account');
         $char=$request->input('char');
-
-        //getItemsCache() true to get the whole respons
-        $itemData = $this->getItemsCache($acc, $char, true);
-        $itemsNoFlasks = array_filter($itemData['items'], function ($item){
-            return $item['inventoryId']!="Flask";
-        });
-        $itemsNoFlasks=json_encode($itemsNoFlasks);
-        $itemData = json_encode($itemData);
-        $treeData = $this->getTreeCache($acc, $char);
-        $treeData = json_encode($treeData);
-
-        $hash = md5($treeData.'/'.$itemsNoFlasks);
-        $snapshot = \App\Snapshot::where('hash', '=', $hash)->first();
-        if(!$snapshot){
-            $version = config('app.poe_version');
-            $original_char = $acc .'/'. $char;
-            $snapshot = \App\Snapshot::create([
-                'hash' => $hash,
-                'tree_data' => $treeData,
-                'item_data' => $itemData,
-                'original_char' => $original_char,
-                'poe_version' => $version
-            ]);
-            $snapshot->original_level = $snapshot->item_data['character']['level'];
-            $snapshot->save();
-        }
+        $snapshot = Snapshot::create($acc, $char);
 
         $favStore = $snapshot->item_data['character'];
         $favStore['league'] = 'localBuild';
