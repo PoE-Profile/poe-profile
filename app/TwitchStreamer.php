@@ -25,9 +25,9 @@ class TwitchStreamer extends Model
             return true;
         }
         $last_level = intval($snapshots->last()->original_level);
-        $curent_level = intval($this->account->last_character_info);
+        $curent_level = intval($this->account->last_character_info['level']);
         $diff=$curent_level-$last_level;
-        if($curent_level<60 && $diff>=10){
+        if($curent_level>10 && $curent_level<60 && $diff>=10){
             return true;
         }else if($curent_level>60 && $curent_level<90 && $diff>=5 ){
             return true;

@@ -52,21 +52,24 @@ class Snapshot extends Model
     }
 
     static public function create($acc, $char){
-        $itemData = PoeApi::getItemsData($acc, $char);
+        $itemsData = PoeApi::getItemsData($acc, $char);
         $treeData = PoeApi::getTreeData($acc, $char);
 
-        $itemsNoFlasks = array_filter($itemData['items'], function ($item){
+        if (!array_key_exists('items', $itemsData)) {
+            return;
+        }
+        $itemsNoFlasks = array_filter($itemsData['items'], function ($item){
             return $item['inventoryId']!="Flask";
         });
         $itemsNoFlasks=json_encode($itemsNoFlasks);
         $hash = md5(json_encode($treeData).'/'.$itemsNoFlasks);
 
         $snapshot = \App\Snapshot::firstOrNew(['hash' => $hash]);
-        $snapshot->item_data = $itemData;
+        $snapshot->item_data = $itemsData;
         $snapshot->tree_data = $treeData;
         $snapshot->original_char = $acc .'/'. $char;
         $snapshot->poe_version = config('app.poe_version');
-        $snapshot->original_level = $itemData['character']['level'];
+        $snapshot->original_level = $itemsData['character']['level'];
         $snapshot->save();
         return $snapshot;
     }

@@ -41,6 +41,7 @@ class PoeApi
         $time = config('app.poe_cache_time');
         return \Cache::remember($key, $time, function () use ($acc,$char) {
             $client = new \GuzzleHttp\Client();
+            try {
             $responseTree = $client->request(
                         'GET',
                         'https://www.pathofexile.com/character-window/get-passive-skills',
@@ -51,6 +52,9 @@ class PoeApi
                             ]
                         ]
                     );
+            }catch (\GuzzleHttp\Exception\ClientException $exception) {
+               return [];
+           }
             return json_decode((string)$responseTree->getBody(), true);
         });
     }
@@ -72,9 +76,10 @@ class PoeApi
                     ]
                 ]);
             }catch (\GuzzleHttp\Exception\ClientException $e) {
-                $response = $e->getResponse();
-                // $responseBodyAsString = $response->getBody()->getContents();
+                //$response = $e->getResponse();
+                return [];
             }
+            
             $response = json_decode((string)$response->getBody(), true);
             return $response;
         });
