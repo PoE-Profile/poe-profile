@@ -98,53 +98,7 @@ class ApiController extends Controller
 
     public function getLadder(Request $request)
     {
-        $take = 30;
-        if ($request->has('searchFilter')) {
-            $respond = \App\LadderCharacter::with('account')
-                ->where('league', '=', $request->input('leagueFilter'))
-                ->whereHas('account', function ($query) use (&$request) {
-                    $query->where('name', 'like', '%'.$request->input ('searchFilter').'%');
-                })
-                ->orWhere('name', 'like', '%'.$request->input ('searchFilter').'%')
-                ->paginate($take);
-
-            return $respond;
-        }
-
-        if ($request->has('classFilter') && $request->has('skillFilter')) {
-            $respond = \App\LadderCharacter::with('account')
-                                ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
-                                ->where('class', '=', $request->input('classFilter'))
-                                ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                                ->paginate($take);
-            return $respond;
-        }
-        if ($request->has('classFilter')) {
-            $respond = \App\LadderCharacter::with('account')
-                ->where('class', '=', $request->input('classFilter'))
-                ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                ->paginate($take);
-            return $respond;
-        }
-
-
-        if ($request->has('skillFilter')) {
-            $respond = \App\LadderCharacter::with('account')
-                        ->where('items_most_sockets', 'like', "%typeLine\":\"".$request->input('skillFilter')."\"%")
-                        ->where('league', '=', $request->input('leagueFilter'))->orderBy('rank', 'asc')
-                        ->paginate($take);
-            return $respond;
-        }
-
-        if ($request->has('leagueFilter')) {
-            $respond = \App\LadderCharacter::with('account')->where('league', '=', $request->input('leagueFilter'))
-                        ->orderBy('rank', 'asc')->paginate($take);
-            return $respond;
-        }
-
-        $currentLeagues = explode(',', env('POE_LEAGUES'));
-        $respond = \App\LadderCharacter::with('account')->where('league', '=', $currentLeagues[0])->orderBy('rank', 'asc')->paginate($take);
-        return $respond;
+        return \App\LadderCharacter::with('account')->filter($request);
     }
 
     public function getTwitchChars()
