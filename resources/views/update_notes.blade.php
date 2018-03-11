@@ -23,6 +23,7 @@
         <h2>What is new <small>(version 2.1)</small> </h2>
         <ul>
             <li>Automatically make Snapshots of Twitch streamers</li>
+            <li>Resistance in Stats tab show real value (-60% resistance)</li>
             <li>Added Public Stashes (redirect to pathofexile.com/trade/)</li>
             <li>Added PoB Code in builds</li>
             <li>Added Snapshots tab in profile </li>
@@ -30,7 +31,7 @@
     	</ul>
         <h4>
             If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
-            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">reddit</a> posts.
+            and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
         </h4>
         <br><br>
 
