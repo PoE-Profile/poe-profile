@@ -17,4 +17,41 @@ class LadderCharacter extends Model
     {
         return $this->belongsTo('App\Account');
     }
+
+    public function scopeLeague($query, $league)
+    {
+        return $query->where('league', '=', $league)->orderBy('rank', 'asc');
+    }
+
+    public function scopeSkill($query, $skill)
+    {
+        return $query->where('items_most_sockets', 'like', "%typeLine\":\"" . $skill . "\"%");
+    }
+
+    public function scopeClass($query, $class)
+    {
+        return $query->where('class', '=', $class);
+    }
+
+    public function scopeFilter($query, $request)
+    {
+        $take = 30;
+        if ($request->has('searchFilter')) {
+            $query->whereHas('account', function ($query) use (&$request) {
+                    $query->where('name', 'like', '%' . $request->input('searchFilter') . '%');
+                })
+                ->orWhere('name', 'like', '%' . $request->input('searchFilter') . '%');
+        }
+
+        if ($request->has('classFilter')) {
+            $query->class($request->input('classFilter'));
+        }
+
+        if ($request->has('skillFilter')) {
+            $query->skill($request->input('skillFilter'));
+        }
+
+        return $query->league($request->input('leagueFilter'))->paginate($take);
+    }
+    
 }

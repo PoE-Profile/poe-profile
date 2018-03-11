@@ -20,6 +20,21 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
+        <h2>What is new <small>(version 2.1)</small> </h2>
+        <ul>
+            <li>Automatically make Snapshots of Twitch streamers</li>
+            <li>Added Public Stashes (redirect to pathofexile.com/trade/)</li>
+            <li>Added PoB Code in builds</li>
+            <li>Added Snapshots tab in profile </li>
+            <li>Added <a href="/build_tutorial" class="about-link">Tutorial</a> for Builds</li>
+    	</ul>
+        <h4>
+            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
+            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">reddit</a> posts.
+        </h4>
+        <br><br>
+
+        <h1>Changes from older versions:</h1>
         <h2>What is new <small>(version 2.0)</small> </h2>
         <ul>
             <li>Project updated to Laralve 5.5 using Vuejs 2.x</li>
@@ -29,13 +44,9 @@
             <li>Improvements on Ladders</li>
             <li>Fixed major bug. Since we moved to github two weeks ago, we were not able to load any new public accounts that are not already in our database.</li>
     	</ul>
-        <h4>
-            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
-            and <a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" class="about-link">reddit</a> posts.
-        </h4>
-        <br><br>
 
-        <h1>Changes from older versions:</h1>
+        <br>
+
         <h2>What is new <small>(version 1.1)</small> </h2>
         <ul>
             <li>Added jewels from items and their stats.</li>
