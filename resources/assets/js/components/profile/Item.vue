@@ -1,11 +1,12 @@
 <template>
 <div :class="[item.inventoryId, itemRarity(item.frameType)]"
-    @mouseover="hover = true" @mouseleave="hover = false"
-    >
+    @mouseover="hover = true" @mouseleave="hover = false">
 
-    <div :class="['icon', showInfo ? 'skillsFloatRight' : '']">
+    <div :class="['icon', showInfo ? 'skillsFloatRight' : '']"
+        v-bind:style="shaperElderBg()">
         <div :class="['sockets', ]" v-if="toggleInfo()">
-            <div  v-if="item.sockets" class="socket-inner" style="position: relative; z-index: 9999;">
+            <div v-if="item.sockets" class="socket-inner"
+                style="position: relative; z-index: 9999;">
                 <span v-for="(socket, index) in item.sockets">
                     <socket
                         v-if="item.sockets !== ''"
@@ -17,16 +18,28 @@
                         :hide-gem-tooltip="hideGemTooltip">
                     </socket>
                 </span>
-
             </div>
         </div>
         <img :src="item.icon" :class="showInfo ? 'skillsFloatRight' : ''">
     </div>
 
     <div :class="computedItemInfoClass" v-if="item.name !== 'null'">
-        <gem-info  v-if="showGemInfo && !isAbyss" :gem-info="hoverGem" :show-wiki="false" style="float:left;width:420px;"></gem-info>
-        <item-info v-if="showGemInfo && isAbyss" :item-info="hoverGem" style="float:left;width:410px;" :show-flask="showFlask" :show-wiki="showInfo"></item-info>
-        <item-info v-if="toggleInfo()" :item-info="item" :show-Flask="showFlask" :show-wiki="showInfo"></item-info>
+        <gem-info v-if="showGemInfo && !isAbyss"
+            :gem-info="hoverGem"
+            :show-wiki="false"
+            style="float:left;width:420px;">
+        </gem-info>
+        <item-info v-if="showGemInfo && isAbyss"
+            :item-info="hoverGem"
+            style="float:left;width:410px;"
+            :show-flask="showFlask"
+            :show-wiki="showInfo">
+        </item-info>
+        <item-info v-if="toggleInfo()"
+            :item-info="item"
+            :show-Flask="showFlask"
+            :show-wiki="showInfo">
+        </item-info>
     </div>
 
 </div>
@@ -39,10 +52,6 @@ import GemInfo from './GemInfo.vue';
 import Socket from './Socket.vue';
 
 export default {
-
-    // props: [
-    //     'item', 'showInfo', 'showFlask'
-    // ],
     props: {
         showInfo: {
             type: Boolean,
@@ -51,7 +60,8 @@ export default {
         },
         item: {
             type: Object,
-            required: true
+            required: true,
+            defense: null
         },
         showFlask: {
             type: Boolean,
@@ -70,7 +80,6 @@ export default {
             return false;
         },
         'computedItemInfoClass':function(){
-            // console.log(this.hoverGem);
             var classArray = ['item-info'];
             if(this.showFlask){
                 classArray.push('item-info-flask');
@@ -88,7 +97,8 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+
     },
 
     components: {
@@ -102,10 +112,6 @@ export default {
             showItem: false,
             hover: false,
             hoverGem: null,
-            infoClass: {
-                items: 'item-info',
-                gems: 'item-info-gems',
-            }
         }
     },
 
@@ -119,6 +125,17 @@ export default {
             if(!this.hoverGem){
                 this.hoverGem=null;
             }
+        },
+
+        shaperElderBg: function(){
+            var size='w='+this.item.w+'&h='+this.item.h;
+            if("shaper" in this.item){
+                return 'background-image: url(https://www.pathofexile.com/image/inventory/ShaperBackground.png?'+size+'&x=182&y=253);'
+            }
+            if("elder" in this.item){
+                return 'background-image: url("https://www.pathofexile.com/image/inventory/ElderBackground.png?'+size+'");'
+            }
+            return 'background-image: none;'
         },
 
         hideGemTooltip: function(){
@@ -137,7 +154,6 @@ export default {
                 }
             })
             links.shift();
-            // console.log(links);
             return links;
         },
 
@@ -173,3 +189,10 @@ export default {
 };
 
 </script>
+
+<style media="screen">
+    .icon{
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>

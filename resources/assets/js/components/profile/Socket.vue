@@ -28,6 +28,15 @@ export default {
         hideGemTooltip: Function,
     },
 
+    watch: {
+        'gem': function(val, oldVal){
+            this.$nextTick(function () {
+                $('.show-tooltip').tooltip('dispose');
+                $('.show-tooltip').tooltip();
+            });
+        }
+    },
+
     created: function(){
         this.$nextTick(function () {
             $('.show-tooltip').tooltip();
@@ -47,6 +56,10 @@ export default {
 
         typeClass: function(){
             var gemType = (this.gem.typeLine.indexOf('Support') !== -1) ? '-Support' : '-Skill';
+
+            if(this.gem.colour==='G'){
+                return 'socket'+this.socket.attr+'-full-'+this.gem.colour+gemType;
+            }
 
             if(this.socket.attr === 'G'){
                 //White socket with Gem
