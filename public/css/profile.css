@@ -799,8 +799,9 @@ a:focus {
 
 .Amulet .icon {
     position: absolute;
-    left: -25px;
-    top: 25px;
+    top: 0;
+    height: 45px;
+    width: 45px;
 }
 
 .inventoryPanel .Ring {
