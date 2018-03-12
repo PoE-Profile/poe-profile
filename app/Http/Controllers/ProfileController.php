@@ -99,7 +99,7 @@ class ProfileController extends Controller
     public function getProfileSnapshots($acc)
     {
         $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')
-                                    ->groupBy('original_char')->get();
+                            ->orderBy('created_at', 'DESC')->get()->unique('original_char');
 
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('snapshots', compact('acc', 'snapshots', 'dbAcc'));

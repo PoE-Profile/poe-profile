@@ -85,7 +85,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url('/update_notes') }}">
 							<i class="fa fa-history" aria-hidden="true" style="color: orange;"></i>
-							Changelog
+							ChangelogV2.1
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
@@ -102,22 +102,6 @@
 							      </span>
 							    </div>
 							</form>
-							@if (Auth::guest())
-							{{-- <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Login</a></li> --}}
-							{{-- <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}">Register</a></li> --}}
-							@else
-							<li class="nav-item dropdown" style="padding-right: 55px">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-									<img src="/uploads/avatars/{{Auth::user()->avatar}}" style="width:25px; height:25px; float:left; border-radius:50%; margin-right:25px;" /><span class="caret"></span>
-									{{-- {{ Auth::user()->name }}  --}}
-								</a>
-								<div class="dropdown-menu" aria-labelledby="responsiveNavbarDropdown">
-									<a class="dropdown-item" href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
-									<a class="dropdown-item" href="{{ url('/settings') }}"><i class="fa fa-btn fa-user"></i>Account Settings</a>
-									<a class="dropdown-item" href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i>Poe Profile</a>
-								</div>
-							</li>
-							@endif
 						</ul>
 					</li>
 					<li class="nav-item float-lg-right">

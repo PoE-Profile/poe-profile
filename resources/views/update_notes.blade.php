@@ -20,10 +20,11 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
-        <h2>What is new <small>(version 2.1)</small> </h2>
+        <h2>What is new <small>(version 2.1 - Mar 11 ,2018)</small> </h2>
         <ul>
             <li>Automatically make Snapshots of Twitch streamers</li>
             <li>Resistance in Stats tab show real value (-60% resistance)</li>
+            <li>Added elder/shaper background to items</li>
             <li>Added Public Stashes (redirect to pathofexile.com/trade/)</li>
             <li>Added PoB Code in builds</li>
             <li>Added Snapshots tab in profile </li>
@@ -36,7 +37,7 @@
         <br><br>
 
         <h1>Changes from older versions:</h1>
-        <h2>What is new <small>(version 2.0)</small> </h2>
+        <h2>What is new <small>(version 2.0 - Mar 5 ,2018)</small> </h2>
         <ul>
             <li>Project updated to Laralve 5.5 using Vuejs 2.x</li>
             <li>We are now on <a href="https://github.com/PoE-Profile/poe-profile" target="_blank" class="about-link">GITHUB</a> if you wanna contribute you are welcome</li>
@@ -48,7 +49,7 @@
 
         <br>
 
-        <h2>What is new <small>(version 1.1)</small> </h2>
+        <h2>What is new <small>(version 1.1 - Jan 12, 2018)</small> </h2>
         <ul>
             <li>Added jewels from items and their stats.</li>
             <li>Added button to copy Path of Building code for easy import.</li>
@@ -66,7 +67,7 @@
 
         <br>
 
-        <h2>What is new <small>(version 1.0)</small> </h2>
+        <h2>What is new <small>(version 1.0 - Sep 4, 2017)</small> </h2>
         <ul>
             <li>Added Ladder page, where you can see public accounts and their characters from chosen league</li>
             <li>Added Twitch page, where you can see online streamers and their last played character.</li>
@@ -88,7 +89,7 @@
 
         <br>
 
-        <h2>What is new <small>(version 0.4)</small> </h2>
+        <h2>What is new <small>(version 0.4 - Mar 25, 2017)</small> </h2>
         <ul>
             <li>
                 Added Life and Mana globes
@@ -124,7 +125,7 @@
 
         <br>
 
-        <h2>What is new <small>(version 0.3)</small> </h2>
+        <h2>What is new <small>(version 0.3 - Mar 11, 2017)</small> </h2>
         <ul>
             <li>
 				New Jewel section
@@ -162,7 +163,7 @@
         </ul>
         <br>
 
-        <h2>What is new <small>(version 0.2)</small> </h2>
+        <h2>What is new <small>(version 0.2 (beta) - Jan 14, 2017)</small> </h2>
     	<ul>
     		<li>
 				Added Misc tab to Stat Section with lots of stats related to it.

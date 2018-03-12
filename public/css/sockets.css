@@ -145,6 +145,16 @@ ul.itemLevel li {
   background-image: url(/imgs/genIntFullSkill.png);
 }
 
+.socketD-full-G-Skill {
+  background-image: url(/imgs/dexGenFullSkill.png);
+}
+.socketI-full-G-Skilxl {
+  background-image: url(/imgs/intGenFullSkill.png);
+}
+.socketS-full-G-Skill {
+  background-image: url(/imgs/strGenFullSkill.png);
+}
+
 .socket.socketAbyss {
     background-image: url("/imgs/socketAbyss.png");
 }

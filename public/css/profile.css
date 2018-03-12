@@ -848,7 +848,6 @@ a:focus {
     vertical-align: middle;
 }
 
-
 .inventoryPanel .Weapon ,
 .inventoryPanel .Weapon2 {
     position: absolute;
@@ -868,8 +867,6 @@ a:focus {
     top: -10px;
     height: 175px;
 }
-
-
 
 .inventoryPanel .Gloves {
     position: absolute;
@@ -980,7 +977,6 @@ a:focus {
     background-color: #000;
     margin: 15px 0px 0px 3px;
     float: left;
-
 }
 
 .mod-info a {
@@ -1010,7 +1006,6 @@ a:focus {
     margin-left: 10px;
     margin-bottom: 10px;
 }
-
 
 .item-info {
     position: relative;
