@@ -18,22 +18,22 @@
 	{{-- <link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/vue-loading.css"> --}}
 	@yield('styleSheets')
 	<style type="text/css">
-		/* always present */
-		.expand-transition {
-			transition: all .3s ease;
-			height: 30px;
-			padding: 10px;
-			background-color: #eee;
-			overflow: hidden;
-		}
-		/* .expand-enter defines the starting state for entering */
-		/* .expand-leave defines the ending state for leaving */
-		.expand-enter, .expand-leave {
-			height: 0;
-			padding: 0 10px;
-			opacity: 0;
-		}
+    #iPZUemdYKrpcjyd {
+    display: none;
+    padding: 10px 10px;
+    background: #D30000;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    /* position: fixed;
+    bottom: 0;
+    z-index: 999999;
+    width: 1120px !important;
+    margin: 10px; */
 
+    }
 	</style>
 </head>
 <body >
@@ -122,7 +122,12 @@
 
 			</div>
 		</nav>
+        <div id="iPZUemdYKrpcjyd">
+          Our website is made possible by displaying online advertisements to our visitors.<br>
+          Please consider supporting us by disabling your ad blocker.
+        </div>
 		<div>
+
 			@yield('content')
 		</div>
 	</div>
@@ -132,7 +137,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-
+    <script src="/js/ads.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    if(!document.getElementById('WAMhafvKNgVtphDM')){
+        document.getElementById('iPZUemdYKrpcjyd').style.display='block';
+    }
+    </script>
 
 	@yield('script')
 	<script type="text/javascript">
