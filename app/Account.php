@@ -78,7 +78,7 @@ class Account extends Model
             $this->save();
         }
 
-        $ladder_char=$this->ladderChars()->where('name', $this->last_character)->first();
+        $ladder_char=$this->ladderChars()->where('name', $itemsData['character']['name'])->first();
         if($ladder_char){
             $ladder_char->items_most_sockets=$items_most_sockets;
             $ladder_char->public=true;

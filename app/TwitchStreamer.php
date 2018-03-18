@@ -29,9 +29,9 @@ class TwitchStreamer extends Model
 
         $last_level = intval($snapshots->last()->original_level);
         $diff=$curent_level-$last_level;
-        if($curent_level>10 && $curent_level<60 && $diff>=10){
+        if($curent_level>20 && $curent_level<80 && $diff>=10){
             return true;
-        }else if($curent_level>60 && $curent_level<90 && $diff>=5 ){
+        }else if($curent_level>80 && $curent_level<90 && $diff>=5 ){
             return true;
         }else if($diff>=1 && $curent_level>=90){
             return true;

@@ -31,7 +31,7 @@ $(function () {
 @section('content')
 <div class="container" v-cloak>
     <div class="text-xs-center" style="padding-bottom:5px;">
-        <div style="margin: 0 auto;height: 91px;width: 971px;border: 1px solid #FFF;">
+        <div style="margin: 0 auto;">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- exile_profile_big -->
             <ins class="adsbygoogle"

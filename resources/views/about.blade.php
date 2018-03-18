@@ -54,6 +54,11 @@ https://www.pathofexile.com/character-window/get-passive-skills?character=[Charn
 			<li>
 				Visualization of skills and their support gems.
 			</li>
+            <li>Added Life and Mana globes , Show Life and Mana auras reservation</li>
+            <li>Ladder page, where you can see public accounts and their characters from chosen league</li>
+            <li>Twitch page, where you can see online streamers and their last played character</li>
+            <li>Builds, you can save Snapshot of gear and skill tree (saved build can be shared)</li>
+
     	</ul>
 
 		<br>

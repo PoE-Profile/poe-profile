@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Account;
+use App\LadderCharacter;
 use Sunra\PhpSimple\HtmlDomParser;
 
 class UpdateAccount extends Command
@@ -13,7 +13,7 @@ class UpdateAccount extends Command
      *
      * @var string
      */
-    protected $signature = 'poe:update-acc {--limit=0} ';
+    protected $signature = 'poe:update-ladder-info {--limit=0} ';
 
     /**
      * The console command description.
@@ -39,16 +39,25 @@ class UpdateAccount extends Command
      */
     public function handle()
     {
+        $currentLeagues = explode(',',config('app.poe_leagues'));
+        foreach ($currentLeagues as $league) {
+            $this->updateLeague($league);
+        }
+    }
+
+    private function updateLeague($league){
+        $this->info("updateLeague ".$league);
         $limit = $this->option('limit') ? $this->option('limit') : 100;
-        $accToUpdate=Account::where('last_character_info', '=', '')
-                        ->where('updated_at', '<', \Carbon\Carbon::now()->subMinutes(90)->toDateTimeString())
-                        ->orderBy('views', 'desc')->take($limit)->get();
-        //dd($accToUpdate->toArray());
-        foreach ($accToUpdate as $acc) {
-            $this->info("update ".$acc->name);
-            $acc->updateLastChar();
-            $this->comment("update updateLastCharInfo");
-            $acc->updateLastCharInfo();
+        $charsToUpdate=LadderCharacter::where('league', '=', $league)
+                        // ->where('updated_at', '<', \Carbon\Carbon::now()->toDateString())
+                        ->where('public', true)
+                        ->orderBy('rank')->take($limit)->get();
+        // dd($accToUpdate->toArray());
+        foreach ($charsToUpdate as $char) {
+            $this->info("update ".$char->rank." ".$char->name);
+            $job = (new \App\Jobs\UpdateLadderStatus($char->id));
+            dispatch($job);
+            usleep(700000);
         }
     }
 

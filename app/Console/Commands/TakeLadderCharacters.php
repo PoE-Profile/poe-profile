@@ -122,11 +122,13 @@ class TakeLadderCharacters extends Command
         if ($ladderCharacter !== null) {
             //update char
             //$this->info($char['rank'].' character '. $char['charName']. ' updated!');
+            $ladderCharacter->timestamps = false;
             $ladderCharacter->rank = $char['rank'];
             $ladderCharacter->level = $char['level'];
             $ladderCharacter->dead = $char['dead'];
             $ladderCharacter->class = $char['class'];
             $ladderCharacter->save();
+            $ladderCharacter->timestamps = true;
         } else {
             //add new
             // $this->info($char['rank'].' character '. $char['charName']. ' added!');
