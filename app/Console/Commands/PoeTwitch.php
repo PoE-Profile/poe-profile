@@ -159,13 +159,11 @@ class PoeTwitch extends Command
 
                 $dbStreamer->account->updateLastChar();
                 $dbStreamer->account->updateLastCharInfo();
-                /*
                 if($dbStreamer->isForSnapshot()){
                     $acc = $dbStreamer->account->name;
                     $char = $dbStreamer->account->last_character;
                     Snapshot::create($acc, $char);
                 }
-                */
 
             }
         }
