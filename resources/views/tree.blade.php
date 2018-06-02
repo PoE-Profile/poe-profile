@@ -227,7 +227,7 @@ body{
     //<!--
                 document.body.className = document.body.className.replace( /(?:^|\s)noJS(?!\S)/ , '');
             window.momentLocale = 'en_US';
-            window.momentTimezone = 'Europe/Kiev';
+            window.momentTimezone = 'Europe/Sofia';
             window.PoELocale = 'en_US';
 
             BASEURL = '';
@@ -242,7 +242,7 @@ body{
   */
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
-                paths : {"main":"main.9f4a2ea7b2e75687a33df2017a875e3d7bdfcd48","plugins":"plugins.99e4676dc7ca1f9db1afd6c9c9041cfdbb8100dd","skilltree":"skilltree.bf3e3334a4e2dc73e2db8431bd5bd345e55c54c1"},
+                paths : {"main":"main.0904cd605302effc314ee2f7c3b64395eb5fcf37","plugins":"plugins.edc1d67db43be05427b144b7621cbad3135705e7","skilltree":"skilltree.d0b0d420aabba1fa24778765fc7a518380d8db5c"},
                 shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
             });
             require(["main"], function(){});    //-->
@@ -266,6 +266,7 @@ body{
                 height:    967,
                 width: 1300,
                 startClass: 6,
+                version: '3.3.0',
                 fullScreen: false
             };
             var treeControls = new PassiveSkillTree.controls(opts);
