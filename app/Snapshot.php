@@ -47,7 +47,7 @@ class Snapshot extends Model
     public function getStats()
     {
         // var_dump($this->item_data);
-        $stManager = new Stats_Manager($this->item_data,$this->tree_data);
+        $stManager = new Stats_Manager($this->item_data,$this->tree_data, false, $this->poe_version);
         return $stManager->getStats();
     }
 

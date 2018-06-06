@@ -487,7 +487,11 @@ new Vue({
         },
 
         setTreeUrl: function(){
-            var userStr="?accountName="+this.account+"&characterName="+this.character.name;
+            var version = '';
+            if (this.build) {
+                version = "&version=" + this.build.poe_version;
+            }
+            var userStr="?accountName="+this.account+"&characterName="+this.character.name+version;
             var tempStr = "/passive-skill-tree/hash"+userStr;
             var url_hash = (new poeHelpers).getTreeUrl(
                 this.character.classId,
