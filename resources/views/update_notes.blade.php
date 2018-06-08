@@ -20,6 +20,20 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
+        <h2>What is new <small>(version 2.2 - June 8 ,2018)</small> </h2>
+        <ul>
+            <li>Added images for new skills</li>
+            <li>Passive skill Tree changed</li>
+            <li>Added PoB Code fix for jewels</li>
+            <li>Changes on ladder(new Leagues)</li>
+            <li>Skill Tree versioning for snapshots/builds </li>
+    	</ul>
+        <h4>
+            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
+            and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
+        </h4>
+        <br><br>
+
         <h2>What is new <small>(version 2.1 - Mar 11 ,2018)</small> </h2>
         <ul>
             <li>Automatically make Snapshots of Twitch streamers</li>
@@ -30,11 +44,6 @@
             <li>Added Snapshots tab in profile </li>
             <li>Added <a href="/build_tutorial" class="about-link">Tutorial</a> for Builds</li>
     	</ul>
-        <h4>
-            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
-            and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
-        </h4>
-        <br><br>
 
         <h1>Changes from older versions:</h1>
         <h2>What is new <small>(version 2.0 - Mar 5 ,2018)</small> </h2>

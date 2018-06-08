@@ -465,7 +465,7 @@ new Vue({
                         self.setTreeUrl();
                         return;
                     }else{
-                        console.log("testSkill-tree");
+                        
                         this.getTreeData(function(response){
                             self.treeData=response.data;
                             self.setTreeUrl();

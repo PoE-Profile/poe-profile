@@ -65,9 +65,10 @@ class PobXMLBuilder
 
     private function getJewelsCoords($treeJson)
     {
+
         $jews = [];
         foreach ($treeJson['items'] as $k => $item) {
-            $hash = $treeJson['jewel_slots'][$item['x']]['passiveSkill']['hash'];
+            $hash = $treeJson['jewel_slots'][$item['x']];
             $jews[$hash] = $k+1;
         }
 

@@ -85,7 +85,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url('/update_notes') }}">
 							<i class="fa fa-history" aria-hidden="true" style="color: orange;"></i>
-							ChangelogV2.1
+							ChangelogV2.2
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
