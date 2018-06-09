@@ -23,9 +23,9 @@
         <h2>What is new <small>(version 2.2 - June 8 ,2018)</small> </h2>
         <ul>
             <li>Added images for new skills</li>
-            <li>Passive skill Tree changed</li>
-            <li>Added PoB Code fix for jewels</li>
-            <li>Changes on ladder(new Leagues)</li>
+            <li>Passive skill Tree updated to 3.3</li>
+            <li>Fixed bug with PoB Code not adding jewels</li>
+            <li>Added new leagues to ladder</li>
             <li>Skill Tree versioning for snapshots/builds </li>
     	</ul>
         <h4>
