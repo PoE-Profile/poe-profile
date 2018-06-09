@@ -52,7 +52,11 @@ Route::group(['middleware' => 'web'], function () {
 
     // routes for passive-skill-tree
     Route::get('/passive-skill-tree/{any}',
-            ['as' => 'profile.tree', 'uses' => 'SkillTreeController@showSkillTree']);
+        ['as' => 'profile.tree', 'uses' => 'SkillTreeController@showSkillTree']
+    );
+    Route::get('/passive-skill-tree/3.2.0/{any}',
+            ['as' => 'profile.tree.two', 'uses' => 'SkillTreeController@showSkillTreeTwo']);
+
     Route::get('/character-window/get-passive-skills',
             ['as' => 'profile.tree.passives', 'uses' => 'SkillTreeController@getPassiveSkills']);
 

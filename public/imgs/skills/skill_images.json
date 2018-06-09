@@ -263,5 +263,17 @@
     "Despair": "\/imgs\/skills\/Despair_skill_icon.png",
     "Bodyswap": "\/imgs\/skills\/Bodyswap_skill_icon.png",
     "Cremation": "\/imgs\/skills\/Cremation_skill_icon.png",
-    "Unearth": "\/imgs\/skills\/Unearth_skill_icon.png"
+    "Unearth": "\/imgs\/skills\/Unearth_skill_icon.png",
+
+    "Explosive Trap": "\/imgs\/skills\/Explosive_Trap.png",
+    "Flamethrower Trap": "\/imgs\/skills\/Flamethrower_Trap.png",
+    "Lightning Spire Trap": "\/imgs\/skills\/Lightning_Spire_Trap.png",
+    "Seismic Trap": "\/imgs\/skills\/Seismic_Trap.png",
+    "Siphoning Trap": "\/imgs\/skills\/Siphoning_Trap.png",
+    "Vaal Blade Vortex": "\/imgs\/skills\/Vaal_Blade_Vortex.png",
+    "Vaal Blight": "\/imgs\/skills\/Vaal_Blight.png",
+    "Vaal Earthquake": "\/imgs\/skills\/Vaal_Earthquake.png",
+    "Vaal Impurity of Fire": "\/imgs\/skills\/Vaal_Impurity_of_Fire.png",
+    "Vaal Impurity of Ice": "\/imgs\/skills\/Vaal_Impurity_of_Ice.png",
+    "Vaal Impurity of Lightning": "\/imgs\/skills\/Vaal_Impurity_of_Lightning.png"
 }

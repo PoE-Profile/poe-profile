@@ -8,12 +8,15 @@ class Stats_Manager
     public $type = '';
     public $modValidator = '';
 
-    public function __construct($items,$treeData,$offHand=false)
+    public function __construct($items,$treeData,$offHand=false, $version = '')
     {
+
         $character = $items['character'];
         $this->stats = [
             'misc' => [
                 new misc_stats\Totems,
+                new misc_stats\Traps,
+                new misc_stats\Mines,
                 new misc_stats\Rarity,
                 new misc_stats\Quantity,
                 new misc_stats\Skill_Effect_Duration,
@@ -81,6 +84,12 @@ class Stats_Manager
                 new offence_stats\Cold_Damage,
                 new offence_stats\Lightning_Damage,
                 new offence_stats\Chaos_Damage,
+                new offence_stats\Trap_Damage,
+                new offence_stats\Trap_Trigger_Area,
+                new offence_stats\Trap_Throwing_Speed,
+                new offence_stats\Trap_Cooldown_Recovery,
+                new offence_stats\Mine_Damage,
+                new offence_stats\Mine_Laying_Speed,
                 new offence_stats\Increased_Damage,
                 new offence_stats\Projectile_Damage,
                 new offence_stats\Accuracity,
@@ -103,6 +112,11 @@ class Stats_Manager
 
         //tree
         $treeNodesJewels = new CharacterTreePoints;
+        if ($version == '') {
+            $version = config('app.poe_version');
+        }
+        
+        $treeNodesJewels->loadJSON($version);
         $nodes = $treeNodesJewels->getPoints($treeData);
         $this->addTreeNode($nodes);
 
@@ -183,10 +197,6 @@ class Stats_Manager
 
     private function parseMod($mod)
     {
-        // if ($this->modValidator) {
-        //     # code...
-        // }
-
         foreach ($this->stats['defense'] as $m) {
             $m->parse($mod, $this->type);
         }
@@ -252,5 +262,10 @@ class Stats_Manager
             }
         }
 
+    }
+
+    public function setTreeVersion($version)
+    {
+        $this->currentVersion = $version;
     }
 }

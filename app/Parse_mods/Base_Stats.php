@@ -12,49 +12,63 @@ class Base_Stats
             '+32 to Strength',
             '+14 to Dexterity',
             '+14 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         2 => [
             // Ranger
             '+14 to Strength',
             '+32 to Dexterity',
             '+14 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         3 => [
             // Witch
             '+14 to Strength',
             '+14 to Dexterity',
             '+32 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         4 => [
             // Duelist
             '+23 to Strength',
             '+23 to Dexterity',
             '+14 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         5 => [
             // Templar
             '+23 to Strength',
             '+14 to Dexterity',
             '+23 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         6 => [
             // Shadow
             '+14 to Strength',
             '+23 to Dexterity',
             '+23 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ],
         0 => [
             // Scion
             '+20 to Strength',
             '+20 to Dexterity',
             '+20 to Intelligence',
-            '1 additional Totem'
+            '1 additional Totem',
+            '3 additional Trap',
+            '3 additional Mine'
         ]
     ];
 
