@@ -250,7 +250,7 @@ body{
 
 
 </script>
-<script type="text/javascript" src="/js/st_us.js"></script>
+<script type="text/javascript" src="/js/st_us3_4.js"></script>
 
 <script type="text/javascript">
 
