@@ -207,7 +207,7 @@ body{
 </style>
 <div id="sidebar-dock1"></div>
 <div id="sidebar" name="sidebar" >
-    <h1>V3_4</h1>
+    <h1>V3_5</h1>
     <!-- <ul class="nav nav-tabs"  style="padding-left:10px;">
         <li class="nav-item" style="">
             <a class="nav-link active" href="#" data-toggle="more-info">
@@ -267,7 +267,7 @@ body{
                 height:    967,
                 width: 1300,
                 startClass: 6,
-                version: '3.3.0',
+                version: '3.5.0',
                 fullScreen: false
             };
             var treeControls = new PassiveSkillTree.controls(opts);
