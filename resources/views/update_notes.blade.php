@@ -20,6 +20,12 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
+        <h2>What is new <small>(version 2.3 - December 7 ,2018)</small> </h2>
+        <ul>
+            <li>Passive skill Tree updated to 3.5</li>
+            <li>More coming soon ....</li>
+    	</ul>
+
         <h2>What is new <small>(version 2.2 - June 8 ,2018)</small> </h2>
         <ul>
             <li>Added images for new skills</li>
