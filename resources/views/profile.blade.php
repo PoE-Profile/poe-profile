@@ -93,7 +93,7 @@ $(function () {
                                 <i class="fa fa-clone" aria-hidden="true"></i>
                             </button>
 
-                            <item v-for="item in computedItems" :item="item"></item>
+                            <item v-for="(item, index) in computedItems" :item="item" :key="index"></item>
                         </div>
 
                         <div style="position: absolute;">

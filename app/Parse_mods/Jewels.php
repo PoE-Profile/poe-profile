@@ -260,20 +260,33 @@ class Jewels
             ],
         ];
 
-    public function addJewels($jewels){
-        foreach($jewels as $jewel){
-            $this->jewel_slots[$jewel['x']]['slot']  = $jewel;
-            if($jewel['category']!='jewels'){
+    public function addJewels($jewels)
+    {
+        foreach ($jewels as $jewel) {
+            $this->jewel_slots[$jewel['x']]['slot'] = $jewel;
+            if (!array_key_exists('jewels', $jewel['category'])) {
                 continue;
             }
+
             if (isset($jewel['properties'])) {
-                $this->jewel_slots[$jewel['x']]['radius']  = $jewel['properties'][0]['values'][0][0];
+                $this->jewel_slots[$jewel['x']]['radius'] = $this->jewelRadius($jewel['properties']);
             }
         }
 
-        return $jewels = array_filter($this->jewel_slots, function($jewel) {
+        return array_filter($this->jewel_slots, function ($jewel) {
             return !empty($jewel['slot']);
         });
+    }
+
+    public function jewelRadius($props)
+    {
+        $radius = null;
+        foreach ($props as $p) {
+            if ($p['name'] == 'Radius') {
+                $radius = $p['values'][0][0];
+            }
+        }
+        return $radius;
     }
 
     public function uniqueJewels($point){
@@ -315,37 +328,32 @@ class Jewels
                 
                 // Transform Strength to Intelligence / Brute Force Solution jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Brute Force')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Strength', 'Intelligence', $point->sd[$i]);
-                    }
+                    $point->sd = $this->replaceMod($point->sd, 'Brute');
+                }
+
+                // Transform Strength to Dexterity / Fluid Force Solution jewel
+                if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Fluid Motion')) {
+                    $point->sd = $this->replaceMod($point->sd, 'Fluid');
                 }
 
                 // Transform Intelligence to Dexterity / Careful Planning jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Careful Planning')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Intelligence', 'Dexterity', $point->sd[$i]);
-                    }
+                    $point->sd = $this->replaceMod($point->sd, 'Careful');
                 }
 
                 // Transform Intelligence to Strength / Efficient Training jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Efficient Training')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Intelligence', 'Strength', $point->sd[$i]);
-                    }
+                    $point->sd = $this->replaceMod($point->sd, 'Efficient');
                 }
                 
                 // Transform Dexterity to Intelligence / Fertile Mind jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Fertile Mind')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Dexterity', 'Intelligence', $point->sd[$i]);
-                    }
+                    $point->sd  = $this->replaceMod($point->sd, 'Fertile');
                 }
 
                 // Transform Strength to Dexterity / Inertia jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Inertia')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Strength', 'Dexterity', $point->sd[$i]);
-                    }
+                    $point->sd = $this->replaceMod($point->sd, 'Inertia');
                 }
 
                 // Transform Melee and Melee Weapon Type to Bow / Lioneye's Fall jewel
@@ -374,6 +382,70 @@ class Jewels
 
         // if jewel has radius set no null return empty array
         return [];
+    }
+
+    private function replaceMod($mods, $jewelName) {
+        for ($i = 0; $i < count($mods); $i++) {
+
+            $modName = preg_replace('/\d+/u', '#', $mods[$i]);
+            $modValue = filter_var($mods[$i], FILTER_SANITIZE_NUMBER_INT);
+            // dd('hey');
+            if ($jewelName == 'Efficient') {
+                // dump($mods[$i]);
+                if ($modName === '+# to Intelligence') {
+                    $mods[$i] = str_replace('Intelligence', 'Strength', $mods[$i]);
+                }
+                if ($modName === '+# to Strength and Intelligence') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Strength';
+                }
+                // dump($mods[$i]);
+            }
+            // dump('zzzz');
+            if ($jewelName == 'Inertia') {
+                if ($modName === '+# to Dexterity') {
+                    $mods[$i] = str_replace('Dexterity', 'Strength', $mods[$i]);
+                }
+                if ($modName === '+# to Strength and Dexterity') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Strength';
+                }
+            }
+
+            if ($jewelName == 'Careful') {
+                if ($modName === '+# to Intelligence') {
+                    $mods[$i] = str_replace('Intelligence', 'Dexterity', $mods[$i]);
+                }
+                if ($modName === '+# to Dexterity and Intelligence') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Dexterity';
+                }
+            }
+            if ($jewelName == 'Fluid') {
+                if ($modName === '+# to Strength') {
+                    $mods[$i] = str_replace('Strength', 'Dexterity', $mods[$i]);
+                }
+                if ($modName === '+# to Strength and Dexterity') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Dexterity';
+                }
+            }
+
+            if ($jewelName == 'Fertile') {
+                if ($modName === '+# to Dexterity') {
+                    $mods[$i] = str_replace('Dexterity', 'Intelligence', $mods[$i]);
+                }
+                if ($modName === '+# to to Dexterity and Intelligence') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Intelligence';
+                }
+            }
+            if ($jewelName == 'Brute') {
+                if ($modName === '+# to Strength') {
+                    $mods[$i] = str_replace('Strength', 'Intelligence', $mods[$i]);
+                }
+                if ($modName === '+# to Strength and Intelligence') {
+                    $mods[$i] = '+' . ($modValue * 2) . ' to Intelligence';
+                }
+            }
+        }
+        return $mods;
+        
     }
 
     private function lioneyesFall($mod){

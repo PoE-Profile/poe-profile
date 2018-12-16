@@ -226,7 +226,7 @@ export default {
                 this.alertMsg="Account is removed from favorites .";
             }else{
                 this.favStore.addAcc(acc);
-                this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/home' class='about-link'>Home</a>\" ";
+                this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/favorites' class='about-link'>Favorites</a>\" ";
             }
 
             Vue.nextTick(function () {
