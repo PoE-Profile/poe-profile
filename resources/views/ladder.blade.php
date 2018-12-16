@@ -4,7 +4,7 @@
 <script type="text/javascript">
     window.PHP = {
         account: '',
-        poe_leagues: "{{ env('POE_LEAGUES') }}"
+        poe_leagues: "{{ cache('current_leagues', config('app.poe_leagues')) }}"
     }
 </script>
 @stop

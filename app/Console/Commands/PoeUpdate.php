@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class CacheNewLeagues extends Command
+class PoeUpdate extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'poe:cache_leagues';
+    protected $signature = 'poe:update {--leagues}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create string with the new leagues and cache it';
+    protected $description = '--leagues : Create string with the new leagues and cache it';
 
     /**
      * Create a new command instance.
@@ -36,13 +36,15 @@ class CacheNewLeagues extends Command
      * @return mixed
      */
     public function handle()
-    {   
-        $client = new \GuzzleHttp\Client(['http_errors' => false]);
-        $response = $client->get('http://api.pathofexile.com/leagues?type=main');
-        $response_data = json_decode($response->getBody(), true);
-        $current_leagues = $this->leaguesStringify($response_data);
-        \Cache::forever('current_leagues', $current_leagues);
-        $this->info('Current leagues are cached: ' . \Cache::get('current_leagues'));
+    {
+        if($this->option('leagues')){
+            $client = new \GuzzleHttp\Client(['http_errors' => false]);
+            $response = $client->get('http://api.pathofexile.com/leagues?type=main');
+            $response_data = json_decode($response->getBody(), true);
+            $current_leagues = $this->leaguesStringify($response_data);
+            \Cache::forever('current_leagues', $current_leagues);
+            $this->info('Current leagues are cached: ' . \Cache::get('current_leagues'));
+        }
     }
 
     public function leaguesStringify($leagues) {

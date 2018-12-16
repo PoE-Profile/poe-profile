@@ -5,7 +5,8 @@
     window.PHP = {
         account: '',
         csrf_token: "{{ csrf_token() }}",
-        poe_leagues: "{{ env('POE_LEAGUES') }}",
+        poe_leagues: "{{ cache('current_leagues', config('app.poe_leagues')) }}"
+
     }
 </script>
 @endsection
