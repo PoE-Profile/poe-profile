@@ -23,6 +23,11 @@
         <h2>What is new <small>(version 2.3 - December 7 ,2018)</small> </h2>
         <ul>
             <li>Passive skill Tree updated to 3.5</li>
+            <li>Added Fluid Force Solution transform jewel</li>
+            <li>Added filters to Ladders URI,  now you would be able to share links</li>
+            <li>Added Added delve solo/group in Ladders page</li>
+            <li>Fixed bug: props on flasks now display properly</li>
+            <li>Fixed bug: after favoriting an account there is a link to Favorites Page</li>
             <li>More coming soon ....</li>
     	</ul>
 

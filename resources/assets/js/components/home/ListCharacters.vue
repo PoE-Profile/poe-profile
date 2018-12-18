@@ -44,8 +44,15 @@
                 <th v-if="archive">
                     <span>League</span>
                 </th>
+                <th v-if="!archive" style="text-align:center;">
+                    Solo Depth
+                </th>
+                <th v-if="!archive" style="text-align:center;">
+                    Team Depth
+                </th>
                 <th>Level</th>
                 <th v-if="showTwitch">Twitch</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -95,6 +102,12 @@
                             </a>
                         </li>
                     </ul>
+                </td>
+                <td v-if="!archive" style="text-align:center;">
+                    {{char.delve_solo}}
+                </td>
+                <td v-if="!archive" style="text-align:center;">
+                    {{char.delve_default}}
                 </td>
                 <td>{{char.level}}</td>
                 <td class="twitch-cell" v-if="showTwitch">
@@ -279,6 +292,7 @@ export default {
         clearFilters: function(reload){
             this.selectedSkill="";
             this.selectedClass="";
+            // location.hash="";
             if(reload){
                 this.$emit('filter-list', null)
             }
