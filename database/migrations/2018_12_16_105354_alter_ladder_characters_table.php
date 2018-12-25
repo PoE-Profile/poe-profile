@@ -15,6 +15,9 @@ class AlterLadderCharactersTable extends Migration
     {
         Schema::table('ladder_characters', function($table) {
             $table->string('unique_id');
+            $table->bigInteger('experience');
+            $table->boolean('online')->default(false);
+            $table->text('stats')->nullable();
             $table->integer('delve_default');
             $table->integer('delve_solo');
         });
@@ -29,6 +32,9 @@ class AlterLadderCharactersTable extends Migration
     {
         Schema::table('ladder_characters', function($table) {
             $table->dropColumn('unique_id');
+            $table->dropColumn('experience');
+            $table->dropColumn('online');
+            $table->dropColumn('stats');
             $table->dropColumn('delve_default');
             $table->dropColumn('delve_solo');
         });

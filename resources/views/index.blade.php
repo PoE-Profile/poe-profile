@@ -110,7 +110,9 @@ $('.show-tooltip').tooltip();
                 </li>
             </ul>
 
-            <list-characters v-on:filter-list="filterListCharacters" :char-data="listChars"></list-characters>
+            <list-characters v-on:filter-list="filterListCharacters"
+                :league="selectedTab!='ladder'"
+                :char-data="listChars"></list-characters>
 
             <div class="" v-if="listChars.length==0" style="height:100%;">
                 <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>

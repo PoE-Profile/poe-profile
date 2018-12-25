@@ -28,6 +28,8 @@ class AddIndexLadderCharacters extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('ladder_characters', function (Blueprint $table) {
+            $table->dropIndex(['name','league','class','dead','public']);
+        });
     }
 }

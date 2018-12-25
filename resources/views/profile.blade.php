@@ -80,7 +80,7 @@ $(function () {
                     <h2 class="info1">Level @{{character.level}} @{{character.class}} </h2>
                     <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</h2>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a></h2>
-                    <h2 class="info2">Delve depth Solo: @{{ dbAcc.ladder_chars[0].delve_solo}} </h2>
+                    <!-- <h2 class="info2" v-if="!isBuild">Delve depth Solo: @{{ dbAcc.ladder_chars[0].delve_solo}} </h2> -->
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">

@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class LadderCharacter extends Model
 {
 	protected $fillable = [
-        'league', 'rank', 'name', 'class', 'level', 'account_id', 'items_most_sockets', 'dead', 'public'
+        'league', 'rank', 'name', 'class', 'level', 'account_id', 'items_most_sockets',
+        'dead', 'public', 'online', 'experience', 'stats'
     ];
     protected $casts = [
         'items_most_sockets' => 'array',
+        'dead' => 'boolean',
+        'online' => 'boolean',
+        'public' => 'boolean',
     ];
 
     public function account()
@@ -53,5 +57,5 @@ class LadderCharacter extends Model
 
         return $query->league($request->input('leagueFilter'))->paginate($take);
     }
-    
+
 }

@@ -37,6 +37,7 @@ class TakeLadderCharacters extends Command
     public function __construct()
     {
         parent::__construct();
+
     }
 
     /**
@@ -47,7 +48,10 @@ class TakeLadderCharacters extends Command
 
     public function handle()
     {
-        
+        if(\Cache::get('current_leagues')==null){
+            $this->call('poe:update', ['--leagues' => true]);
+        }
+
         if ($this->option('fill_league_table')) {
             $this->addLeagues();
             return;
@@ -60,7 +64,7 @@ class TakeLadderCharacters extends Command
         $bar = $this->output->createProgressBar(count($this->laddersPages));
         foreach ($this->laddersPages as $page) {
             $this->indexCharsFrom($page->url, $page->league);
-            $this->indexCharsFrom($page->url_with_depth, $page->league);
+            // $this->indexCharsFrom($page->url_with_depth, $page->league);
             $bar->advance();
         }
         $bar->finish();
@@ -111,6 +115,8 @@ class TakeLadderCharacters extends Command
                 $twitch = $entry['account']['twitch']['name'];
             }
 
+            $delve['default'] = 0;
+            $delve['solo'] = 0;
             if (array_key_exists('depth', $entry['character'])) {
                 $delve['default'] = $entry['character']['depth']['default'];
                 $delve['solo'] = $entry['character']['depth']['solo'];
@@ -126,7 +132,9 @@ class TakeLadderCharacters extends Command
                 'level' => $entry['character']['level'],
                 'unique_id' => $entry['character']['id'],
                 'delve_default' => $delve['default'],
-                'delve_solo' => $delve['solo']
+                'delve_solo' => $delve['solo'],
+                'experience' => $entry['character']['experience'],
+                'online' => $entry['online'],
             ];
         }, $response['entries']);
 
@@ -136,19 +144,20 @@ class TakeLadderCharacters extends Command
     }
 
     public function indexChar($char){
-        $ladderCharacter = LadderCharacter::where('name', '=', $char['charName'])->first();
+        $ladderCharacter = LadderCharacter::where('name', '=', $char['charName'])
+                            ->where('league', '=', $char['league'])->first();
         if ($ladderCharacter !== null) {
             //update char
             //$this->info($char['rank'].' character '. $char['charName']. ' updated!');
-            $ladderCharacter->timestamps = false;
             $ladderCharacter->rank = $char['rank'];
             $ladderCharacter->level = $char['level'];
             $ladderCharacter->dead = $char['dead'];
             $ladderCharacter->unique_id = $char['unique_id'];
-            $ladderCharacter->delve_default = $char['delve_default'];
-            $ladderCharacter->delve_solo = $char['delve_solo'];
+            $ladderCharacter->experience = $char['experience'];
+            $ladderCharacter->online = $char['online'];
+            $ladderCharacter->delve_default = 0;
+            $ladderCharacter->delve_solo = 0;
             $ladderCharacter->save();
-            $ladderCharacter->timestamps = true;
         } else {
             //add new
             // $this->info($char['rank'].' character '. $char['charName']. ' added!');
@@ -174,8 +183,10 @@ class TakeLadderCharacters extends Command
                 'class' => $char['class'],
                 'level' => $char['level'],
                 'unique_id' => $char['unique_id'],
-                'delve_default' => $char['unique_id'],
-                'delve_solo' => $char['unique_id'],
+                'experience' => $char['experience'],
+                'online' => $char['online'],
+                'delve_default' => 0,
+                'delve_solo' => 0,
                 'account_id' => $acc->id,
                 'dead' => $char['dead'],
                 'public' => true
@@ -183,7 +194,6 @@ class TakeLadderCharacters extends Command
         }
 
         if($this->option('update')){
-            // dd($ladderCharacter->id);
             $job = (new \App\Jobs\UpdateLadderStatus($ladderCharacter->id));
             dispatch($job);
             //add timeout for ratelimit
@@ -204,6 +214,10 @@ class TakeLadderCharacters extends Command
         }
         $index= $this->ask('What league ?(int):');
         $this->selectedLeague=$currentLeagues[$index-1];
+    }
+
+    public function remove_last_char($string) {
+        return substr($string, 0, -1) == null ? '' : substr($string, 0, -1);
     }
 
     public function addLeagues() {
@@ -256,7 +270,4 @@ class TakeLadderCharacters extends Command
         return $this->remove_last_char($temp_rules);
     }
 
-    public function remove_last_char($string) {
-        return substr($string, 0, -1) == null ? '' : substr($string, 0, -1);
-    }
 }

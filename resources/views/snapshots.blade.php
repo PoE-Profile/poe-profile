@@ -66,6 +66,7 @@ $(function () {
                     <th>Created at</th>
                 </tr>
                 @foreach($snapshots as $snap)
+                
                     <tr>
                         <td ><a href="/build/{{$snap->hash}}">{{ $snap->hash }}</a></td>
                         <td>{{ $snap->original_char }}</td>
