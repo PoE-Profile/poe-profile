@@ -16,7 +16,8 @@
         v-bind:class="{'open':openSuggestion}"
         v-if="showDropdown"
     >
-        <div class="my-sticky-top" style="background-color: #373A3C;" v-if="search">
+        <slot name="dropdown-head" ></slot>
+        <div class="my-sticky-top" style="background-color: #373A3C;" v-if="search && list.length>3">
             <input type="text" v-model="selection" id="dropdown-search1"
                 style="margin:0px;width:100%" placeholder="Search"
                 @keydown.enter = 'enter'
@@ -59,7 +60,7 @@ export default {
         return {
             selection: '',
             open: false,
-            current: 0,
+            current: -1,
             lastSelection: '',
             showDropdown: false,
         }

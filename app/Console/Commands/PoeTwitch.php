@@ -135,7 +135,7 @@ class PoeTwitch extends Command
         $client = new \GuzzleHttp\Client();
         $response = $client->request(
             'GET',
-            'https://api.twitch.tv/kraken/streams?game=Path%20of%20Exile', [
+            'https://api.twitch.tv/kraken/streams?game=Path%20of%20Exile&limit=100', [
             'headers' => [
                 'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',
                 'User-Agent' => 'testing/1.0',

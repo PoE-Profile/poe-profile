@@ -88,7 +88,7 @@ const app = new Vue({
 
     mounted: function () {
 
-        this.poe_leagues=window.PHP.poe_leagues.split(",");
+        this.poe_leagues=window.PHP.poe_leagues.split(", ");
         //load data if ladder URL
 
         this.selectedLeague=this.poe_leagues[0];
@@ -97,8 +97,8 @@ const app = new Vue({
         }
 
         var urlArr = window.location.href.replace('#', '').split('/');
-        if (urlArr[urlArr.length - 1] === 'ladders') {
-            this.filterLeague(this.selectedLeague);
+        if (location.pathname === '/ladders') {
+            this.watchHashUrl()
         }
         if (urlArr[urlArr.length - 1] === 'favorites') {
             this.getFavs();
@@ -115,12 +115,13 @@ const app = new Vue({
                 this.classFilter = '';
                 this.searchFilter = "";
             } else {
-                if (filter.hasOwnProperty('skill')) {
-                this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter='+filter.skill+'&';
-                }
 
                 if (filter.hasOwnProperty('class')) {
                     this.classFilter = (filter.class == 'All') ? '' : 'classFilter='+filter.class+'&';
+                }
+
+                if (filter.hasOwnProperty('skill')) {
+                    this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter=' + filter.skill + '&';
                 }
 
                 if (filter.hasOwnProperty('search')) {
@@ -137,6 +138,7 @@ const app = new Vue({
                 this.isLoading=false;
                 this.selectedTab='ladder';
             });
+            this.buildHashUrl();
         },
 
         goToAcc: function(acc) {
@@ -202,6 +204,7 @@ const app = new Vue({
             axios.get('api/ladderData?'+vm.filters+'&page='+ pageNum).then((response) => {
                 vm.ladderPaginate = response.data;
             });
+            this.buildHashUrl(true);
         },
 
         withEllipsis: function(text,after){
@@ -240,5 +243,101 @@ const app = new Vue({
             }
             return sel;
         },
+
+        watchHashUrl: function() {
+            if (location.hash === "") {
+                this.filterLeague(this.selectedLeague);
+                return;
+            }
+            let url = location.hash.split("/");
+            let filters = '';
+            let page = ''
+            url.forEach((el, index) => {
+                if (index == 1) {
+                    filters += 'leagueFilter=' + el + '&';
+                }
+                if (index == 2) {
+                    page = 'page='+el;
+                }
+                if (el.includes("class-")) {
+                    filters += 'classFilter=' + el.replace('class-', '').replace('-', ' ') + '&';
+                }
+                if (el.includes("skill-")) {
+                    filters += "skillFilter=" + el.replace("skill-", "").replace('-', ' ') + "&";
+                }
+                if (el.includes("?search-")) {
+                    filters += "searchFilter=" + el.replace("?search-", "") + "&";
+                }
+                
+            });
+            filters += page;
+            this.isLoading = true;
+            this.ladderPaginate = [];
+            this.selectedTab = 'ladder';
+            axios.get('api/ladderData?' + filters).then((response) => {
+                this.ladderPaginate = response.data;
+                this.isLoading = false;
+                this.selectedTab = 'ladder';
+                this.setFilters(url)
+            });
+         
+        },
+
+        setFilters: function(url) {
+            url.forEach((el, index) => {
+                if (index == 1) {
+                    this.leagueFilter = 'leagueFilter=' + el + '&';
+                }
+                
+                if (el.includes("class-")) {
+                    this.classFilter = 'classFilter=' + el.replace('class-', '').replace('-', ' ') + '&';
+                }
+                if (el.includes("skill-")) {
+                    this.skillFilter = "skillFilter=" + el.replace("skill-", "").replace('-', ' ') + "&";
+                }
+                if (el.includes("?search-")) {
+                    this.searchFilter = "searchFilter=" + el.replace("?search-", "") + "&";
+                }
+            });
+        },
+
+        buildHashUrl: function (page_changed = false) {
+            //on Load
+            if (location.hash === "") {
+                setTimeout(() => {
+                    location.hash = '#/' + this.selectedLeague + '/' + this.ladderPaginate.current_page;
+                }, 700);
+                return
+            }
+
+            // page changed
+            if (page_changed) {
+                setTimeout(() => {
+                    let url = location.hash.split("/");
+                    url[2] = this.ladderPaginate.current_page;
+                    location.hash = url.join('/');
+                }, 600);
+                return
+            }
+            
+            // filter change
+            let filterArr = this.filters.split('&');
+            let url = '';
+            filterArr.forEach(el => {
+                if (el.includes("classFilter")) {
+                    url += '/class-' + el.replace('classFilter=', '').replace(' ', '-');
+                }
+                if (el.includes("skillFilter")) {
+                    url += '/skill-' + el.replace('skillFilter=', '').replace(' ', '-');
+                }
+                if (el.includes("searchFilter")) {
+                    url += '/?search-' + el.replace('searchFilter=', '');
+                }
+            });
+            setTimeout(() => {
+                location.hash = '#/' + this.selectedLeague + '/' + this.ladderPaginate.current_page + url;
+            }, 700);
+            
+        }
     }
 });

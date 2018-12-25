@@ -28,8 +28,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('poe:ladder')->hourly();
 
+        $schedule->command('cache:clear')->dailyAt('13:00');
+
         // $schedule->command('poe:ladder --update')->dailyAt('13:00');
-        //$schedule->command('poe:update-ladder-info --limit=100')->everyTenMinutes();
 
     }
 

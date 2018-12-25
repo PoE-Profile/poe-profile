@@ -66,7 +66,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ route('index.builds') }}"><i class="fa fa-bookmark" aria-hidden="true"></i> My Builds</a>
 					</li>
-					<li class="nav-item dropdown">
+					<li class="nav-item dropdown" v-if="favStore.favAcc.length==0">
 						<a class="nav-link" href="{{ route('favorites') }}">
 					  		<i class="fa fa-star" aria-hidden="true"></i> Favorites
 						</a>
@@ -75,8 +75,11 @@
                         <div class="" style="width:100%;color: white;">
                             <drop-down v-on:selected="goToAcc" :list="favStore.favAcc">
                                 <i class="fa fa-star" aria-hidden="true"></i>
+                                <span slot="dropdown-head">
+                                    <a class="nav-link" href="{{ route('favorites') }}" style="text-align: center;">
+                                        -- Show All Favs --</a>
+                                </sapn>
                             </drop-down>
-
                         </div>
                     </li>
 					<li class="nav-item">

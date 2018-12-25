@@ -13,28 +13,31 @@
 
         <span v-if="showFlask" class="group -textwrap tc -mod">
             <span :style="{listStyleType: 'none', color: 'grey'}" v-for="prop in flaskProperties">
-                {{ prop}}<br>
+                {{ prop }}<br>
             </span>
         </span>
         <span class="group -textwrap tc -mod" v-if="itemInfo.properties">
             <span :style="{listStyleType: 'none', color: 'grey'}" v-for="prop in itemInfo.properties">
-                {{ prop.name }}: <span v-if="prop.values.length > 0" style="color: white;"> {{prop.values[0][0]}}</span><br>
+                <p v-if="prop.name.match(/%0/)" style="margin: 0;">{{ displayProp(prop) }}</p>
+                <p v-else style="margin: 0;">
+                    {{ prop.name }}: <span v-if="prop.values.length > 0" style="color: white;"> {{prop.values[0][0]}}</span><br>
+                </p>
             </span>
         </span>
 
         <span class="group -textwrap tc -mod" v-if="itemInfo.requirements">
             <span class="group -textwrap tc -mod" v-if="itemInfo.talismanTier">
-                <p :style="{listStyleType: 'none', color: 'grey', display: 'inline'}">Talisman Tier: </p> <span style="color: white;">{{ itemInfo.talismanTier }} </span>
+                <p :style="{listStyleType: 'none', color: 'grey', display: 'inline'}">Talisman Tier: </p> 
+                <span style="color: white;">{{ itemInfo.talismanTier }} </span>
                 <br>
             </span>
 
             <p :style="{listStyleType: 'none', color: 'grey', display: 'inline'}">Requires </p>
-            <p
-                :style="{listStyleType: 'none', color: 'grey', display: 'inline'}"
-                v-for="(req, index) in itemInfo.requirements"
-            >
+            <p :style="{listStyleType: 'none', color: 'grey', display: 'inline'}" v-for="(req, index) in itemInfo.requirements">
                 {{ req.name }}
-                <span v-if="req.values.length > 0" style="color: white;"> {{req.values[0][0]}} {{ index+1 < itemInfo.requirements.length ? ',' : ''}} </span>
+                <span v-if="req.values.length > 0" style="color: white;"> 
+                    {{req.values[0][0]}} {{ index+1 < itemInfo.requirements.length ? ',' : ''}} 
+                </span>
             </p>
         </span>
 
@@ -161,6 +164,18 @@ export default {
         },
     },
     methods: {
+        displayProp: function(prop) {
+            let noNums = prop.name.replace(/[0-9]/g, ''),
+                propArr = noNums.split("%"),
+                propName = propArr[0];
+            for (let i = 1; i < propArr.length; i++) {
+                let value = prop.values[i-1][0]
+                propName += value + propArr[i];
+            }
+
+            return propName
+        },
+
         withEllipsis: function(text,after){
             if(text.length<=after){
                 return text;

@@ -82,7 +82,7 @@ class ProfileController extends Controller
     {
         $results=[];
         $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        $currentLeagues = explode(',',config('app.poe_leagues'));
+        $currentLeagues = explode(', ', \Cache::get('current_leagues', config('app.poe_leagues')));
         array_splice($currentLeagues, 2);
         foreach ($currentLeagues as $league) {
             $publicStash = $dbAcc->getPublicStash($league);

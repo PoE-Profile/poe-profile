@@ -2,10 +2,10 @@
 <div>
 
     <div v-if="showRank && !archive" class="input-group " style="margin-left:auto;margin-right:auto;background:#202624;">
-    
-        <input type="text" name="account" v-model="searchBig" class="form-control" 
-        style="border-color: #CCCCCC;" 
-        placeholder="Search for Character or Account name" 
+
+        <input type="text" name="account" v-model="searchBig" class="form-control"
+        style="border-color: #CCCCCC;"
+        placeholder="Search for Character or Account name"
         v-on:keyup.enter="search()">
 
         <span class="input-group-btn">
@@ -41,11 +41,18 @@
                     </drop-down>
                     <span v-else>Skill</span>
                 </th>
-                <th v-if="archive">
+                <th v-if="archive||league">
                     <span>League</span>
+                </th>
+                <th v-if="depth" style="text-align:center;">
+                    Solo Depth
+                </th>
+                <th v-if="depth" style="text-align:center;">
+                    Team Depth
                 </th>
                 <th>Level</th>
                 <th v-if="showTwitch">Twitch</th>
+
             </tr>
         </thead>
         <tbody>
@@ -74,11 +81,6 @@
                     </span>
                     <span v-else>No Info</span>
                 </td>
-                <td class="skill-cell" v-if="archive">
-                    <span>
-                        {{char.league}}
-                    </span>
-                </td>
                 <td class="skill-cell" v-if="!archive">
                     <ul class="home-list-skills">
                         <li v-for="skill in getActiveSkill(char.items_most_sockets)">
@@ -95,6 +97,17 @@
                             </a>
                         </li>
                     </ul>
+                </td>
+                <td class="skill-cell" v-if="archive||league">
+                    <span>
+                        {{char.league}}
+                    </span>
+                </td>
+                <td v-if="depth" style="text-align:center;">
+                    {{char.delve_solo}}
+                </td>
+                <td v-if="depth" style="text-align:center;">
+                    {{char.delve_default}}
                 </td>
                 <td>{{char.level}}</td>
                 <td class="twitch-cell" v-if="showTwitch">
@@ -152,6 +165,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        depth:{
+            type: Boolean,
+            default: false,
+        },
+        league:{
+            type: Boolean,
+            default: false,
+        }
     },
 
     components: {
@@ -279,6 +300,7 @@ export default {
         clearFilters: function(reload){
             this.selectedSkill="";
             this.selectedClass="";
+            // location.hash="";
             if(reload){
                 this.$emit('filter-list', null)
             }

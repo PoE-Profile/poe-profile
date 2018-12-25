@@ -79,7 +79,9 @@ class PoeApi
                 //$response = $e->getResponse();
                 return [];
             }
-            
+
+            \App\Jobs\AddCharLeague::dispatch($response);
+
             $response = json_decode((string)$response->getBody(), true);
             return $response;
         });

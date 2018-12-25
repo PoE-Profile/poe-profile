@@ -77,9 +77,10 @@ $(function () {
                 <div class="row character-info">
                     <h2 v-if="skillTreeReseted" style="color:darkred;background-color: black;opacity: 0.6"> No skill tree data.</h2>
                     <h2 class="name">@{{character.name}}</h2>
-                    <h2 class="info1">Level @{{character.level}} @{{character.class}}</h2>
-                    <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</small></h2>
-                    <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a> </small></h2>
+                    <h2 class="info1">Level @{{character.level}} @{{character.class}} </h2>
+                    <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</h2>
+                    <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a></h2>
+                    <!-- <h2 class="info2" v-if="!isBuild">Delve depth Solo: @{{ dbAcc.ladder_chars[0].delve_solo}} </h2> -->
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">
@@ -93,7 +94,7 @@ $(function () {
                                 <i class="fa fa-clone" aria-hidden="true"></i>
                             </button>
 
-                            <item v-for="item in computedItems" :item="item"></item>
+                            <item v-for="(item, index) in computedItems" :item="item" :key="index"></item>
                         </div>
 
                         <div style="position: absolute;">

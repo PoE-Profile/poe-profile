@@ -114,20 +114,20 @@ export default {
 
     data: function() {
         return {
-            vaalGem: '',
             showFullDesc: false,
-        }
-    },
-
-    created: function () {
-        if(this.gemInfo.hasOwnProperty('vaal')){
-           this.vaalGem = this.gemInfo.vaal;
         }
     },
 
     computed: {
         'wikiLink': function() {
             return 'http://pathofexile.gamepedia.com/' + this.gemInfo.typeLine.replace(' ', '_');
+
+        },
+        'vaalGem': function() {
+            if(this.gemInfo.hasOwnProperty('vaal')){
+                return this.gemInfo.vaal;
+            }
+            return '';
         }
     },
 
