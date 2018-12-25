@@ -194,10 +194,7 @@ class TakeLadderCharacters extends Command
         }
 
         if($this->option('update')){
-            $job = (new \App\Jobs\UpdateLadderStatus($ladderCharacter->id));
-            dispatch($job);
-            //add timeout for ratelimit
-            sleep(1);
+            \App\Jobs\UpdateLadderStatus::dispatch($ladderCharacter->id);
         }
     }
 

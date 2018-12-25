@@ -82,7 +82,13 @@ class UpdateLadderStatus extends Job implements ShouldQueue
         }
 
         $ladderChar->save();
+        //add timeout for ratelimit
+        sleep(1);
+    }
 
+    public function tags()
+    {
+        return ['UpdateLadderStatus/', 'char_id:' . $this->char_id];
     }
 
 }

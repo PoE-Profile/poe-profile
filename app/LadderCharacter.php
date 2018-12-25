@@ -8,7 +8,7 @@ class LadderCharacter extends Model
 {
 	protected $fillable = [
         'league', 'rank', 'name', 'class', 'level', 'account_id', 'items_most_sockets',
-        'dead', 'public', 'online', 'experience', 'stats'
+        'dead', 'public', 'unique_id', 'online', 'experience', 'stats'
     ];
     protected $casts = [
         'items_most_sockets' => 'array',

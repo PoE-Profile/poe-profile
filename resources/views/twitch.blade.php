@@ -40,7 +40,7 @@
         v-if="twitchAccChars.length>0"
         style="background-color: #211F18;opacity: 0.85;min-height:800px;">
         <h3 class="" style="padding:7px;">Twitch</h3>
-        <list-characters :char-data="twitchAccChars"></list-characters>
+        <list-characters :char-data="twitchAccChars" :league="true" ></list-characters>
     </div>
 </div>
 
