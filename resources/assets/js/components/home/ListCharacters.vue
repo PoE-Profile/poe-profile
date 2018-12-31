@@ -13,7 +13,7 @@
         </span>
     </div>
 
-    <table class="table table-hover homapage-table" style="color:white">
+    <table class="table table-hover homapage-table">
         <thead>
             <tr>
                 <!-- <th>#</th> -->
@@ -44,13 +44,13 @@
                 <th v-if="archive||league">
                     <span>League</span>
                 </th>
-                <th v-if="depth" style="text-align:center;">
+                <th v-if="depth">
                     Solo Depth
                 </th>
-                <th v-if="depth" style="text-align:center;">
+                <th v-if="depth">
                     Team Depth
                 </th>
-                <th>Level</th>
+                <th class="text-center">Level</th>
                 <th v-if="showTwitch">Twitch</th>
 
             </tr>
@@ -103,13 +103,18 @@
                         {{char.league}}
                     </span>
                 </td>
-                <td v-if="depth" style="text-align:center;">
+                <td v-if="depth">
                     {{char.delve_solo}}
                 </td>
-                <td v-if="depth" style="text-align:center;">
+                <td v-if="depth">
                     {{char.delve_default}}
                 </td>
-                <td>{{char.level}}</td>
+                <td>
+                    <div class="html5-progress-bar">
+                        <p>{{char.level}}</p>
+                        <progress v-if="!league"  max="100" :value="char.levelProgress"></progress>
+                    </div>
+                </td>
                 <td class="twitch-cell" v-if="showTwitch">
                     <a href="#" class="show-tooltip" @click.prevent="openTwitch(char.twitch)"
                     data-placement="top" title="" :data-original-title="char.twitch.status">
@@ -364,3 +369,58 @@ export default {
     },
 };
 </script>
+
+<style>
+.table {
+    color: #fff;
+}
+.table th , td{
+    text-align: center;
+}
+
+.html5-progress-bar {
+	text-align: center;
+    margin: 0;
+}
+
+.html5-progress-bar p {
+    margin: 0;
+}
+.html5-progress-bar progress {
+	background-color: #f3f3f3;
+    max-width: 33%;
+	border: 0;
+	height: 7px;
+	border-radius: 12px;
+    margin: 0;
+}
+.html5-progress-bar progress::-webkit-progress-bar {
+	background-color: #f3f3f3;
+	border-radius: 9px;
+}
+.html5-progress-bar progress::-webkit-progress-value {
+	background: #cdeb8e;
+	background: -moz-linear-gradient(top,  #cdeb8e 0%, #47682c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdeb8e), color-stop(100%,#47682c));
+	background: -webkit-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: -o-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: -ms-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: linear-gradient(to bottom,  #cdeb8e 0%,#47682c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#47682c',GradientType=0 );
+	border-radius: 9px;
+}
+.html5-progress-bar progress::-moz-progress-bar {
+	background: #cdeb8e;
+	background: -moz-linear-gradient(top,  #cdeb8e 0%, #47682c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdeb8e), color-stop(100%,#47682c));
+	background: -webkit-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: -o-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: -ms-linear-gradient(top,  #cdeb8e 0%,#47682c 100%);
+	background: linear-gradient(to bottom,  #cdeb8e 0%,#47682c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#47682c',GradientType=0 );
+	border-radius: 9px;
+}
+
+
+</style>
+

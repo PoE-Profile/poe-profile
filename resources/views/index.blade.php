@@ -6,7 +6,6 @@
         account: '',
         csrf_token: "{{ csrf_token() }}",
         poe_leagues: "{{ cache('current_leagues', config('app.poe_leagues')) }}"
-
     }
 </script>
 @endsection
@@ -48,10 +47,11 @@ $('.show-tooltip').tooltip();
         </form>
         <div class="text-xs-center" style="margin-top: 20px;">
             You can test out with this popular streamer accounts
-            <a href="/profile/ziggyd/" class="about-link">ziggyd</a>,
-            <a href="/profile/nugiyen/" class="about-link">nugiyen</a>,
-            <a href="/profile/mathil/" class="about-link">mathil</a>,
-            <a href="/profile/Zizaran/" class="about-link">zizaran</a>
+            <a href="/profile/ziggyd/" class="about-link">Ziggyd</a>,
+            <a href="/profile/Zizaran/" class="about-link">Zizaran</a>,
+            <a href="/profile/mathil/" class="about-link">Mathil</a>,
+            <a href="/profile/nugiyen/" class="about-link">Nugiyen</a>,
+            <a href="/profile/RaizQT/" class="about-link">RaizQt</a>
             <br>
             <a class="nav-link" href="{{ url('/profile_tutorial') }}" style="color:lightblue">
                 How to change your profile characters tab to public.
@@ -78,70 +78,26 @@ $('.show-tooltip').tooltip();
         <div class="navigation" style="padding-bottom: 0px;margin-top: 10px;">
             <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;background-color: #211F18;">
                 <li class="nav-item">
-        		    <a class="nav-link " data-toggle="tab" @click.prevent="getFavs()"
-                    href="#favs" role="tab" aria-controls="favs">Favorites</a>
-        	    </li>
-                <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" @click.prevent="getTwitch()"
                     href="#twitch" role="tab" aria-controls="twitch">Twitch</a>
         	    </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab"
-                    href="#ladders" role="tab" aria-controls="ladders"
-                    @click.prevent="getLadder()">League Ladders</a>
+                    <a class="nav-link" href="/ladders" >League Ladders</a>
         	    </li>
             </ul>
         </div>
         <div class="tab-content" style="background-color: #211F18;min-height:800px;">
-            <ul class="nav nav-pills char-nav" style=""
-                v-if="selectedTab=='ladder'">
-                <li class="nav-item" v-for="(league, index) in poe_leagues">
-                    <drop-down v-on:selected="filterListCharacters" :list="leaguesDropDown(league)"
-                        v-if="isLeagueDropDown(league)" :search="false"
-                        :lclass="''" :class="[isLeagueDropDownSelected(league)?'active nav-link':'nav-link']">
-                        <span v-if="isLeagueDropDownSelected(league)">@{{selectedLeague}}</span>
-                        <span v-else>@{{league.split("::")[0]}}     </span>
-                    </drop-down>
-                    <a v-else href="#" class="nav-link" data-toggle="tab" role="tab"
-                        :class="{'active': league==selectedLeague}"
-                        @click.prevent="filterLeague(league)">
-                        @{{league}}
-                    </a>
-                </li>
-            </ul>
 
             <list-characters v-on:filter-list="filterListCharacters"
-                :league="selectedTab!='ladder'"
-                :char-data="listChars"></list-characters>
+                :league="true"
+                :char-data="twitchAccChars"></list-characters>
 
-            <div class="" v-if="listChars.length==0" style="height:100%;">
+            <div class="" v-if="twitchAccChars.length==0" style="height:100%;">
                 <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
                 <div class="" v-if="listCharsError.length>0">
                     <h3 class="text-xs-center">@{{listCharsError}}</h3>
                 </div>
             </div>
-            <div class="prevNext text-xs-center" v-if="selectedTab=='ladder' && ladderPaginate.total > 15">
-
-                <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
-                <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
-
-                <div class="sss" style="
-                    left: 0;
-                    right: 0;
-                    margin-left: auto;
-                    margin-right: auto;
-                    width: 360px; ">
-                    <span v-for="n in pages" >
-                        <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
-                    </span>
-                </div>
-
-
-                <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
-                <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>
-
-            </div>
-
 
         </div>
 

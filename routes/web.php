@@ -9,9 +9,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', ['as' => 'home', 'uses' => function () {
         return view('index');
     }]);
+
     Route::get('/ladders', ['as' => 'ladders', 'uses' => function () {
         return view('ladder');
     }]);
+
+    Route::get('/ladders/{ladder_name}', ['as' => 'private-ladders', 'uses' => 'LadderController@privateLadder']);
 
     Route::get('/twitch', ['as' => 'twitch', 'uses' => function () {
         return view('twitch');

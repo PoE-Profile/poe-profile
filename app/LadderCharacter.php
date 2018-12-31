@@ -17,6 +17,8 @@ class LadderCharacter extends Model
         'public' => 'boolean',
     ];
 
+    protected $appends = ['levelProgress'];
+
     public function account()
     {
         return $this->belongsTo('App\Account');
@@ -56,6 +58,21 @@ class LadderCharacter extends Model
         }
 
         return $query->league($request->input('leagueFilter'))->paginate($take);
+    }
+
+    public function getLevelProgressAttribute() {
+        $exp_table = \Storage::disk('public_folder')->get('/jsons/expirience_table.json');
+        $exp_table = json_decode($exp_table, true);
+        $id = $this->level - 1;
+        $current_level = $exp_table['levels'][$id];
+        //check if level 100 return 100%
+        if ($current_level['total'] === 0) {
+            return 100;
+        }
+        $xp_gained = $this->experience - $current_level['startAt'];
+        $percentage = ($xp_gained / $current_level['total']) * 100;
+
+        return (int) round($percentage);
     }
 
 }

@@ -93,16 +93,28 @@ new Vue({
 
         characterRank: function(){
             var rank = ''
-            var self = this;
             this.dbAcc.ladder_chars.forEach(c => {
-                if (c.name === self.character.name) {
+                if (c.name === this.character.name) {
                     rank = '(Rank: ' + c.rank + ')';
-                    if (c.league !== self.character.league.toLowerCase()) {
+                    if (c.league !== this.character.league.toLowerCase()) {
                         rank = '(Rank: ' + c.rank + ' in ' + _.upperFirst(c.league) + ')';
                     }
                 }
             });
             return rank;
+        },
+
+        delveDepth: function () {
+            var depth = ''
+            this.dbAcc.ladder_chars.forEach(c => {
+                if (c.name === this.character.name) {
+                    depth = '(Delve depth Solo: ' + c.delve_solo + ')';
+                    if (c.league !== this.character.league.toLowerCase()) {
+                        depth = '(Delve depth Solo: ' + c.delve_solo + ' in ' + _.upperFirst(c.league) + ')';
+                    }
+                }
+            });
+            return depth;
         },
 
         stickedStatItems: function(){

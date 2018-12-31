@@ -4,6 +4,7 @@
 <script type="text/javascript">
     window.PHP = {
         account: '',
+        ladder_name: "{{$ladder_name}}",
         poe_leagues: "{{ cache('current_leagues', config('app.poe_leagues')) }}"
     }
 </script>
