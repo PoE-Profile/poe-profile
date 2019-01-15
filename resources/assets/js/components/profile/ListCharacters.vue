@@ -14,9 +14,6 @@
                   {{league.name}}({{league.count}})
                   </a>
               </li>
-              <li>
-
-              </li>
             </ul>
         </div>
 

@@ -113,4 +113,23 @@ class PoeApi
 
     }
 
+    static public function getLadder($id, $offset, $limit=200, $delve=false){
+        $base_url = 'https://www.pathofexile.com/api/ladders';
+        $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league';
+        if($delve){
+            $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league&sort=depth';
+        }
+        $page_url = $base_url.$parms;
+
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+        try {
+            $response = $client->get($page_url);
+        }catch (\GuzzleHttp\Exception\ClientException $e) {
+            //$response = $e->getResponse();
+            dd($e->getResponse());
+            return [];
+        }
+
+        return json_decode($response->getBody(), true);
+    }
 }

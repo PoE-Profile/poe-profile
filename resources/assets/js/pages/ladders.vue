@@ -1,31 +1,103 @@
-require('./bootstrap');
+<template lang="html">
+    <div class="tab-pane" id="ladders" role="tabpanel" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
 
-Vue.component('loader', require('./components/Loader.vue'));
-Vue.component('list-characters', require('./components/home/ListCharacters.vue'));
-Vue.component('drop-down', require('./components/home/DropDown.vue'));
+        <list-characters v-on:filter-list="filterListCharacters"
+            :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"
+            :delve="true" >
+            <template slot="thead">
+                <th>Rank</th>
+                <th>
+                    <drop-down v-on:selected="trigerFilterClass" :list="classes">
+                        <span v-if="selectedClass.length>0">{{selectedClass}}</span>
+                        <span v-else>Class</span>
+                    </drop-down>
+                </th>
+                <th>Account</th>
+                <th>Character</th>
+                <th>
+                    <drop-down v-on:selected="trigerFilterSkills"
+                         style="width:190px; padding: 2px;" :list="skills">
+                        <span>Skills</span>
+                    </drop-down>
+                </th>
+                <th><a href="#" v-on:click="">Solo Depth</a></th>
+                <th><a href="#">Team Depth</a></th>
+                <th class="text-center">Level</th>
+            </template>
+        </list-characters>
+        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
+        <div class="prevNext text-xs-center" v-if="ladderPaginate.total > 0">
 
-var favStore = require('./helpers/FavStore.js');
+            <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
+            <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
 
-const app = new Vue({
-    el: '#app',
-    data: {
-        accName: '',
-        characters: '',
-        progress: 0,
-        classFilter: '',
-        skillFilter: '',
-        leagueFilter: '',
-        searchFilter: '',
-        skillImages: '',
-        favStore: favStore,
-        ladderPaginate: [],
-        selectedTab: '',
-        isLoading: false,
-        selectedLeague: '',
-        poe_leagues: [],
-        listCharsError: '',
-        listPages: 10,
-        pages: 0,
+            <div style="
+                  left: 0;
+                  right: 0;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 360px; ">
+                <span v-for="n in pages" >
+                    <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">{{n}}</a>
+                </span>
+            </div>
+
+            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
+            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>
+
+        </div>
+    </div>
+</template>
+
+<script>
+import Loader from '../components/Loader.vue';
+import ListCharacters from '../components/ListCharacters.vue';
+
+export default {
+    components: {Loader, ListCharacters},
+    props: {
+        league: {
+            type: Object,
+            required: true,
+        },
+    },
+    data: function(){
+        return{
+            // accName: '',
+            // characters: '',
+            classFilter: '',
+            skillFilter: '',
+            leagueFilter: '',
+            searchFilter: '',
+            skillImages: '',
+            ladderPaginate: [],
+            isLoading: false,
+            listPages: 10,
+            pages: 0,
+            selectedClass: '',
+            classes: [
+                'All',
+                'Slayer',
+                'Gladiator',
+                'Champion',
+                'Assassin',
+                'Saboteur',
+                'Trickster',
+                'Juggernaut',
+                'Berserker',
+                'Chieftain',
+                'Necromancer',
+                'Ocultist',
+                'Elemntalist',
+                'Deadeye',
+                'Raider',
+                'Pathfinder',
+                'Inquisitor',
+                'Hierophant',
+                'Guardian',
+                'Ascendant'
+            ]
+        }
     },
 
     watch: {
@@ -52,7 +124,6 @@ const app = new Vue({
         },
     },
 
-
     computed: {
         filters: function () {
             var filter = this.leagueFilter + this.skillFilter + this.classFilter + this.searchFilter;
@@ -61,23 +132,16 @@ const app = new Vue({
             }
             return filter;
         },
-     
+
     },
 
     mounted: function () {
-
-        this.poe_leagues = window.PHP.poe_leagues.split(", ");
-        //load data if ladder URL
-
-        this.selectedLeague = this.poe_leagues[0];
-        if (this.isLeagueDropDown(this.selectedLeague)) {
-            this.selectedLeague = this.selectedLeague.split("::")[1].split("|")[0];
-        }
+        this.leagueFilter = 'leagueFilter=' + this.league.name + '&';
+        this.filterListCharacters(null);
 
         if (location.pathname === '/ladders') {
-            this.watchHashUrl()
+            // this.watchHashUrl()
         }
-
     },
 
     methods: {
@@ -105,14 +169,18 @@ const app = new Vue({
 
             this.isLoading = true;
             this.ladderPaginate = [];
-            this.selectedTab = 'ladder';
-            axios.get('/api/ladderData?' + this.filters).then((response) => {
+            var base_url = '/api/ladders/'+this.league.name;
+            if(!this.league.indexed){
+                base_url = '/api/private-ladders/'+this.league.name;
+            }
+            var url = base_url +'?' + this.filters;
+
+            axios.get(url).then((response) => {
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
-                this.selectedTab = 'ladder';
             });
             if (location.pathname === '/ladders') {
-                this.buildHashUrl();
+                // this.buildHashUrl();
             }
         },
 
@@ -120,28 +188,21 @@ const app = new Vue({
             window.location = "/profile/" + acc;
         },
 
-        getLadder: function () {
-            this.filterLeague(this.selectedLeague);
-        },
-
-        filterLeague: function (filterLeague) {
-            this.selectedLeague = filterLeague;
-            this.leagueFilter = 'leagueFilter=' + filterLeague + '&';
-            this.filterListCharacters(null);
-        },
-
         changePage: function (pageNum) {
-            var vm = this;
 
             if (pageNum <= 0) {
-                pageNum = vm.ladderPaginate.last_page;
+                pageNum = this.ladderPaginate.last_page;
             }
-            if (pageNum > vm.ladderPaginate.last_page) {
+            if (pageNum > this.ladderPaginate.last_page) {
                 pageNum = 1;
             }
-
-            axios.get('/api/ladderData?' + vm.filters + '&page=' + pageNum).then((response) => {
-                vm.ladderPaginate = response.data;
+            var base_url = '/api/ladders/'+this.league.name;
+            if(!this.league.indexed){
+                base_url = '/api/private-ladders/'+this.league.name;
+            }
+            var url = base_url +'?' + this.filters + '&page=' + pageNum;
+            axios.get(url).then((response) => {
+                this.ladderPaginate = response.data;
             });
             this.buildHashUrl(true);
         },
@@ -153,35 +214,13 @@ const app = new Vue({
             return text.substring(0, after) + ".."
         },
 
-        //suport for leaguesDropDown for small multi day events
-        leaguesDropDown: function (l) {
-            return l.split("::")[1].split("|");
-        },
-
-        isLeagueDropDown: function (l) {
-            if (l.split("::").length > 1)
-                return true;
-            else
-                return false;
-        },
-
-        isLeagueDropDownSelected: function (l) {
-            if (!this.isLeagueDropDown(l)) {
-                return false;
-            }
-            var tempLNames = l.split("::")[1].split("|");
-            var sel = false;
-            for (var i = 0; i <= tempLNames.length; i++) {
-                if (tempLNames[i] == this.selectedLeague) {
-                    sel = true;
-                }
-            }
-            return sel;
+        trigerFilterClass: function(c){
+            this.classFilter = c;
+            this.filterListCharacters({'class': c});
         },
 
         watchHashUrl: function () {
             if (location.hash === "") {
-                this.filterLeague(this.selectedLeague);
                 return;
             }
             let url = location.hash.split("/");
@@ -208,11 +247,9 @@ const app = new Vue({
             filters += page;
             this.isLoading = true;
             this.ladderPaginate = [];
-            this.selectedTab = 'ladder';
             axios.get('/api/ladderData?' + filters).then((response) => {
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
-                this.selectedTab = 'ladder';
                 this.setFilters(url)
             });
 
@@ -279,4 +316,9 @@ const app = new Vue({
 
         }
     }
-});
+
+}
+</script>
+
+<style lang="css">
+</style>

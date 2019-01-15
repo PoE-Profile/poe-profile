@@ -2,8 +2,9 @@
 require('./bootstrap');
 
 Vue.component('loader', require('./components/Loader.vue'));
-Vue.component('list-characters', require('./components/home/ListCharacters.vue'));
-Vue.component('drop-down', require('./components/home/DropDown.vue'));
+Vue.component('ladders-page', require('./pages/ladders.vue'));
+Vue.component('list-characters', require('./components/ListCharacters.vue'));
+Vue.component('drop-down', require('./components/DropDown.vue'));
 
 var favStore = require('./helpers/FavStore.js');
 
@@ -19,7 +20,7 @@ const app = new Vue({
     },
 
     watch : {
-       
+
     },
 
 
@@ -66,7 +67,7 @@ const app = new Vue({
 
         getTwitch: function(){
             this.isLoading=true;
-            axios.get('api/twitch').then((response) => {
+            axios.get('/api/twitch').then((response) => {
                 this.twitchAccChars = response.data;
                 // this.listChars=response.data;
                 this.isLoading=false;
@@ -76,6 +77,6 @@ const app = new Vue({
                 });
             });
         },
-        
+
     }
 });

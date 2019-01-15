@@ -77,10 +77,13 @@ $(function () {
                 <div class="row character-info">
                     <h2 v-if="skillTreeReseted" style="color:darkred;background-color: black;opacity: 0.6"> No skill tree data.</h2>
                     <h2 class="name">@{{character.name}}</h2>
-                    <h2 class="info1">Level @{{character.level}} @{{character.class}} 
+                    <h2 class="info1">Level @{{character.level}} @{{character.class}}
                         <small style="color:white;" v-if="isBuild">(patch @{{ build.poe_version }})</small>
                     </h2>
-                    <h2 class="info2" v-if="!isBuild"> @{{character.league}} League @{{characterRank}}</h2>
+                    <a :href="'/ladders/'+character.league">
+                        <h2 class="info2" v-if="!isBuild">
+                        @{{character.league}} League @{{characterRank}}</h2>
+                    </a>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a></h2>
                     <h2 class="info2" v-if="!isBuild"> @{{delveDepth}} </h2>
                 </div>
@@ -302,7 +305,7 @@ $(function () {
     <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
         <br><br>
         <h3 >You havent saved any builds yet!</h3>
-        <span> <a href="/build_tutorial">How to save a build</a></span>
+        <span> <a href="{{route('tutorial.build')}}">How to save a build</a></span>
         <br><br><br><br><br><br>
     </div>
 

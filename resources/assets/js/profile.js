@@ -5,7 +5,7 @@ Vue.component('jewel', require('./components/profile/Jewel.vue'));
 //GRID
 Vue.component('list-characters', require('./components/profile/ListCharacters.vue'));
 //LIST
-Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
+Vue.component('list-characters-rank', require('./components/ListCharacters.vue'));
 
 Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
@@ -16,9 +16,9 @@ Vue.component('bubble', require('./components/profile/Bubble.vue'));
 Vue.component('bandits', require('./components/profile/Bandits.vue'));
 Vue.component('pob-code', require('./components/profile/PobCode.vue'));
 
-Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
+Vue.component('modal-twitch', require('./components/ModalTwitch.vue'));
 Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue'));
-Vue.component('drop-down', require('./components/home/DropDown.vue'));
+Vue.component('drop-down', require('./components/DropDown.vue'));
 
 import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
@@ -477,7 +477,7 @@ new Vue({
                         self.setTreeUrl();
                         return;
                     }else{
-                        
+
                         this.getTreeData(function(response){
                             self.treeData=response.data;
                             self.setTreeUrl();

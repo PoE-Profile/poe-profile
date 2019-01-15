@@ -6,61 +6,58 @@
 
 Route::group(['middleware' => 'web'], function () {
     //Main Page
-    Route::get('/', ['as' => 'home', 'uses' => function () {
+    Route::get('/',function () {
         return view('index');
-    }]);
+    })->name('home');
 
-    Route::get('/ladders', ['as' => 'ladders', 'uses' => function () {
-        return view('ladder');
-    }]);
+    Route::get('/ladders/', 'LadderController@index')->name('ladders.index');
+    Route::get('/ladders/{name}', 'LadderController@show')->name('ladders.show');
+    Route::get('/api/ladders/{name}', 'LadderController@getLadder')
+        ->name('api.ladders');
+    Route::get('/api/private-ladders/{name}', 'LadderController@getPrivateLadder')
+        ->name('api.ladders.private');
 
-    Route::get('/ladders/{ladder_name}', ['as' => 'private-ladders', 'uses' => 'LadderController@privateLadder']);
-
-    Route::get('/twitch', ['as' => 'twitch', 'uses' => function () {
+    Route::get('/twitch', function () {
         return view('twitch');
-    }]);
+    })->name('twitch');
 
-    Route::get('/favorites', ['as' => 'favorites', 'uses' => function () {
+    Route::get('/favorites', function () {
         return view('favorites');
-    }]);
+    })->name('favorites');
 
     Route::get('/about', function () {
         return view('about');
-    });
+    })->name('about');
 
     Route::get('/update_notes', function () {
-        return view('update_notes');
-    });
+        return view('changelog');
+    })->name('changelog');
 
-    Route::get('/profile_tutorial', function () {
+    Route::get('/tutorial/profile', function () {
         return view('profile_tutorial');
-    });
+    })->name('tutorial.profile');
 
-    Route::get('/build_tutorial', function () {
+    Route::get('/tutorial/build', function () {
         return view('build_tutorial');
-    });
+    })->name('tutorial.build');
 
     // saved Builds/Snapshots
-    Route::get('/builds', ['as' => 'index.builds', 'uses' => 'ProfileController@indexBuild']);
-    Route::get('/build/{hash}', ['as' => 'show.build', 'uses' => 'ProfileController@showBuild']);
+    Route::get('/builds', 'ProfileController@indexBuild')->name('index.builds');
+    Route::get('/build/{hash}', 'ProfileController@showBuild')->name('show.build');
 
     //profile routes
-    Route::get('/profile', ['as' => 'view.profile', 'uses' => 'ProfileController@profileDefault']);
-    Route::post('/profile', ['as' => 'view.post.profile', 'uses' => 'ProfileController@postProfile']);
-    Route::get('/profile/{acc}/ranks', ['as' => 'profile.ranks', 'uses' => 'ProfileController@getProfileRanks']);
-    Route::get('/profile/{acc}/snapshots', ['as' => 'profile.snapshots', 'uses' => 'ProfileController@getProfileSnapshots']);
-    Route::get('/profile/{acc}/stashes', ['as' => 'profile.stashes', 'uses' => 'ProfileController@getStashs']);
-    Route::get('/profile/{acc}', ['as' => 'get.profile', 'uses' => 'ProfileController@getProfile']);
-    Route::get('/profile/{acc}/{char}', ['as' => 'get.profile.char', 'uses' => 'ProfileController@getProfileChar']);
+    Route::get('/profile', 'ProfileController@profileDefault')->name('profile');
+    Route::post('/profile', 'ProfileController@postProfile')->name('profile.post');
+    Route::get('/profile/{acc}/ranks', 'ProfileController@getProfileRanks')->name('profile.ranks');
+    Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');
+    Route::get('/profile/{acc}/stashes', 'ProfileController@getStashs')->name('profile.stashes');
+    Route::get('/profile/{acc}', 'ProfileController@getProfile')->name('profile.acc');
+    Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.acc.char');
 
     // routes for passive-skill-tree
-    Route::get('/passive-skill-tree/{any}',
-        ['as' => 'profile.tree', 'uses' => 'SkillTreeController@showSkillTree']
-    );
-    Route::get('/passive-skill-tree/3.2.0/{any}',
-            ['as' => 'profile.tree.two', 'uses' => 'SkillTreeController@showSkillTreeTwo']);
-
-    Route::get('/character-window/get-passive-skills',
-            ['as' => 'profile.tree.passives', 'uses' => 'SkillTreeController@getPassiveSkills']);
+    Route::get('/passive-skill-tree/{any}','SkillTreeController@showSkillTree')
+            ->name('profile.tree');
+    Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
+            ->name('profile.tree.passives');
 
 });

@@ -18,7 +18,7 @@ $('.show-tooltip').tooltip();
 @endsection
 
 @section('content')
-<div class="container text-center" style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;" v-cloak>
+<div class="container text-center home-container-bg" v-cloak>
     <div class="account" style="width:100%">
         <div class="wrapper" style="width: 100%;padding-bottom: 10px">
             <div class="progress-bar" v-if="progress > 0">
@@ -30,15 +30,16 @@ $('.show-tooltip').tooltip();
             <p class="lead" style="text-align:center">
                 Welcome to PoE-Profile.info, ultimate PoE profile Page. <br>
                 Here you can see all of your characters
-                from <a href="https://www.pathofexile.com/" class="about-link" >PathOfExile.com</a> with combined stats data from passive skill tree and items. <br>
+                from <a href="https://www.pathofexile.com/" class="about-link" >PathOfExile.com</a>
+                with combined stats data from passive skill tree and items. <br>
                 <a href="{{ url('/about') }}" class="btn btn-sm btn-outline-warning">Learn more</a> <br>
             </p>
             <br>
         </div>
-        <form enctype="multipart/form-data" action="{{route('view.post.profile')}}" method="post">
+        <form enctype="multipart/form-data" action="{{route('profile.post')}}" method="post">
             <div class="input-group " style="width:50%;margin-left:auto;margin-right:auto;background:#202624;">
-              <!-- <span class="input-group-addon" id="basic-addon1">https://www.pathofexile.com/account/view-profile/</span> -->
-              <input type="text" name="account" class="form-control" style="border-color: #CCCCCC;" placeholder="Account Name...">
+              <input type="text" name="account" class="form-control"
+                    style="border-color: #CCCCCC;" placeholder="Account Name...">
               <span class="input-group-btn">
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-outline-warning" >View Profile!</button>
@@ -53,7 +54,7 @@ $('.show-tooltip').tooltip();
             <a href="/profile/nugiyen/" class="about-link">Nugiyen</a>,
             <a href="/profile/RaizQT/" class="about-link">RaizQt</a>
             <br>
-            <a class="nav-link" href="{{ url('/profile_tutorial') }}" style="color:lightblue">
+            <a class="nav-link" href="{{ route('tutorial.profile') }}" style="color:lightblue">
                 How to change your profile characters tab to public.
             </a>
         </div>

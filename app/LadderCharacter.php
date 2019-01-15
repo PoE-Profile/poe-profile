@@ -8,7 +8,7 @@ class LadderCharacter extends Model
 {
 	protected $fillable = [
         'league', 'rank', 'name', 'class', 'level', 'account_id', 'items_most_sockets',
-        'dead', 'public', 'unique_id', 'online', 'experience', 'stats'
+        'dead', 'public', 'unique_id', 'online', 'experience', 'stats', 'delve_solo', 'delve_default'
     ];
     protected $casts = [
         'items_most_sockets' => 'array',
@@ -57,7 +57,8 @@ class LadderCharacter extends Model
             $query->skill($request->input('skillFilter'));
         }
 
-        return $query->league($request->input('leagueFilter'))->paginate($take);
+        return $query->league($request->input('leagueFilter'))
+                        ->where('rank', '>',0)->paginate($take);
     }
 
     public function getLevelProgressAttribute() {
@@ -75,4 +76,43 @@ class LadderCharacter extends Model
         return (int) round($percentage);
     }
 
+    //map poe api entry to our db struct;
+    static public function poeEntryToArray($entry){
+        $delve = ['default'=>0, 'solo'=>0];
+        if (array_key_exists('depth', $entry['character'])) {
+            $delve['default'] = $entry['character']['depth']['default'];
+            $delve['solo'] = $entry['character']['depth']['solo'];
+        }
+
+        return [
+            'rank' => $entry['rank'],
+            'dead' => $entry['dead'],
+            'name' => $entry['character']['name'],
+            'class' => $entry['character']['class'],
+            'level' => $entry['character']['level'],
+            'unique_id' => $entry['character']['id'],
+            'delve_default' => $delve['default'],
+            'delve_solo' => $delve['solo'],
+            'experience' => $entry['character']['experience'],
+            'online' => $entry['online'],
+            'public' => true
+        ];
+    }
+
+    public function updateLadderInfo($char_info){
+        $this->updateStats($char_info);
+        $this->rank = $char_info['rank'];
+        $this->level = $char_info['level'];
+        $this->dead = $char_info['dead'];
+        $this->unique_id = $char_info['unique_id'];
+        $this->experience = $char_info['experience'];
+        $this->online = $char_info['online'];
+        $this->delve_default=$char_info['delve_default'];
+        $this->delve_solo=$char_info['delve_solo'];
+        $this->save();
+    }
+
+    public function updateStats($char_info){
+        
+    }
 }

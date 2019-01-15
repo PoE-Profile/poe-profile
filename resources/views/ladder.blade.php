@@ -4,7 +4,6 @@
 <script type="text/javascript">
     window.PHP = {
         account: '',
-        poe_leagues: "{{ cache('current_leagues', config('app.poe_leagues')) }}"
     }
 </script>
 @stop
@@ -15,7 +14,7 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ mix('/js/build/ladders.js') }}"></script>
+<script type="text/javascript" src="{{ mix('/js/build/home.js') }}"></script>
 @endsection
 
 @section('styleSheets')
@@ -36,57 +35,23 @@
         </script>
     </div>
 </div>
-<div class="container" style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;" v-cloak>
-    <div class="tab-pane" id="ladders" role="tabpanel" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
-        <div class="text-xs-center1">
-            <ul class="nav nav-pills char-nav pull-right" style="background-color: #211F18;opacity: 0.85;">
-                <li class="nav-item" v-for="league in poe_leagues">
-                    <drop-down  v-on:selected="filterListCharacters" :list="leaguesDropDown(league)"
-                        v-if="isLeagueDropDown(league)" :search="false" style="min-width:200px; padding: 2px;"
-                        :lclass="''" :class="[isLeagueDropDownSelected(league)?'active nav-link':'nav-link ']">
-                        <span v-if="isLeagueDropDownSelected(league)">@{{selectedLeague}}</span>
-                        <span v-else>@{{league.split("::")[0]}}     </span>
-                    </drop-down>
-                    <a v-else href="#" class="nav-link" data-toggle="tab" role="tab"
-                        :class="{'active': league==selectedLeague}"
-                        @click.prevent="filterLeague(league)">
-                        @{{league}}
-                    </a>
-                </li>
-            </ul>
-            <h3 class="" style="padding:7px;">Ladders</h3>
-        </div>
-        <list-characters v-on:filter-list="filterListCharacters" :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"></list-characters>
-        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
-
-        <div class="" v-if="ladderPaginate==null" style="height:100%;">
-            <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
-            <div class="" v-if="listCharsError.length>0">
-                <h3 class="text-xs-center">@{{listCharsError}}</h3>
-            </div>
-        </div>
-        <div class="prevNext text-xs-center" v-if="ladderPaginate.total > 0">
-
-            <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
-            <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
-
-            <div class="sss" style="
-                  left: 0;
-                  right: 0;
-                  margin-left: auto;
-                  margin-right: auto;
-                  width: 360px; ">
-                <span v-for="n in pages" >
-                    <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">@{{n}}</a>
-                </span>
-            </div>
-
-
-            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
-            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>
-
-        </div>
+<div class="container page-bg" v-cloak>
+    <div class="container" style="background-color: #211F18;opacity: 0.85;">
+        <ul class="nav nav-pills char-nav pull-right">
+            @foreach ($current_leagues as $l)
+            <li class="nav-item">
+                <?php
+                $isActiv=(trim($l)==$league->name)?'active':'';
+                 ?>
+                <a href="{{route('ladders.show',$l)}}" class="nav-link {{$isActiv}}">
+                    {{$l}}
+                </a>
+            </li>
+            @endforeach
+        </ul>
+        <h3 class="" style="padding:10px;">Ladders</h3>
     </div>
+    <ladders-page :league="{{$league}}" ></ladders-page>
 </div>
 
 @endsection

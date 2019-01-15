@@ -2,12 +2,10 @@
 <div>
 
     <div v-if="showRank && !archive" class="input-group " style="margin-left:auto;margin-right:auto;background:#202624;">
-
         <input type="text" name="account" v-model="searchBig" class="form-control"
         style="border-color: #CCCCCC;"
         placeholder="Search for Character or Account name"
         v-on:keyup.enter="search()">
-
         <span class="input-group-btn">
         <button type="submit" class="btn btn-outline-warning" @click.prevent="search()">Search</button>
         </span>
@@ -15,45 +13,36 @@
 
     <table class="table table-hover homapage-table">
         <thead>
-            <tr>
-                <!-- <th>#</th> -->
-                <th v-if="showRank">Rank</th>
-                <th v-if="!archive">
-                    <drop-down  v-if="showRank"  v-on:selected="trigerFilterClass" :list="classes">
-                        <span v-if="selectedClass.length>0">{{selectedClass}}</span>
-                        <span v-else>Class</span>
-                    </drop-down>
-                    <span v-else>Class</span>
-                </th>
-                <th v-else>
-                    <span>Class</span>
-                </th>
-                <th>Account</th>
-                <th>
-                    <span v-if="showRank">Character</span>
-                    <span v-else>Last Character</span>
-                </th>
-                <th v-if="!archive">
-                    <drop-down v-if="showRank" v-on:selected="trigerFilterSkills"
-                         style="width:190px; padding: 2px;" :list="skills">
-                        <span v-if="selectedSkill.length>0">{{selectedSkill}}</span>
-                        <span v-else>Skills</span>
-                    </drop-down>
-                    <span v-else>Skill</span>
-                </th>
-                <th v-if="archive||league">
-                    <span>League</span>
-                </th>
-                <th v-if="depth">
-                    Solo Depth
-                </th>
-                <th v-if="depth">
-                    Team Depth
-                </th>
-                <th class="text-center">Level</th>
-                <th v-if="showTwitch">Twitch</th>
-
-            </tr>
+            <slot name="thead">
+                <tr>
+                    <th v-if="showRank">Rank</th>
+                    <th v-if="!archive">
+                        Class
+                    </th>
+                    <th v-else>
+                        <span>Class</span>
+                    </th>
+                    <th>Account</th>
+                    <th>
+                        <span v-if="showRank">Character</span>
+                        <span v-else>Last Character</span>
+                    </th>
+                    <th v-if="!archive">
+                        Skills
+                    </th>
+                    <th v-if="archive||league">
+                        <span>League</span>
+                    </th>
+                    <th v-if="delve">
+                        <a href="#" v-on:click="">Solo Depth</a>
+                    </th>
+                    <th v-if="delve">
+                        <a href="#">Team Depth</a>
+                    </th>
+                    <th class="text-center">Level</th>
+                    <th v-if="showTwitch">Twitch</th>
+                </tr>
+            </slot>
         </thead>
         <tbody>
             <tr v-for="char in charData">
@@ -88,9 +77,7 @@
                             <div class="skill-card card card-inverse">
                                 <img v-bind:src="skill.imgUrl">
                                 <div class="caption-overlay">
-                                    <p class="card-text">
-                                        {{withEllipsis(skill.name,18)}}
-                                    </p>
+                                    <p class="card-text">{{withEllipsis(skill.name,18)}}</p>
                                 </div>
                                 <div class="card-backdrop"></div>
                             </div>
@@ -103,16 +90,17 @@
                         {{char.league}}
                     </span>
                 </td>
-                <td v-if="depth">
+                <td v-if="delve">
                     {{char.delve_solo}}
                 </td>
-                <td v-if="depth">
+                <td v-if="delve">
                     {{char.delve_default}}
                 </td>
                 <td>
                     <div class="html5-progress-bar">
-                        <p>{{char.level}}</p>
-                        <progress v-if="!league"  max="100" :value="char.levelProgress"></progress>
+                        <p><b>{{char.level}}</b></p>
+                        <progress v-if="!league&&char.levelProgress<100"  max="100"
+                        :value="char.levelProgress"></progress>
                     </div>
                 </td>
                 <td class="twitch-cell" v-if="showTwitch">
@@ -153,9 +141,8 @@
 
 <script type="text/javascript">
 
-import { SkillsHelper } from '../../helpers/SkillsHelper.js';
-import {poeHelpers} from '../../helpers/poeHelpers.js';
-import dropDown from './DropDown.vue';
+import { SkillsHelper } from '../helpers/SkillsHelper.js';
+import {poeHelpers} from '../helpers/poeHelpers.js';
 Vue.component('modal-twitch', require('./ModalTwitch.vue'));
 
 export default {
@@ -170,7 +157,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        depth:{
+        delve:{
             type: Boolean,
             default: false,
         },
@@ -180,9 +167,7 @@ export default {
         }
     },
 
-    components: {
-        'dropDown': dropDown,
-    },
+    components: {},
 
     watch : {
         charData: function(val){
@@ -199,35 +184,12 @@ export default {
             searchBig: '',
             isModalVisible: false,
             noResults: false,
-            // showTwitch: false,
             trigerChangeFromFilter:false,
             skillImages: '',
             selectedSkill: '',
             selectedClass: '',
             skills: '',
             stream: null,
-            classes: [
-                'All',
-                'Slayer',
-                'Gladiator',
-                'Champion',
-                'Assassin',
-                'Saboteur',
-                'Trickster',
-                'Juggernaut',
-                'Berserker',
-                'Chieftain',
-                'Necromancer',
-                'Ocultist',
-                'Elemntalist',
-                'Deadeye',
-                'Raider',
-                'Pathfinder',
-                'Inquisitor',
-                'Hierophant',
-                'Guardian',
-                'Ascendant'
-            ]
         }
     },
 
@@ -258,14 +220,6 @@ export default {
                 return true;
             }
         },
-        // noResults: function(){
-        //     if(this.charData.length==0)
-        //     {
-        //         return true;
-        //     }else{
-        //         return false;
-        //     }
-        // }
     },
 
     mounted: function() {
@@ -388,7 +342,9 @@ export default {
 }
 .html5-progress-bar progress {
 	background-color: #f3f3f3;
-    max-width: 33%;
+    /* max-width: 33%; */
+    /* margin: 20px; */
+    width: 100px;
 	border: 0;
 	height: 7px;
 	border-radius: 12px;
@@ -423,4 +379,3 @@ export default {
 
 
 </style>
-

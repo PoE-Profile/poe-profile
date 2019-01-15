@@ -19,7 +19,7 @@ class ProfileController extends Controller
     public function postProfile(Request $request)
     {
         $acc = $request->input('account');
-        return redirect()->route('get.profile',$acc);
+        return redirect()->route('profile.acc',$acc);
     }
 
     public function getProfile($acc)

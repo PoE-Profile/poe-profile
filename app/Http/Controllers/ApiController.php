@@ -94,11 +94,6 @@ class ApiController extends Controller
         return $newFavs;
     }
 
-    public function getLadder(Request $request)
-    {
-        return \App\LadderCharacter::with('account')->filter($request);
-    }
-
     public function getTwitchChars()
     {
         $streamers = \Cache::remember('OnlineStreamers', 15, function () {
