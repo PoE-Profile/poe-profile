@@ -154,9 +154,9 @@ export default {
         },
         characterUrl: function(char){
             if (this.isBuild) {
-                return (new poeHelpers).getBaseDomain() + '/build/' + char.buildId + '/';
+                return route('show.build', char.buildId);
             }
-            return (new poeHelpers).getBaseDomain() + '/profile/' + window.PHP.account + '/' + char.name;
+            return route('profile.acc.char', {acc: window.PHP.account, char: char.name});
         },
 
         withEllipsis: function(text,after){

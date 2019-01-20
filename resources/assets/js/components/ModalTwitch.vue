@@ -9,7 +9,7 @@
           <div class="modal-header">
               <div class="pull-right">
                   <span v-if="stream.account">
-                      <a :href="('/profile/' + stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
+                      <a :href="route('profile.acc', stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
                   </span>
                   <a :href="('https://www.twitch.tv/' + stream.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Twitch</a>
                   <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>

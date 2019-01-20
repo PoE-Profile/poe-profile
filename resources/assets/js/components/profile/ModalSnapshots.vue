@@ -23,7 +23,7 @@
                     <tr v-for="snapshot in snapshots"
                         v-bind:class="[currentHash==snapshot.hash ? 'current-snap' : '']">
 
-                        <td ><a :href="'/build/'+snapshot.hash" >{{snapshot.hash}}</a></td>
+                        <td ><a :href="route('show.build', snapshot.hash)" >{{snapshot.hash}}</a></td>
                         <td>{{snapshot.original_char}}</td>
                         <td>{{snapshot.original_level}}</td>
                         <td>{{snapshot.created_at}}</td>

@@ -80,9 +80,10 @@ class PoeApi
                 return [];
             }
 
-            \App\Jobs\AddCharLeague::dispatch($response);
+            
 
             $response = json_decode((string)$response->getBody(), true);
+            \App\Jobs\AddCharLeague::dispatch($response);
             return $response;
         });
     }

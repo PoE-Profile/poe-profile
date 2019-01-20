@@ -60,11 +60,11 @@
                     </a>
                 </td>
                 <td>
-                    <a :href="ranksUrl(char, true)" >{{char.account.name}}</a>
+                    <a :href="route('profile.acc', char.account.name)" >{{char.account.name}}</a>
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                    <a :href="ranksUrl(char)">{{char.name}}</a>
+                    <a :href="route('profile.acc.char', {acc: char.account.name, char: char.name})">{{char.name}}</a>
                     <span v-if="showRank && !char.public" style="color: gray;font-weight: bold;">(private)</span>
                     <span v-if="char.dead" style="color: red; font-weight: bold;">(dead)</span>
                     </span>

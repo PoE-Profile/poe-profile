@@ -8,6 +8,11 @@ Vue.component('drop-down', require('./components/DropDown.vue'));
 
 var favStore = require('./helpers/FavStore.js');
 
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 const app = new Vue({
     el: '#app',

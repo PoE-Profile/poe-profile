@@ -32,22 +32,22 @@
             <li class="nav-item">
                 <a class="nav-link"
                     v-bind:class="[selectedTab=='profile' ? 'active' : '']"
-                    :href="'/profile/'+ account">Characters</a>
+                    :href="route('profile.acc', account)">Characters</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"
                     v-bind:class="[selectedTab=='ranks' ? 'active' : '']"
-                    :href="'/profile/'+ account + '/ranks'">Ranks</a>
+                    :href="route('profile.ranks', account)">Ranks</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"
                     v-bind:class="[selectedTab=='snapshots' ? 'active' : '']"
-                    :href="'/profile/'+ account + '/snapshots'">Snapshots</a>
+                    :href="route('profile.snapshots', account)">Snapshots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"
                     v-bind:class="[selectedTab=='stashes' ? 'active' : '']"
-                    :href="'/profile/'+ account + '/stashes/'">Public Stash</a>
+                    :href="route('profile.stashes', account)">Public Stash</a>
             </li>
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
@@ -215,7 +215,10 @@ export default {
         this.$nextTick(function () {
             $('.show-tooltip').tooltip();
         })
-        new Clipboard('.clipboard');
+        
+        if (location.pathname.split('/')[1] === 'build') {
+            new Clipboard('.clipboard');
+        }
     },
     methods: {
 

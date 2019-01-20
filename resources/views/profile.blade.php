@@ -80,11 +80,11 @@ $(function () {
                     <h2 class="info1">Level @{{character.level}} @{{character.class}}
                         <small style="color:white;" v-if="isBuild">(patch @{{ build.poe_version }})</small>
                     </h2>
-                    <a :href="'/ladders/'+character.league">
+                    <a :href="route('ladders.show', character.league)">
                         <h2 class="info2" v-if="!isBuild">
                         @{{character.league}} League @{{characterRank}}</h2>
                     </a>
-                    <h2 class="info2" v-if="isBuild"> Original: <a :href="'/profile/'+original_char">@{{original_char}}</a></h2>
+                    <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile', original_char)">@{{original_char}}</a></h2>
                     <h2 class="info2" v-if="!isBuild"> @{{delveDepth}} </h2>
                 </div>
                 <div class="inventory ">

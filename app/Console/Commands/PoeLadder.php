@@ -6,6 +6,7 @@ use App\Account;
 use App\TwitchStreamer;
 use App\LadderCharacter;
 use App\PoeApi;
+use App\Jobs\UpdateLadderStatus;
 
 use Illuminate\Console\Command;
 
@@ -89,7 +90,7 @@ class PoeLadder extends Command
             }
 
             if($this->option('update')){
-                \App\Jobs\UpdateLadderStatus::dispatch($ladderCharacter->id);
+                dispatch(new UpdateLadderStatus($ladderCharacter->id));
             }
         }
 

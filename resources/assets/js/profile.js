@@ -24,6 +24,11 @@ import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
 var profileStore = require('./helpers/profileStore.js');
 
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 new Vue({
     el: '#app',
