@@ -1,57 +1,71 @@
 <template lang="html">
-    <div class="tab-pane" id="ladders" role="tabpanel" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
-
-        <list-characters v-on:filter-list="filterListCharacters"
-            :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []"
-            :delve="true" >
-            <template slot="thead">
-                <th>Rank</th>
-                <th>
-                    <drop-down v-on:selected="trigerFilterClass" :list="classes">
-                        <span v-if="selectedClass.length>0">{{selectedClass}}</span>
-                        <span v-else>Class</span>
-                    </drop-down>
-                </th>
-                <th>Account</th>
-                <th>Character</th>
-                <th>
-                    <drop-down v-on:selected="trigerFilterSkills"
-                         style="width:190px; padding: 2px;" :list="skills">
-                        <span>Skills</span>
-                    </drop-down>
-                </th>
-                <th><a href="#" v-on:click="">Solo Depth</a></th>
-                <th><a href="#">Team Depth</a></th>
-                <th class="text-center">Level</th>
-            </template>
-        </list-characters>
-        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>
-        <div class="prevNext text-xs-center" v-if="ladderPaginate.total > 0">
-
-            <a class="page-link poe-btn" href="#" @click.prevent="changePage(1)">First</a>
-            <a class="page-link poe-btn" href="#" @click.prevent="changePage(ladderPaginate.current_page -1)">Previous</a>
-
-            <div style="
-                  left: 0;
-                  right: 0;
-                  margin-left: auto;
-                  margin-right: auto;
-                  width: 360px; ">
-                <span v-for="n in pages" >
-                    <a class="page-link poe-btn"  :class="(ladderPaginate.current_page === n) ? 'active' : ''" href="#" @click.prevent="changePage(n)">{{n}}</a>
-                </span>
+    <div id="ladders" class="ladder-bg">
+        <div class="row filters pb-1 ">
+            <div class="col-sm-1">
+                <strong>Filter by</strong>
             </div>
-
-            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.last_page)">Last</a>
-            <a class="page-link poe-btn pull-right" href="#" @click.prevent="changePage(ladderPaginate.current_page+1)">Next</a>
-
+            <drop-down class="col-sm-2" v-on:selected="trigerFilterClass" :list="classes">
+                <span v-if="filterParms.hasOwnProperty('class')">{{filterParms.class}}</span>
+                <span v-else>Class</span>
+            </drop-down>
+            <drop-down class="col-sm-2" v-on:selected="trigerFilterSkills" :list="skills">
+                <span v-if="filterParms.hasOwnProperty('skill')">{{filterParms.skill}}</span>
+                <span v-else>Skills</span>
+            </drop-down>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" name="account" v-model="filterParms.search"
+                    placeholder="Search for Character or Account name" class="form-control"
+                    v-on:keyup.enter="filterListCharacters">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn poe-btn btn-secondary"
+                            @click.prevent="filterListCharacters">Search</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <drop-down v-on:selected="trigerSort" :list="sortBy">
+                    <span>Sort by</span>
+                    <span v-if="filterParms.hasOwnProperty('sort')">{{filterParms.sort}}</span>
+                    <span v-else>Rank</span>
+                </drop-down>
+            </div>
+            <div class="col-sm-1">
+                <button type="submit" class="btn btn-outline-warning"
+                    @click.prevent="clearFilters">Clear</button>
+            </div>
         </div>
+
+        <list-characters @filter-skill="trigerFilterSkills" @filter-class="trigerFilterClass"
+            :select="filterParms.rank" :delve="true" :compact="true"
+            :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []" >
+        </list-characters>
+
+        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;" ></loader>
+        <nav class="text-sm-center">
+            <ul class="pagination" >
+                <li class="page-item"><a class="page-link poe-btn" href="#"
+                    @click.prevent="changePage(1)">First</a></li>
+                <li class="page-item"><a class="page-link poe-btn" href="#"
+                    @click.prevent="changePage(ladderPaginate.current_page -1)"> < </a></li>
+                <li class="page-item" v-for="n in pages">
+                    <a class="page-link poe-btn" href="#" @click.prevent="changePage(n)"
+                    :class="(ladderPaginate.current_page === n) ? 'active' : ''">{{n}}</a></li>
+                <li class="page-item"><a class="page-link poe-btn" href="#"
+                    @click.prevent="changePage(ladderPaginate.current_page+1)"> > </a></li>
+                <li class="page-item"><a class="page-link poe-btn " href="#" @blur.prevent=""
+                    @click.prevent="changePage(ladderPaginate.last_page)">Last</a></li>
+            </ul>
+        </nav>
+
     </div>
 </template>
 
 <script>
 import Loader from '../components/Loader.vue';
 import ListCharacters from '../components/ListCharacters.vue';
+import {poeHelpers} from '../helpers/poeHelpers.js';
+var skillsData = require('../helpers/SkillsData.js');
 
 export default {
     components: {Loader, ListCharacters},
@@ -63,18 +77,13 @@ export default {
     },
     data: function(){
         return{
-            // accName: '',
-            // characters: '',
-            classFilter: '',
-            skillFilter: '',
-            leagueFilter: '',
-            searchFilter: '',
-            skillImages: '',
+            filterParms:{},
+            skills: '',
             ladderPaginate: [],
+            sortBy: ['Rank', 'Team-Depth', 'Solo-Depth'],
             isLoading: false,
             listPages: 10,
             pages: 0,
-            selectedClass: '',
             classes: [
                 'All',
                 'Slayer',
@@ -124,87 +133,82 @@ export default {
         },
     },
 
-    computed: {
-        filters: function () {
-            var filter = this.leagueFilter + this.skillFilter + this.classFilter + this.searchFilter;
-            if (filter.charAt(filter.length - 1) === '&') {
-                filter = filter.substring(0, filter.length - 1);
-            }
-            return filter;
-        },
+    computed: {},
 
-    },
-
-    mounted: function () {
-        this.leagueFilter = 'leagueFilter=' + this.league.name + '&';
-        this.filterListCharacters(null);
-
-        if (location.pathname === '/ladders') {
-            // this.watchHashUrl()
+    created: function(){
+        this.skills = Object.keys(skillsData);
+        this.skills.unshift('All');
+        var searchParams = new URL(window.location).searchParams;
+        for(var pair of searchParams.entries()) {
+           this.filterParms[pair[0]] = pair[1];
+        }
+        if(this.filterParms.hasOwnProperty('rank')){
+            this.filterParms.rank=parseInt(this.filterParms.rank);
+            this.filterParms.page = Math.ceil(this.filterParms.rank / 30);
         }
     },
 
+    mounted: function () {
+        this.filterListCharacters();
+    },
+
     methods: {
-
-        filterListCharacters(filter) {
-            if (filter === null) {
-                this.skillFilter = '';
-                this.classFilter = '';
-                this.searchFilter = "";
-            } else {
-
-                if (filter.hasOwnProperty('class')) {
-                    this.classFilter = (filter.class == 'All') ? '' : 'classFilter=' + filter.class + '&';
-                }
-
-                if (filter.hasOwnProperty('skill')) {
-                    this.skillFilter = (filter.skill == 'All') ? '' : 'skillFilter=' + filter.skill + '&';
-                }
-
-                if (filter.hasOwnProperty('search')) {
-                    // this.leagueFilter = ''
-                    this.searchFilter = (filter.search == '') ? '' : 'searchFilter=' + filter.search + '&';
-                }
-            }
-
+        filterListCharacters() {
             this.isLoading = true;
             this.ladderPaginate = [];
             var base_url = '/api/ladders/'+this.league.name;
             if(!this.league.indexed){
                 base_url = '/api/private-ladders/'+this.league.name;
             }
-            var url = base_url +'?' + this.filters;
 
-            axios.get(url).then((response) => {
+            axios.get(base_url,{ params: this.filterParms }).then((response) => {
+                var responsUrl =  new URL(response.request.responseURL);
+                var curentUrl = new URL(location);
+                var stateUrl = curentUrl.pathname+responsUrl.search;
+                window.history.pushState("", "", stateUrl);
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
             });
-            if (location.pathname === '/ladders') {
-                // this.buildHashUrl();
-            }
         },
 
-        goToAcc: function (acc) {
-            window.location = "/profile/" + acc;
+        trigerFilterClass: function(c){
+            this.filterParms.class = c;
+            if(c=='All'){
+                delete this.filterParms.class
+            }
+            this.filterListCharacters();
+        },
+
+        trigerFilterSkills: function(s){
+            this.filterParms.skill = s;
+            if(s=='All'){
+                delete this.filterParms.skill
+            }
+            this.filterListCharacters();
+        },
+
+        trigerSort: function(sort){
+            this.filterParms.sort = sort;
+            if(sort=='Rank'){
+                delete this.filterParms.sort
+            }
+            this.filterListCharacters();
+        },
+
+        clearFilters: function(){
+            this.filterParms={};
+            this.filterListCharacters();
         },
 
         changePage: function (pageNum) {
-
             if (pageNum <= 0) {
                 pageNum = this.ladderPaginate.last_page;
             }
             if (pageNum > this.ladderPaginate.last_page) {
                 pageNum = 1;
             }
-            var base_url = '/api/ladders/'+this.league.name;
-            if(!this.league.indexed){
-                base_url = '/api/private-ladders/'+this.league.name;
-            }
-            var url = base_url +'?' + this.filters + '&page=' + pageNum;
-            axios.get(url).then((response) => {
-                this.ladderPaginate = response.data;
-            });
-            this.buildHashUrl(true);
+            this.filterParms.page = pageNum;
+            this.filterListCharacters();
         },
 
         withEllipsis: function (text, after) {
@@ -214,111 +218,22 @@ export default {
             return text.substring(0, after) + ".."
         },
 
-        trigerFilterClass: function(c){
-            this.classFilter = c;
-            this.filterListCharacters({'class': c});
-        },
-
-        watchHashUrl: function () {
-            if (location.hash === "") {
-                return;
-            }
-            let url = location.hash.split("/");
-            let filters = '';
-            let page = ''
-            url.forEach((el, index) => {
-                if (index == 1) {
-                    filters += 'leagueFilter=' + el + '&';
-                }
-                if (index == 2) {
-                    page = 'page=' + el;
-                }
-                if (el.includes("class-")) {
-                    filters += 'classFilter=' + el.replace('class-', '').replace('-', ' ') + '&';
-                }
-                if (el.includes("skill-")) {
-                    filters += "skillFilter=" + el.replace("skill-", "").replace('-', ' ') + "&";
-                }
-                if (el.includes("?search-")) {
-                    filters += "searchFilter=" + el.replace("?search-", "") + "&";
-                }
-
-            });
-            filters += page;
-            this.isLoading = true;
-            this.ladderPaginate = [];
-            axios.get('/api/ladderData?' + filters).then((response) => {
-                this.ladderPaginate = response.data;
-                this.isLoading = false;
-                this.setFilters(url)
-            });
-
-        },
-
-        setFilters: function (url) {
-            url.forEach((el, index) => {
-                if (index == 1) {
-                    this.leagueFilter = 'leagueFilter=' + el + '&';
-                }
-
-                if (index == 2) {
-                    this.changePage(el);
-                }
-
-                if (el.includes("class-")) {
-                    this.classFilter = 'classFilter=' + el.replace('class-', '').replace('-', ' ') + '&';
-                }
-                if (el.includes("skill-")) {
-                    this.skillFilter = "skillFilter=" + el.replace("skill-", "").replace('-', ' ') + "&";
-                }
-                if (el.includes("?search-")) {
-                    this.searchFilter = "searchFilter=" + el.replace("?search-", "") + "&";
-                }
-            });
-        },
-
-        buildHashUrl: function (page_changed = false) {
-            //on Load
-            if (location.hash === "") {
-                setTimeout(() => {
-                    location.hash = '#/' + this.selectedLeague + '/' + this.ladderPaginate.current_page;
-                }, 1000);
-                return
-            }
-
-            // page changed
-            if (page_changed) {
-                setTimeout(() => {
-                    let url = location.hash.split("/");
-                    url[2] = this.ladderPaginate.current_page;
-                    location.hash = url.join('/');
-                }, 400);
-                return
-            }
-
-            // filter change
-            let filterArr = this.filters.split('&');
-            let url = '';
-            filterArr.forEach(el => {
-                if (el.includes("classFilter")) {
-                    url += '/class-' + el.replace('classFilter=', '').replace(' ', '-');
-                }
-                if (el.includes("skillFilter")) {
-                    url += '/skill-' + el.replace('skillFilter=', '').replace(' ', '-');
-                }
-                if (el.includes("searchFilter")) {
-                    url += '/?search-' + el.replace('searchFilter=', '');
-                }
-            });
-            setTimeout(() => {
-                location.hash = '#/' + this.selectedLeague + '/' + this.ladderPaginate.current_page + url;
-            }, 700);
-
-        }
     }
 
 }
 </script>
 
 <style lang="css">
+.page-link:focus{
+    background-color: #494535;
+    color: #ebb16c;
+}
+.page-link.active{ background-color: #494535; color: #ebb16c;}
+.page-link{ width: 54px; }
+#ladders .pagination{
+    margin-left:auto;margin-right:auto;
+}
+.ladder-bg{
+    background-color: #211F18;opacity: 0.85;min-height:800px;
+}
 </style>

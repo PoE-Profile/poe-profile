@@ -26,7 +26,7 @@ class LadderCharacter extends Model
 
     public function scopeLeague($query, $league)
     {
-        return $query->where('league', '=', $league)->orderBy('rank', 'asc');
+        return $query->where('league', '=', $league);
     }
 
     public function scopeSkill($query, $skill)
@@ -37,28 +37,6 @@ class LadderCharacter extends Model
     public function scopeClass($query, $class)
     {
         return $query->where('class', '=', $class);
-    }
-
-    public function scopeFilter($query, $request)
-    {
-        $take = 30;
-        if ($request->has('searchFilter')) {
-            $query->whereHas('account', function ($query) use (&$request) {
-                    $query->where('name', 'like', '%' . $request->input('searchFilter') . '%');
-                })
-                ->orWhere('name', 'like', '%' . $request->input('searchFilter') . '%');
-        }
-
-        if ($request->has('classFilter')) {
-            $query->class($request->input('classFilter'));
-        }
-
-        if ($request->has('skillFilter')) {
-            $query->skill($request->input('skillFilter'));
-        }
-
-        return $query->league($request->input('leagueFilter'))
-                        ->where('rank', '>',0)->paginate($take);
     }
 
     public function getLevelProgressAttribute() {
@@ -126,7 +104,7 @@ class LadderCharacter extends Model
                 // dump('exp grinded from last update: ' . ($char_info['experience'] - $this->experience));
                 // dump('exp per hour: ' . $this->number_format_short($exp));
             }
-            
+
         }
     }
 

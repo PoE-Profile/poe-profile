@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Sunra\PhpSimple\HtmlDomParser;
 
 class AddCharLeague implements ShouldQueue
 {
@@ -32,11 +33,11 @@ class AddCharLeague implements ShouldQueue
     public function handle()
     {
         $char_league = $this->items_response['character']['league'];
-        $char_league = preg_replace("/\(([^()]*+|(?R))*\)/", "", $char_league);
-        // dd($char_league);
+        // $char_league = preg_replace("/ \(([^()]*+|(?R))*\)/", "", $char_league);
+        $char_league = preg_replace("/ \(PL[0-9]+\)/", '', $char_league);
         $db_league = \App\League::where('name', '=', $char_league)->get();
         if ($db_league->isEmpty()) {
-            
+
             $private_league_data = $this->private_league_parser($char_league);
 
             // \App\League::firstOrCreate([
@@ -51,22 +52,39 @@ class AddCharLeague implements ShouldQueue
     }
 
     private function private_league_parser($league) {
-        $login_info = [
-            'login_email' => '#',
-            'login_password' => '#',
-            'action' => 'login'
-        ];
 
-        $cookieJar = new \GuzzleHttp\Cookie\CookieJar();
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://www.pathofexile.com',
-            'cookies' => $cookieJar,
-        ]);
+        $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray([
+                        'POESESSID' => ''
+                    ], 'pathofexile.com');
 
-        $response = $client->post('/login/', [
-            'form_params' => $login_info,
-        ])->getBody()->getContents();
-        dd($cookieJar);
+        try {
+            // $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client(['cookies' => true]);
+            $response = $client->request(
+                'GET',
+                'https://www.pathofexile.com/private-leagues/league/'.$league,
+                ['cookies' => $cookieJar]
+            );
+
+        }catch (\GuzzleHttp\Exception\ClientException $e) {
+            dd($e);
+            return '';
+        }
+
+        $body = $response->getBody()->getContents();
+        return;
+        dd($body);
+        $html = HtmlDomParser::str_get_html($body);
+        dd($html);
+        // $client = new \GuzzleHttp\Client([
+        //     'base_uri' => 'https://www.pathofexile.com',
+        //     'cookies' => $cookieJar,
+        // ]);
+        //
+        // $response = $client->post('/login/', [
+        //     'form_params' => $login_info,
+        // ])->getBody()->getContents();
+        // dd($cookieJar);
 
         $response2 = $client->get('/private-leagues/league/'.$league)->getBody()->getContents();
 

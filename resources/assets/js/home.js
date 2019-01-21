@@ -24,14 +24,9 @@ const app = new Vue({
         listCharsError:'',
     },
 
-    watch : {
+    watch : {},
 
-    },
-
-
-    computed: {
-
-    },
+    computed: {},
 
     mounted: function () {
         if (location.pathname === '/favorites') {

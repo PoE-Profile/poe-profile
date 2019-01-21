@@ -35,23 +35,31 @@ class LadderController extends Controller
     {
         $query = \App\LadderCharacter::with('account');
         $take = 30;
-        if ($request->has('searchFilter')) {
+        if ($request->has('search')) {
             $query->whereHas('account', function ($query) use (&$request) {
-                    $query->where('name', 'like', '%' . $request->input('searchFilter') . '%');
+                    $query->where('name', 'like', '%' . $request->input('search') . '%');
                 })
-                ->orWhere('name', 'like', '%' . $request->input('searchFilter') . '%');
+                ->orWhere('name', 'like', '%' . $request->input('search') . '%');
         }
 
-        if ($request->has('classFilter')) {
-            $query->class($request->input('classFilter'));
+        if ($request->has('class')) {
+            $query->class($request->input('class'));
         }
 
-        if ($request->has('skillFilter')) {
-            $query->skill($request->input('skillFilter'));
+        if ($request->has('skill')) {
+            $query->skill($request->input('skill'));
         }
 
-        return $query->league($name)
-                    ->where('rank', '>',0)->paginate($take);
+        $query->league($name)->where('rank', '>',0);
+
+        if($request->has('sort')=='Team-Depth') {
+            $sort = $request->input('sort')=='Team-Depth' ? 'delve_default' : 'delve_solo';
+            $query->orderBy($sort, 'DESC');
+        }else{
+            $query->orderBy('rank');
+        }
+
+        return $query->paginate($take);
     }
 
 

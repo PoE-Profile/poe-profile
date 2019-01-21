@@ -20,11 +20,7 @@ $('.show-tooltip').tooltip();
 @section('content')
 <div class="container text-center home-container-bg" v-cloak>
     <div class="account" style="width:100%">
-        <div class="wrapper" style="width: 100%;padding-bottom: 10px">
-            <div class="progress-bar" v-if="progress > 0">
-                <span class="progress-bar-fill" v-bind:style="{width: progress+'%'}"></span>
-            </div>
-        </div>
+
 
         <div class="inner cover">
             <p class="lead" style="text-align:center">
@@ -89,9 +85,7 @@ $('.show-tooltip').tooltip();
         </div>
         <div class="tab-content" style="background-color: #211F18;min-height:800px;">
 
-            <list-characters v-on:filter-list="filterListCharacters"
-                :league="true"
-                :char-data="twitchAccChars"></list-characters>
+            <list-characters :league="true" :char-data="twitchAccChars"></list-characters>
 
             <div class="" v-if="twitchAccChars.length==0" style="height:100%;">
                 <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>

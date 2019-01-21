@@ -1727,12 +1727,7 @@ box-shadow: 0 2px 2px 0 #ebb16c, 0 1px 5px 0 #ebb16c, 0 3px 1px -2px #ebb16c;
     top: 0;
     z-index: 1030;
 }
-.prevNext{
-    padding: 5px;
-    /*background-color: #211F18;*/
-    /*opacity: 0.85;*/
-    height: 55px;
-}
+
 .dropdown-item{
     color: white!important;
     padding: 5px 5px;
