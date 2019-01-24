@@ -1,17 +1,17 @@
 <template>
     <div class="list-group twitch-clips w-100 m-0">
-        <a href="#" v-for="clip in tempClips" @click="openClip(clip)"
+        <a href="#" v-for="clip in tempClips" :key="clip.broadcast_id" @click="openClip(clip)"
         class="list-group-item list-group-item-action p-1">
             <div class="d-flex w-100 pull">
                 <img calss="pull-left p-2" style="height:70px;" alt=""
-                :src="clip.img">
+                :src="clip.thumbnails.tiny">
                 <div class="p-1">
                     <!-- <h5 class="mb-1">Chain please (Mathil1)</h5> -->
                     <p class="mb-1">
                         {{clip.title}}
                     </p>
                     <small class="text-muted">
-                        Jan 21, 2019 | 65,726 views.
+                        {{ formatDate(clip.created_at) }} | {{clip.views}} views.
                     </small>
                 </div>
             </div>
@@ -32,34 +32,54 @@ export default {
   },
     data () {
         return {
-          tempClips: [
-            {
-                title: 'Chain please',
-                img:'https://clips-media-assets2.twitch.tv/AT-cm%7C383392266-preview-260x147.jpg',
-                url: 'https://clips.twitch.tv/embed?clip=BlatantAttractivePeafowlPJSalt'
-            },
-            {
-                title: 'He cant keep getting away with this',
-                img:'https://clips-media-assets2.twitch.tv/AT-cm%7C381399302-preview-260x147.jpg',
-                url: 'https://clips.twitch.tv/embed?clip=AliveOriginalRadicchioSoonerLater'
-            },
-            {
-                title: 'Chain please',
-                img:'https://static-cdn.jtvnw.net/jtv_user_pictures/mathil1-profile_image-39376f797063a87b-50x50.jpeg',
-                url: 'https://clips.twitch.tv/embed?clip=AliveOriginalRadicchioSoonerLater'
-            },
-            {
-                title: 'He cant keep getting away with this',
-                img:'https://static-cdn.jtvnw.net/jtv_user_pictures/cutedog_-profile_image-72976cbe312ba0af-50x50.png',
-                url: 'https://clips.twitch.tv/embed?clip=AliveOriginalRadicchioSoonerLater'
-            },
-          ],
+            tempClips: [],
 
         }
     },
+    mounted: function() {
+        this.twitchPoeLatest()
+    },
+
     methods: {
+        twitchPoeLatest() {
+            let twitchApi = axios.create({
+                baseURL: 'https://api.twitch.tv/kraken',
+                headers: {
+                    Accept: 'application/vnd.twitchtv.v5+json',
+                    'Client-ID': 'gi3es6sr9cmscw4aww6lbt309dyj8e'
+                },
+            })
+
+            let query = {
+                game: 'Path of Exile',
+                trending: true,
+                period: 'day',
+                limit: 5
+            }
+            
+            twitchApi.get('clips/top', { params: query }).then((response) => {
+                this.tempClips = response.data.clips;
+            })
+        },
+
+        formatDate(date) {
+            let tempDate = new Date(date);
+            let monthNames = [
+                "Jan", "Feb", "March",
+                "Apr", "May", "June", "July",
+                "Aug", "Sep", "Oct",
+                "Nov", "Dec"
+            ];
+
+            let day = tempDate.getDate();
+            let monthIndex = tempDate.getMonth();
+            let year = tempDate.getFullYear();
+
+            return monthNames[monthIndex] + ' ' + day + ', ' + year;
+        },
+
         openClip(clip){
-            this.$emit('open-clip', clip.url)
+            this.$emit('open-clip', clip.embed_url)
         }
     }
 

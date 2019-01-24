@@ -95,17 +95,22 @@ class LadderCharacter extends Model
             $last_update = \Carbon\Carbon::parse($this->updated_at);
             $diff = now()->diffInMinutes($last_update);
             $exp = (($char_info['experience'] - $this->experience) / $diff) * 60;
-            if ($diff >= 5 && $diff <= 60) {
+            if ($diff >= 10 && $diff <= 60) {
                 $this->stats = json_encode([
                     'xph' => $this->number_format_short($exp),
+                    'ranks' => $this->ranksDiff($char_info['rank']),
                 ]);
-
-                // dump('diff in minutes from last update: ' . $diff);
-                // dump('exp grinded from last update: ' . ($char_info['experience'] - $this->experience));
-                // dump('exp per hour: ' . $this->number_format_short($exp));
             }
-
         }
+    }
+
+    function ranksDiff($newRank) {
+        $diff = $this->rank - $newRank;
+        if ($diff === 0) {
+            return 'null';
+        }
+
+        return $diff < 0 ? ''.$diff : '+'.$diff;
     }
 
     function number_format_short($n, $precision = 1)
