@@ -33,8 +33,8 @@ class LadderController extends Controller
 
     public function getLadder($name, Request $request)
     {
-        $query = \App\LadderCharacter::with('account');
-        $take = 30;
+        $query = \App\LadderCharacter::with('account')->with('account','account.streamer');
+        $take = 50;
         if ($request->has('search')) {
             $query->whereHas('account', function ($query) use (&$request) {
                     $query->where('name', 'like', '%' . $request->input('search') . '%');

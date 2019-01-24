@@ -1,0 +1,125 @@
+[v-cloak] {
+  display: none;
+}
+body {
+    /* padding-top: 60px; */
+    /* padding-bottom: 30px; */
+    background: #202624;
+    color: white;
+}
+
+.fa a :hover {
+    color: #ddd;
+}
+
+.poe-btn {
+    background-color: #332F24;
+    color: #FFF;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif!important;
+    /*border: 1px solid #ddd;*/
+}
+
+.poe-btn:hover {
+    background-color: #ebb16c;
+    color: #000;
+}
+
+.poe-btn.active {
+    /*background-color: #332F24;*/
+    color: #ebb16c;
+    border-color: #ebb16c;
+}
+.poe-btn.active:hover {
+    color: #fff ;
+    background-color: #ebb16c;
+}
+
+a {
+    color: #FFF;
+}
+a:hover {
+    color: #ebb16c;
+}
+a.navbar-brand{
+    color: #FFF;
+}
+a:focus {
+    color: #ebb16c;
+}
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.navbar-fixed-top{
+    z-index: 999999;
+}
+
+
+.dropdown-menu {
+    background-color: #373A3C;
+}
+
+.dropdown-menu > a {
+		color: white;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: #999999;
+    background-image: none;
+}
+
+.nav-link:hover{
+    color:#ebb16c!important;
+}
+.nav-link:focus{
+    color: white;
+}
+
+.home-container-bg{
+    color: white;
+    background: #000 url(/imgs/atlas-bg.jpg?1476327587) no-repeat top center;
+}
+
+
+
+
+
+
+
+
+
+
+.nav-tabs {
+    border-bottom: 1px solid #ebb16c;
+}
+.nav-tabs .nav-link{
+    border: 0px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+    color: #ebb16c;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: transparent transparent transparent;
+    border-bottom: 5px solid #ebb16c;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #ebb16c;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: transparent transparent transparent;
+    /*border-bottom: 5px solid #ebb16c;*/
+    /*font-weight: bold;*/
+}
+
+.nav-link:hover {
+    border-color: #eceeef #eceeef #ddd;
+    color: #eee;
+}
+
+.nav-link {
+    color: #eee;
+}

@@ -37,7 +37,7 @@
         </div>
 
         <list-characters @filter-skill="trigerFilterSkills" @filter-class="trigerFilterClass"
-            :select="filterParms.rank" :delve="true" :compact="true"
+            :select="filterParms.rank" :delve="true" :compact="true" :load-profile="true"
             :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []" >
         </list-characters>
 
@@ -209,13 +209,6 @@ export default {
             }
             this.filterParms.page = pageNum;
             this.filterListCharacters();
-        },
-
-        withEllipsis: function (text, after) {
-            if (text.length <= after) {
-                return text;
-            }
-            return text.substring(0, after) + ".."
         },
 
     }

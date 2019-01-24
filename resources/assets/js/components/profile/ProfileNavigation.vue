@@ -215,7 +215,7 @@ export default {
         this.$nextTick(function () {
             $('.show-tooltip').tooltip();
         })
-        
+
         if (location.pathname.split('/')[1] === 'build') {
             new Clipboard('.clipboard');
         }
@@ -292,13 +292,13 @@ export default {
             this.favStore.removeBuild(hash);
             var lastBuild = _.last(this.favStore.favBuilds);
             if (lastBuild) {
-                location.replace((new poeHelpers).getBaseDomain() + '/build/' + lastBuild.buildId);
+                location.replace(route('build.show',lastBuild.buildId));
             }
-            location.replace((new poeHelpers).getBaseDomain() + '/builds/');
+            location.replace(route('builds',lastBuild.buildId));
         },
 
         redirectBuild: function(build) {
-            location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
+            location.replace(route('build.show',build.buildId));
         }
     }
 

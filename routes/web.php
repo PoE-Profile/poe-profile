@@ -42,8 +42,8 @@ Route::group(['middleware' => 'web'], function () {
     })->name('tutorial.build');
 
     // saved Builds/Snapshots
-    Route::get('/builds', 'ProfileController@indexBuild')->name('index.builds');
-    Route::get('/build/{hash}', 'ProfileController@showBuild')->name('show.build');
+    Route::get('/builds', 'ProfileController@indexBuild')->name('builds');
+    Route::get('/build/{hash}', 'ProfileController@showBuild')->name('build.show');
 
     //profile routes
     Route::get('/profile', 'ProfileController@profileDefault')->name('profile');
@@ -52,7 +52,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');
     Route::get('/profile/{acc}/stashes', 'ProfileController@getStashs')->name('profile.stashes');
     Route::get('/profile/{acc}', 'ProfileController@getProfile')->name('profile.acc');
-    Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.acc.char');
+    Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.char');
 
     // routes for passive-skill-tree
     Route::get('/passive-skill-tree/{any}','SkillTreeController@showSkillTree')
@@ -60,4 +60,13 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
             ->name('profile.tree.passives');
 
+    Route::get('/race/test', function () {
+        $current_leagues = explode(', ', cache('current_leagues', config('app.poe_leagues')));
+        $league = \App\League::where('name', $current_leagues[3])->first();
+        $race = collect([
+            'league' => $league,
+        ]);
+        // dd($race);
+        return view('race.show', compact('race'));
+    })->name('race');
 });

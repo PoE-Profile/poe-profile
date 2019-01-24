@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main_nonav')
 
 @section('jsData')
 <script type="text/javascript">
@@ -12,6 +12,16 @@
     }
 </script>
 @stop
+
+@section('styleSheets')
+<style>
+.inventoryPanel{
+    margin-top: 0px!important;
+    margin-right: 50px!important;
+}
+body{padding-top: 0px;}
+</style>
+@endsection
 
 @section('title')
     PoE Profile Info {{$acc or "" }} / {{$char or "" }}
@@ -31,31 +41,6 @@ $(function () {
 
 @section('content')
 <div class="container" v-cloak>
-    @include('flash::message')
-
-    <div class="text-xs-center" style="padding-bottom:4px;">
-        <div style="margin: 0 auto;">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- exile_profile_big -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:970px;height:90px"
-                 data-ad-client="ca-pub-5347674045883414"
-                 data-ad-slot="8430954096"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </div>
-
-    <profile-nav :build="isBuild"
-                :account="account"
-                :selected-tab="isBuild ? 'builds' : 'profile'"
-                :twitch="isBuild ? null : dbAcc.streamer"
-                :character="character"></profile-nav>
-
-    <list-characters :characters="accountCharacters" :is-build="isBuild"
-        :account="account" :current-character="character" ></list-characters>
-
     <div class="wrap"  v-if="checkBuilds()">
         <div :class="['row', getCharacterClass()+'-panel']">
             <div class="row">

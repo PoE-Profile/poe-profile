@@ -58,7 +58,7 @@
                         </a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('index.builds') }}">
+						<a class="nav-link" href="{{ route('builds') }}">
                             <i class="fa fa-bookmark" aria-hidden="true"></i> My Builds
                         </a>
 					</li>

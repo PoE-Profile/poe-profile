@@ -1,6 +1,6 @@
 <template>
-<div class="ladder-table" :class="{'compact': compact }">
-    <table class="table table-hover homapage-table">
+<div class="ladder-table h-100" :class="{'compact': compact }">
+    <table class="table h-100 table-hover homapage-table">
         <thead>
             <slot name="thead">
                 <tr>
@@ -49,11 +49,12 @@
                     <i aria-hidden="true" v-if="char.online" class="fa fa-circle show-tooltip"
                         style="color: #02a600;font-size: 14px;"
                         data-toggle="tooltip" data-placement="top" title="online"></i>
-                    <a :href="ranksUrl(char, true)" >{{char.account.name}}</a>
+                    <a :href="ranksUrl(char, true)" @click="selectChar(char,$event)">{{char.account.name}}</a>
                 </td>
                 <td>
                     <span v-if="char.name.length>0">
-                        <a v-if="!char.dead" :href="ranksUrl(char)">{{char.name}}</a>
+                        <a v-if="!char.dead" :href="ranksUrl(char)"
+                            @click="selectChar(char,$event)">{{char.name}}</a>
                         <span v-else>{{char.name}} <i style="color: red;">DEAD</i></span>
                         <span v-if="showRank && !char.public" style="color: gray;font-weight: bold;">(private)</span>
                     </span>
@@ -89,18 +90,18 @@
                         :value="char.levelProgress"></progress>
                     </div>
                 </td>
-                <td class="twitch-cell" v-if="showTwitch">
-                    <a href="#" class="show-tooltip" @click.prevent="openTwitch(char.twitch)"
-                    data-placement="top" title="" :data-original-title="char.twitch.status">
+                <td class="twitch-cell" v-if="showTwitch && char.account.streamer!=null">
+                    <a href="#" class="show-tooltip" @click.prevent="openTwitch(char.account.streamer)"
+                    data-placement="top" title="" :data-original-title="char.account.streamer.status">
                         <div class="card card-inverse twitch-card">
                             <div class="hover">
                                 <span class="fa fa-play fa-5x play"></span>
                             </div>
-                            <img v-bind:src="char.twitch.img_preview">
+                            <img v-bind:src="char.account.streamer.img_preview">
                             <div class="caption-overlay">
                                 <p class="card-text">
-                                    {{char.twitch.name}}<span class="pull-right">
-                                        {{char.twitch.viewers}} viewers</span>
+                                    {{char.account.streamer.name}}<span class="pull-right">
+                                        {{char.account.streamer.viewers}} viewers</span>
                                 </p>
                             </div>
                             <div class="card-backdrop"></div>
@@ -158,6 +159,14 @@ export default {
         compact:{
             type: Boolean,
             default: false,
+        },
+        loadProfile:{
+            type: Boolean,
+            default: true,
+        },
+        showTwitch:{
+            type: Boolean,
+            default: false,
         }
     },
 
@@ -178,17 +187,6 @@ export default {
     },
 
     computed: {
-        showTwitch: function(){
-            // return false;
-            if (this.charData.length <= 0) {
-                return false;
-            }
-            var char = this.charData[0];
-            if('twitch' in char){
-                return true;
-            }
-        },
-
         showRank: function(){
             // return false;
             if(this.charData.length==0){
@@ -212,9 +210,17 @@ export default {
     methods: {
         ranksUrl: function(char, acc=false){
             if (acc) {
-                return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name
+                return route('profile.acc',char.account.name);
             }
-            return (new poeHelpers).getBaseDomain() + '/profile/' + char.account.name + '/'+ char.name
+            return route('profile.char', {acc: char.account.name, char: char.name});
+        },
+
+        selectChar: function(char,event){
+            if(this.loadProfile){
+                return;
+            }
+            event.preventDefault();
+            this.$emit('selected-char', char)
         },
 
         getActiveSkill: function(items){
@@ -279,6 +285,47 @@ export default {
 </script>
 
 <style>
+.homapage-table{
+    /*background: #202624;opacity:0.8;*/
+    background-color: #211F18;margin-bottom: 0rem;
+}
+.homapage-table a{
+    color: #ebb16c;
+}
+.homapage-table tbody tr:hover{
+    /*background-color: rgba(0,0,0,1);*/
+    background-color: #494535;
+    color: #CCCCCC;
+}
+.homapage-table .twitch-cell{
+    width:240px;
+    height: 100px;
+    padding: 0px;
+    font-size: 0.75rem;
+}
+.homapage-table .class-cell{
+    width:90px;
+    height: 70px;
+    padding: 0px;
+    font-size: 0.8rem;
+}
+.class-cell img{
+    width: 90px;
+}
+.twitch-cell img{
+    width:240px;
+}
+.homapage-table .row{
+    width: 40px;
+}
+.homapage-table td,.homapage-table th{
+border-top: 0px solid #eceeef;
+vertical-align: middle;
+}
+.homapage-table thead th{
+border-bottom: 1px solid #ebb16c;
+}
+
 .table {
     color: #fff;
 }
@@ -286,8 +333,8 @@ export default {
     text-align: center;
     line-height: 1;
 }
-.ladder-table    { overflow-y: auto;  height: 100%; }
-.ladder-table th { position: sticky; top: 0; }
+/* .ladder-table    { overflow-y: auto;  }
+.ladder-table th { position: sticky; top: 0; } */
 td {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -382,5 +429,115 @@ tr.dead{background-color: #14130E;color: #626262!important;}
 .compact .home-list-skills .card-text{display: none;}
 .compact .skill-card img ,
 .compact .class-cell img{height: 35px!important;width: 35px;}
+
+.compact .twitch-cell img {
+    height: 35px!important;
+    width: 55px!important;
+}
+.compact .twitch-cell{
+    height: 35px!important;
+    width: 55px!important;
+}
+
+.twitch-card{
+border: 0px;
+margin-bottom: 0rem;
+background-color: #000;
+}
+
+.twitch-card:hover,
+.skill-card:hover{
+box-shadow: 0 2px 2px 0 #ebb16c, 0 1px 5px 0 #ebb16c, 0 3px 1px -2px #ebb16c;
+}
+.twitch-card .card-text{
+    color: #FFFFFF;
+}
+.twitch-card .caption-overlay ,
+.skill-card .caption-overlay {
+    position: absolute;
+    right: 0;
+    top: ;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    padding: 4px;
+}
+.card-backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    /*border-radius: .35rem;*/
+    background: transparent linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 1) 100%) repeat scroll 0% 0%;
+    /*background: transparent linear-gradient(to bottom, transparent 30%, rgba(0, 0, 0, 0.35) 56%, #002d5b 100%) repeat scroll 0% 0%;*/
+}
+.twitch-card .card {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.twitch-card:hover .hover .play {
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+}
+.twitch-card:hover .hover {
+    opacity: 0.7; /* added */
+    top: 0; /* added */
+    z-index: 100;
+    background: black;
+}
+.twitch-card .hover{
+    display: block;
+    position: absolute;
+    right: -100%;
+    opacity: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: inherit;
+}
+
+.home-list-skills{
+    /*width:280px;*/
+    padding: 0;
+    height: 66px;
+    overflow: hidden;
+}
+.home-list-skills li{
+    width: 65px;
+    list-style: none;
+    float: left;
+    height: 65px;
+    margin: 2px;
+    font-size: 0.8rem;
+}
+.skill-cell ul{
+    margin: 0;
+}
+.skill-card{
+    /*filter: brightness(50%);*/
+    border: 0px;
+    margin-bottom: 0px;
+}
+.skill-card .card-text{
+    color: #ebb16c;
+    line-height: 0.9;
+    text-align: center;
+}
+.skill-card img{
+    width: 65px;
+    /*border-radius: .35rem;*/
+}
+
+.skill-cell{
+    width:280px;
+    padding: 0rem!important;
+}
 
 </style>

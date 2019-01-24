@@ -85,7 +85,7 @@ $('.show-tooltip').tooltip();
         </div>
         <div class="tab-content" style="background-color: #211F18;min-height:800px;">
 
-            <list-characters :league="true" :char-data="twitchAccChars"></list-characters>
+            <list-characters :league="true" :char-data="twitchAccChars" show-twitch></list-characters>
 
             <div class="" v-if="twitchAccChars.length==0" style="height:100%;">
                 <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px;"></loader>

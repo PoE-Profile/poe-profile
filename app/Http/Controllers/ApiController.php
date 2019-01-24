@@ -96,8 +96,8 @@ class ApiController extends Controller
 
     public function getTwitchChars()
     {
-        $streamers = \Cache::remember('OnlineStreamers', 15, function () {
-            $online = \App\TwitchStreamer::with('account')->where('online', true)
+        $streamers = \Cache::remember('OnlineStreamers', 10, function () {
+            $online = \App\TwitchStreamer::with('account','account.streamer')->where('online', true)
                                 ->orderBy('viewers', 'desc')->get();
             $online = $online->map(function ($streamerItem, $key) {
                 $char=[];
@@ -112,10 +112,11 @@ class ApiController extends Controller
                         'items_most_sockets'=>'',
                     ];
                 }
-                $char['account']=[
-                    'name'=>$streamerItem->account->name,
-                ];
-                $char['twitch']=$streamerItem;
+                $char['account'] = $streamerItem->account;
+                // $char['account']=[
+                //     'name'=>$streamerItem->account->name,
+                // ];
+                // $char['twitch']=$streamerItem;
                 return $char;
             });
             return $online;

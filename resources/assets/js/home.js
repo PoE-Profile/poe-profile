@@ -3,6 +3,7 @@ require('./bootstrap');
 
 Vue.component('loader', require('./components/Loader.vue'));
 Vue.component('ladders-page', require('./pages/ladders.vue'));
+Vue.component('race-page', require('./pages/race.vue'));
 Vue.component('list-characters', require('./components/ListCharacters.vue'));
 Vue.component('drop-down', require('./components/DropDown.vue'));
 

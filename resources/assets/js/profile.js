@@ -268,7 +268,7 @@ new Vue({
 
             if(this.account==""){
                 var build = _.last(this.favStore.favBuilds);
-                location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
+                location.replace(route('build.show',build.buildId));
             }
 
             var build = window.PHP.build;
@@ -422,13 +422,6 @@ new Vue({
                 return true;
             }
             return false;
-        },
-
-        withEllipsis: function(text,after){
-            if(text.length<=after){
-                return text;
-            }
-            return text.substring(0, after)+".."
         },
 
         toggleItemInfo: function(itemType){
