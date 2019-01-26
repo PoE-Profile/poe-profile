@@ -9,7 +9,11 @@
                     </a>
                 </li>
             </ul>
-            <h3 class="" style="padding:10px;">{{league.name}} Ladder:</h3>
+            <h3 class="" style="padding:10px;">{{league.name}} Ladder:
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Start Auto reload every min."
+                    class="btn btn-sm poe-btn form-inline show-tooltip" @click.prevent="startAutoReload" :class="{'active': autoReload}">
+                    Start Auto <i aria-hidden="true" class="fa fa-refresh"></i></button>
+            </h3>
         </div>
         <div class="row filters pb-1" v-if="league.indexed">
             <div class="col-sm-1">
@@ -103,6 +107,7 @@ export default {
     data: function(){
         return{
             isModalVisible: false,
+            autoReload: false,
             stream: null,
             filterParms:{},
             skills: '',
@@ -180,9 +185,17 @@ export default {
     },
 
     methods: {
+        startAutoReload(){
+            this.autoReload=!this.autoReload;
+            setInterval(()=> {
+              this.filterListCharacters();
+            }, 10000);
+        },
         filterListCharacters() {
-            this.isLoading = true;
-            this.ladderPaginate = [];
+            if(!this.autoReload){
+                this.ladderPaginate = [];
+                this.isLoading = true;
+            }
             var base_url = '/api/ladders/'+this.league.name;
             if(!this.league.indexed){
                 base_url = '/api/private-ladders/'+this.league.name;
