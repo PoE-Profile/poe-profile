@@ -3,10 +3,10 @@
         <div class="d-flex flex-column h-100">
           <div class="h-501" style="height:40%!important;">
               <div class="h-100 d-flex flex-row bd-highlight">
-                  <iframe src="https://player.twitch.tv/?channel=donthecrown"
+                  <iframe src="https://player.twitch.tv/?channel=ziggydlive"
                   frameborder="0" class="m-0 w-50 h-100"
                   allowfullscreen="true" scrolling="no"></iframe>
-                  <iframe src="https://player.twitch.tv/?channel=octavian0"
+                  <iframe src="https://player.twitch.tv/?channel=zizaran"
                   frameborder="0" class="m-0 w-50 h-100 border-left"
                   allowfullscreen="true" scrolling="no"></iframe>
               </div>

@@ -79,11 +79,8 @@ class LadderCharacter extends Model
     }
 
     public function updateLadderInfo($new_char_info){
-        // $this->updateStats($new_char_info);
         $stats = \App\Helpers\LadderStats::char($this);
         $this->stats = $stats->getData($new_char_info);
-        // if($this->stats)
-        //     dump($this->stats);
         $this->rank = $new_char_info['rank'];
         $this->level = $new_char_info['level'];
         $this->dead = $new_char_info['dead'];

@@ -122,13 +122,13 @@ class LadderController extends Controller
             $char->save();
             return $char;
         }
-        $char = $char->fresh()->load('account');
+        $char = $char->fresh()->load('account','account.streamer');
         return $char;
     }
 
     public function getRaceLadder($name, Request $request){
         $current_leagues = explode(', ', cache('current_leagues', config('app.poe_leagues')));
-        $league = \App\League::where('name', $current_leagues[3])->first();
+        $league = \App\League::where('name', 'Kammell Friendship Race (PL3002)')->first();
         $race = collect([
             'league' => $league,
         ]);

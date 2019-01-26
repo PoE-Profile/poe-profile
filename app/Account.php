@@ -70,12 +70,12 @@ class Account extends Model
                         });
             $level=$itemsData['character']['level'];
             $requiredSupports = $level<30 ? 2 : 3 ;
-            $requiredSupports = $level<10 ? 1 : 3 ;
+            $requiredSupports = $level<10 ? 1 : $requiredSupports ;
             if ($supports->count()>=$requiredSupports) {
                 $items_most_sockets[] = $item;
             }
         }
-        
+
         if ($this->last_character==$itemsData['character']['name']) {
             $lastChar=[
                 'league'=>$itemsData['character']['league'],

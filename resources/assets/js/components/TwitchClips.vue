@@ -4,7 +4,7 @@
         class="list-group-item list-group-item-action p-1">
             <div class="d-flex w-100 pull">
                 <img calss="pull-left p-2" style="height:70px;" alt=""
-                :src="clip.thumbnails.tiny">
+                :src="clip.thumbnails.medium">
                 <div class="p-1">
                     <!-- <h5 class="mb-1">Chain please (Mathil1)</h5> -->
                     <p class="mb-1">
@@ -54,9 +54,9 @@ export default {
                 game: 'Path of Exile',
                 trending: true,
                 period: 'day',
-                limit: 5
+                limit: 25
             }
-            
+
             twitchApi.get('clips/top', { params: query }).then((response) => {
                 this.tempClips = response.data.clips;
             })
