@@ -12,6 +12,11 @@
   display: none;
 }
 
+.home-container-bg{
+    color: white;
+    background: #000 url(/imgs/atlas-bg.jpg?1476327587) no-repeat top center;
+}
+
 body {
   padding-top: 70px;
 }
@@ -180,4 +185,8 @@ html, body {
     /*background-color: #f5f5f5;*/
     /*border-right: 1px solid #eee;*/
   }
+}
+
+.page-bg{
+    color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;
 }

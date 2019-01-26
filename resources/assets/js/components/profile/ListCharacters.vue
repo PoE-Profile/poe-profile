@@ -4,21 +4,18 @@
 
         <div class="panel-heading" style="padding:2px;padding-top:7px;height:50px;overflow:hidden;">
 
-        <div class="form-inline" style="margin-bottom: 0;">
-            <input type="text" class="form-control pull-right" style="width:190px;"
-            v-model="searchChar" name="" :placeholder="isBuild ? 'Search Build' : 'Search Name or Class'">
-            <ul class="nav nav-pills char-nav">
-              <li class="nav-item" v-for="league in leagues">
-                  <a href="#" @click.prevent="setLeague(league.name)"
-                  :class="['nav-link', league.name===currentLeague ? 'active' : '']">
-                  {{league.name}}({{league.count}})
-                  </a>
-              </li>
-              <li>
-
-              </li>
-            </ul>
-        </div>
+            <div class="form-inline" style="margin-bottom: 0;">
+                <input type="text" class="form-control pull-right" style="width:190px;"
+                v-model="searchChar" name="" :placeholder="isBuild ? 'Search Build' : 'Search Name or Class'">
+                <ul class="nav nav-pills char-nav">
+                  <li class="nav-item" v-for="league in leagues">
+                      <a href="#" @click.prevent="setLeague(league.name)"
+                      :class="['nav-link', league.name===currentLeague ? 'active' : '']">
+                      {{league.name}}({{league.count}})
+                      </a>
+                  </li>
+                </ul>
+            </div>
 
         </div>
         <ul class="list-characters" style="margin-bottom: 0;">
@@ -33,10 +30,7 @@
                 </a>
             </li>
 
-            <li
-              v-for="char in computetChars"
-            >
-
+            <li v-for="char in computetChars">
                 <a :href="characterUrl(char)">
                   <div :class="['character', char.name === currentCharacter.name ? 'hide-current' : '']">
                       <div :class="'icon2 ' + char.class" style=""></div>
@@ -44,7 +38,6 @@
                       <span class="name">{{withEllipsis(char.name,17)}}</span>
                   </div>
                 </a>
-
             </li>
 
         </ul>
@@ -59,7 +52,6 @@
             <span v-else>
                 Show Less Characters <i class="fa fa-caret-up" aria-hidden="true"></i>
             </span>
-            <!-- Show All <i class="fa fa-caret-down" aria-hidden="true"></i> -->
         </a>
     </div>
 </div>
@@ -79,13 +71,13 @@ export default {
         currentCharacter: {
             type: Object,
             required: true,
-            default: {},
         },
 
         isBuild: {
             type: Boolean,
             default: false,
         },
+        account: { type:String, required: true},
     },
 
     data: function() {
@@ -157,9 +149,9 @@ export default {
         },
         characterUrl: function(char){
             if (this.isBuild) {
-                return (new poeHelpers).getBaseDomain() + '/build/' + char.buildId + '/';
+                return route('build.show', char.buildId);
             }
-            return (new poeHelpers).getBaseDomain() + '/profile/' + window.PHP.account + '/' + char.name;
+            return route('profile.char', {acc: this.account, char: char.name});
         },
 
         withEllipsis: function(text,after){

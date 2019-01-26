@@ -19,7 +19,7 @@ class ProfileController extends Controller
     public function postProfile(Request $request)
     {
         $acc = $request->input('account');
-        return redirect()->route('get.profile',$acc);
+        return redirect()->route('profile.acc',$acc);
     }
 
     public function getProfile($acc)
@@ -40,7 +40,7 @@ class ProfileController extends Controller
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
-    public function getProfileChar($acc, $char)
+    public function getProfileChar(Request $request, $acc, $char)
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
@@ -52,6 +52,10 @@ class ProfileController extends Controller
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
             $char = $chars[0]->name;
+        }
+        if($request->has('race')){
+            return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
+
         }
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }

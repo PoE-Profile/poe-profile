@@ -5,7 +5,7 @@ Vue.component('jewel', require('./components/profile/Jewel.vue'));
 //GRID
 Vue.component('list-characters', require('./components/profile/ListCharacters.vue'));
 //LIST
-Vue.component('list-characters-rank', require('./components/home/ListCharacters.vue'));
+Vue.component('list-characters-rank', require('./components/ListCharacters.vue'));
 
 Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
 Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
@@ -16,14 +16,19 @@ Vue.component('bubble', require('./components/profile/Bubble.vue'));
 Vue.component('bandits', require('./components/profile/Bandits.vue'));
 Vue.component('pob-code', require('./components/profile/PobCode.vue'));
 
-Vue.component('modal-twitch', require('./components/home/ModalTwitch.vue'));
+Vue.component('modal-twitch', require('./components/ModalTwitch.vue'));
 Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue'));
-Vue.component('drop-down', require('./components/home/DropDown.vue'));
+Vue.component('drop-down', require('./components/DropDown.vue'));
 
 import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');
 var profileStore = require('./helpers/profileStore.js');
 
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 new Vue({
     el: '#app',
@@ -90,19 +95,39 @@ new Vue({
     },
 
     computed: {
-
+        ladderChar: function(){
+            var char=null;
+            this.dbAcc.ladder_chars.forEach(c => {
+                if (c.name === this.character.name) {
+                    char = c;
+                }
+            });
+            return char;
+        },
         characterRank: function(){
             var rank = ''
-            var self = this;
             this.dbAcc.ladder_chars.forEach(c => {
-                if (c.name === self.character.name) {
+                if (c.name === this.character.name) {
                     rank = '(Rank: ' + c.rank + ')';
-                    if (c.league !== self.character.league.toLowerCase()) {
+                    if (c.league !== this.character.league.toLowerCase()) {
                         rank = '(Rank: ' + c.rank + ' in ' + _.upperFirst(c.league) + ')';
                     }
                 }
             });
             return rank;
+        },
+
+        delveDepth: function () {
+            var depth = ''
+            this.dbAcc.ladder_chars.forEach(c => {
+                if (c.name === this.character.name) {
+                    depth = '(Delve depth Solo: ' + c.delve_solo + ')';
+                    if (c.league !== this.character.league.toLowerCase()) {
+                        depth = '(Delve depth Solo: ' + c.delve_solo + ' in ' + _.upperFirst(c.league) + ')';
+                    }
+                }
+            });
+            return depth;
         },
 
         stickedStatItems: function(){
@@ -251,7 +276,7 @@ new Vue({
 
             if(this.account==""){
                 var build = _.last(this.favStore.favBuilds);
-                location.replace((new poeHelpers).getBaseDomain() + '/build/' + build.buildId);
+                location.replace(route('build.show',build.buildId));
             }
 
             var build = window.PHP.build;
@@ -407,13 +432,6 @@ new Vue({
             return false;
         },
 
-        withEllipsis: function(text,after){
-            if(text.length<=after){
-                return text;
-            }
-            return text.substring(0, after)+".."
-        },
-
         toggleItemInfo: function(itemType){
             this.hoveredItem = '';
             this.showItem = !this.showItem;
@@ -465,7 +483,7 @@ new Vue({
                         self.setTreeUrl();
                         return;
                     }else{
-                        
+
                         this.getTreeData(function(response){
                             self.treeData=response.data;
                             self.setTreeUrl();

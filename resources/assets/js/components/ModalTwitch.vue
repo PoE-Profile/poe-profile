@@ -9,7 +9,7 @@
           <div class="modal-header">
               <div class="pull-right">
                   <span v-if="stream.account">
-                      <a :href="('/profile/' + stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
+                      <a :href="route('profile.acc', stream.account.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Profile</a>
                   </span>
                   <a :href="('https://www.twitch.tv/' + stream.name)" class="btn btn-sm poe-btn poe-btn-twitch">Go to Twitch</a>
                   <button type="button" class="btn btn-sm poe-btn active" @click="close">Close</button>
@@ -20,7 +20,7 @@
           <div class="modal-body">
             <iframe :src="streamUrl"
                 frameborder="0" allowfullscreen="true" scrolling="no"
-                height="550" width="100%"></iframe>
+                height="540" width="100%"></iframe>
           </div>
 
         </div>
@@ -115,7 +115,7 @@ export default {
 
 .modal-body {
   position: relative;
-  padding: 10px 5px;
+  padding: 0px 2px;
   color: #FFF;
   background-color: rgb(33, 31, 24);
 }

@@ -363,6 +363,23 @@ class Jewels
                     }
                 }
 
+                // Transform 50% increased Effect of non-Keystone Passive Skills / Might of the Meek jewel
+                if (str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Might of the Meek')) {
+                    for ($i = 0; $i < count($point->sd); $i++) {
+                        // if Keystone continue
+                        if ($point->ks) {
+                            continue;
+                        }
+                        $mod = $point->sd[$i];
+
+                        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+                        $modValue += $modValue * 0.5; 
+                        $modName = preg_replace('/\d+/u', '#', $mod);
+                        $point->sd[$i] = str_replace('#', round($modValue), $modName);
+                    }
+                }
+                
+
             }
            
         }

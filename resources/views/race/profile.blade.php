@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main_nonav')
 
 @section('jsData')
 <script type="text/javascript">
@@ -12,6 +12,16 @@
     }
 </script>
 @stop
+
+@section('styleSheets')
+<style>
+.inventoryPanel{
+    margin-top: 0px!important;
+    margin-right: 50px!important;
+}
+body{padding-top: 0px;}
+</style>
+@endsection
 
 @section('title')
     PoE Profile Info {{$acc or "" }} / {{$char or "" }}
@@ -31,31 +41,6 @@ $(function () {
 
 @section('content')
 <div class="container" v-cloak>
-    @include('flash::message')
-
-    <div class="text-xs-center" style="padding-bottom:4px;">
-        <div style="margin: 0 auto;">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- exile_profile_big -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:970px;height:90px"
-                 data-ad-client="ca-pub-5347674045883414"
-                 data-ad-slot="8430954096"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </div>
-
-    <profile-nav :build="isBuild"
-                :account="account"
-                :selected-tab="isBuild ? 'builds' : 'profile'"
-                :twitch="isBuild ? null : dbAcc.streamer"
-                :character="character"></profile-nav>
-
-    <list-characters :characters="accountCharacters" :is-build="isBuild"
-        :account="account" :current-character="character" ></list-characters>
-
     <div class="wrap"  v-if="checkBuilds()">
         <div :class="['row', getCharacterClass()+'-panel']">
             <div class="row">
@@ -66,7 +51,8 @@ $(function () {
                 <div style="padding:4px 4px 0 0;">
                     <pob-code :account="account" :character="character.name" class="pull-right" style=""></pob-code>
 
-                    <button class="btn btn-sm poe-btn show-tooltip pull-right mr-1"
+                    <button class="btn btn-sm poe-btn show-tooltip pull-right"
+                            style="margin-right: 10px;"
                             @click.prevent="isSnapshotsVisible = true"
                             data-toggle="tooltip" data-placement="top" title="Show snapshots">
                         <i class="fa fa-clone" aria-hidden="true"></i> Snapshots
@@ -80,24 +66,12 @@ $(function () {
                     <h2 class="info1">Level @{{character.level}} @{{character.class}}
                         <small style="color:white;" v-if="isBuild">(patch @{{ build.poe_version }})</small>
                     </h2>
-                        <h2 class="info2 show-tooltip" v-if="!isBuild"
-                            title="Click to Load League" data-placement="bottom">
-                            <a v-if="ladderChar" :href="route('ladders.show', ladderChar.league)+'?rank='+ladderChar.rank">
-                                @{{ladderChar.league}} League (Rank: @{{ladderChar.rank}})
-                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
-                            </a>
-                            <a v-else :href="route('ladders.show', character.league)">
-                                @{{character.league}} League
-                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
-                            </a>
-                        </h2>
+                    <a :href="route('ladders.show', character.league)+'?rank=155'">
+                        <h2 class="info2" v-if="!isBuild">
+                        @{{character.league}} League @{{characterRank}}</h2>
                     </a>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile')+'/'+original_char">@{{original_char}}</a></h2>
-                    <h2 class="info2" v-if="!isBuild">
-                        <span v-if="ladderChar && ladderChar.delve_solo>0">
-                            Delve Solo depth: @{{ladderChar.delve_solo}}
-                        </span>
-                    </h2>
+                    <h2 class="info2" v-if="!isBuild"> @{{delveDepth}} </h2>
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">

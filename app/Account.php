@@ -53,15 +53,25 @@ class Account extends Model
             $itemsData=PoeApi::getItemsData($this->name, $this->last_character);
         }
         if (!array_key_exists('items', $itemsData)) {
-            var_dump('private acc');
-            return;
+            return false;
         }
         $items_most_sockets = [];
         foreach ($itemsData['items'] as $item) {
             if (!array_key_exists('sockets', $item)) {
                 continue;
             }
-            if (count($item['sockets']) >= 5) {
+            $grouped = collect($item['sockets'])->groupBy('group');
+            $item_most_links=count($grouped[0]);
+            // dump($item_most_links);
+            $supports = collect($item['socketedItems'])
+                        ->where('support',true)
+                        ->filter(function ($item) use($item_most_links){
+                            return $item['socket'] < $item_most_links;
+                        });
+            $level=$itemsData['character']['level'];
+            $requiredSupports = $level<30 ? 2 : 3 ;
+            $requiredSupports = $level<10 ? 1 : $requiredSupports ;
+            if ($supports->count()>=$requiredSupports) {
                 $items_most_sockets[] = $item;
             }
         }
@@ -77,13 +87,14 @@ class Account extends Model
             $this->last_character_info=$lastChar;
             $this->save();
         }
-
-        $ladder_char=$this->ladderChars()->where('name', $itemsData['character']['name'])->first();
+        $ladder_char=$this->ladderChars()
+                        ->where('name', $itemsData['character']['name'])->first();
         if($ladder_char){
             $ladder_char->items_most_sockets=$items_most_sockets;
             $ladder_char->public=true;
             $ladder_char->save();
         }
+        return true;
 
     }
 

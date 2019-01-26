@@ -35,12 +35,11 @@
         </script>
     </div>
 </div>
-<div class="container" style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;" v-cloak>
-    <div class="tab-pane" id="ladders" role="tabpanel"
-        v-if="twitchAccChars.length>0"
-        style="background-color: #211F18;opacity: 0.85;min-height:800px;">
+<div class="container" v-cloak
+    style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;">
+    <div class="tab-pane"  style="background-color: #211F18;opacity: 0.85;">
         <h3 class="" style="padding:7px;">Twitch</h3>
-        <list-characters :char-data="twitchAccChars" :league="true" ></list-characters>
+        <twitch-page></twitch-page>
     </div>
 </div>
 

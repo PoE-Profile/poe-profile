@@ -13,7 +13,8 @@
         "laravel/framework": "5.5.*",
         "laravel/horizon": "^2.0",
         "laravel/tinker": "~1.0",
-        "sunra/php-simple-html-dom-parser": "^1.5"
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "tightenco/ziggy": "^0.6.9"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

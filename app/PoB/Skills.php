@@ -27,7 +27,7 @@ class Skills
         $gear = $this->items;
 
         $gemsArr = [];
-        $handle = fopen('../public/jsons/gems.txt', "r");
+        $handle = fopen(app_path('/PoB/gems.txt'), "r");
         while (($line = fgets($handle)) !== false) {
             $gemsArr[] = ['nameSpec' => explode("|", $line)[0], 'skillId' => explode("|", $line)[1] ];
         }

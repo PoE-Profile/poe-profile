@@ -59,7 +59,7 @@ $(function () {
         @endif
     </div>
     <div class="list-ranks" v-else>
-        <list-characters-rank :archive="true" :char-data="rankArchives"></list-characters-rank>
+        <list-characters-rank league :char-data="rankArchives"></list-characters-rank>
     </div>
 </div>
 @endsection
