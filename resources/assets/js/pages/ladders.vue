@@ -18,7 +18,7 @@
             <h3 class="" style="padding:10px;">{{league.name}} Ladder:
                 <button type="button" data-toggle="tooltip" data-placement="bottom" title="Start Auto reload every min."
                     class="btn btn-sm poe-btn form-inline show-tooltip" @click.prevent="startAutoReload" :class="{'active': autoReload}">
-                    Start Auto <i aria-hidden="true" class="fa fa-refresh"></i></button>
+                    <span v-if="!autoReload">Start </span>Auto <i aria-hidden="true" class="fa fa-refresh"></i></button>
             </h3>
         </div>
         <div class="row filters pb-1" v-if="league.indexed">
