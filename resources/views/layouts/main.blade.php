@@ -88,7 +88,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ route('changelog') }}">
 							<i class="fa fa-history" aria-hidden="true" style="color: orange;"></i>
-							ChangelogV2.3
+							ChangelogV2.4
 						</a>
 					</li>
 					<li class="nav-item float-lg-right">
