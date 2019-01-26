@@ -2,7 +2,7 @@
 <div>
     <div id="ladders" class="ladder-bg">
         <div class="row" v-if="league.name.toLowerCase()=='Kammell Friendship Race (PL3002)'.toLowerCase()">
-            <iframe src="https://player.twitch.tv/?channel=ziggydlive" allowfullscreen="allowfullscreen"
+            <iframe src="https://player.twitch.tv/?channel=ziggydlive&autoplay=false" allowfullscreen="allowfullscreen"
             scrolling="no" width="79%" height="540" frameborder="0"></iframe>
             <iframe src="https://www.twitch.tv/embed/ziggydlive/chat"
             frameborder="0" scrolling="no" height="550" width="20%"></iframe>
