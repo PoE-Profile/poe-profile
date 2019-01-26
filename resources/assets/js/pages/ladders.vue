@@ -189,7 +189,7 @@ export default {
             this.autoReload=!this.autoReload;
             setInterval(()=> {
               this.filterListCharacters();
-            }, 10000);
+          }, 60000);
         },
         filterListCharacters() {
             if(!this.autoReload){
