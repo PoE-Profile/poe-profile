@@ -16,6 +16,10 @@ Route::group(['middleware' => 'web'], function () {
         ->name('api.ladders');
     Route::get('/api/private-ladders/{name}', 'LadderController@getPrivateLadder')
         ->name('api.ladders.private');
+    Route::post('/api/ladders/update-skill/', 'LadderController@updateCharacterSkill')
+        ->name('api.ladders.skill');
+    Route::get('/race/{name}', 'LadderController@getRaceLadder')->name('race');
+
 
     Route::get('/twitch', function () {
         return view('twitch');
@@ -60,13 +64,4 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
             ->name('profile.tree.passives');
 
-    Route::get('/race/test', function () {
-        $current_leagues = explode(', ', cache('current_leagues', config('app.poe_leagues')));
-        $league = \App\League::where('name', $current_leagues[3])->first();
-        $race = collect([
-            'league' => $league,
-        ]);
-        // dd($race);
-        return view('race.show', compact('race'));
-    })->name('race');
 });

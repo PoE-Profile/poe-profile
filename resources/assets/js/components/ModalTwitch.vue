@@ -20,7 +20,7 @@
           <div class="modal-body">
             <iframe :src="streamUrl"
                 frameborder="0" allowfullscreen="true" scrolling="no"
-                height="550" width="100%"></iframe>
+                height="540" width="100%"></iframe>
           </div>
 
         </div>
@@ -115,7 +115,7 @@ export default {
 
 .modal-body {
   position: relative;
-  padding: 10px 5px;
+  padding: 0px 2px;
   color: #FFF;
   background-color: rgb(33, 31, 24);
 }

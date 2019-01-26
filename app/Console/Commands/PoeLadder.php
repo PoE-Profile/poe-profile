@@ -12,7 +12,7 @@ use Illuminate\Console\Command;
 
 class PoeLadder extends Command
 {
-    protected $signature = 'poe:ladder {--select} {--total=} {--update} {--debug} {--delve}';
+    protected $signature = 'poe:ladder {--select} {--name=} {--update} {--debug} {--delve}';
     protected $description = 'Take all characters from specific League';
     private $totalIndexedRanks = 3000;
     private $take=200;
@@ -41,6 +41,25 @@ class PoeLadder extends Command
         }
 
         $currentLeagues = explode(', ', \Cache::get('current_leagues'));
+
+        if($this->option('name')){
+            $name = $this->option('name');
+            $league = \App\League::where('name', $name)->first();
+            if(!$league){
+                $league = \App\League::firstOrCreate([
+                    'name' => $name,
+                    'type' => 'private',
+                    'rules' => '',
+                    'indexed' => true
+                ]);
+            }else{
+                $league->indexed=true;
+                $league->save();
+            }
+            $this->selectedLeague=$name;
+            $currentLeagues[] = $this->selectedLeague;
+        }
+
         foreach ($currentLeagues as $league) {
             if(strlen($this->selectedLeague)>0 && $this->selectedLeague!=$league){
                 continue;
@@ -57,6 +76,11 @@ class PoeLadder extends Command
                     $response = PoeApi::getLadder($league,$offset);
                 }else{
                     $response = PoeApi::getLadder($league,$offset,$this->take,$delve);
+                }
+                //if wrong name $league 404 ,skip curent $league
+                if(!$response||$offset>=$response['total']){
+                    $i=$pages;
+                    continue;
                 }
                 $this->index($league,$response);
                 $bar->advance();

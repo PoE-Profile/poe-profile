@@ -13,6 +13,7 @@ class LadderCharacter extends Model
     protected $casts = [
         'items_most_sockets' => 'array',
         'dead' => 'boolean',
+        'stats' => 'array',
         'online' => 'boolean',
         'public' => 'boolean',
     ];
@@ -77,71 +78,22 @@ class LadderCharacter extends Model
         ];
     }
 
-    public function updateLadderInfo($char_info){
-        $this->updateStats($char_info);
-        $this->rank = $char_info['rank'];
-        $this->level = $char_info['level'];
-        $this->dead = $char_info['dead'];
-        $this->unique_id = $char_info['unique_id'];
-        $this->experience = $char_info['experience'];
-        $this->online = $char_info['online'];
-        $this->delve_default=$char_info['delve_default'];
-        $this->delve_solo=$char_info['delve_solo'];
+    public function updateLadderInfo($new_char_info){
+        // $this->updateStats($new_char_info);
+        $stats = \App\Helpers\LadderStats::char($this);
+        $this->stats = $stats->getData($new_char_info);
+        // if($this->stats)
+        //     dump($this->stats);
+        $this->rank = $new_char_info['rank'];
+        $this->level = $new_char_info['level'];
+        $this->dead = $new_char_info['dead'];
+        $this->unique_id = $new_char_info['unique_id'];
+        $this->experience = $new_char_info['experience'];
+        $this->online = $new_char_info['online'];
+        $this->delve_default=$new_char_info['delve_default'];
+        $this->delve_solo=$new_char_info['delve_solo'];
         $this->save();
     }
 
-    public function updateStats($char_info){
-        if ($this->online) {
-            $last_update = \Carbon\Carbon::parse($this->updated_at);
-            $diff = now()->diffInMinutes($last_update);
-            $exp = (($char_info['experience'] - $this->experience) / $diff) * 60;
-            if ($diff >= 10 && $diff <= 60) {
-                $this->stats = json_encode([
-                    'xph' => $this->number_format_short($exp),
-                    'ranks' => $this->ranksDiff($char_info['rank']),
-                ]);
-            }
-        }
-    }
 
-    function ranksDiff($newRank) {
-        $diff = $this->rank - $newRank;
-        if ($diff === 0) {
-            return 'null';
-        }
-
-        return $diff < 0 ? ''.$diff : '+'.$diff;
-    }
-
-    function number_format_short($n, $precision = 1)
-    {
-        if ($n < 900) {
-        // 0 - 900
-            $n_format = number_format($n, $precision);
-            $suffix = '';
-        } else if ($n < 900000) {
-        // 0.9k-850k
-            $n_format = number_format($n / 1000, $precision);
-            $suffix = 'K';
-        } else if ($n < 900000000) {
-        // 0.9m-850m
-            $n_format = number_format($n / 1000000, $precision);
-            $suffix = 'M';
-        } else if ($n < 900000000000) {
-        // 0.9b-850b
-            $n_format = number_format($n / 1000000000, $precision);
-            $suffix = 'B';
-        } else {
-        // 0.9t+
-            $n_format = number_format($n / 1000000000000, $precision);
-            $suffix = 'T';
-        }
-        // Remove unecessary zeroes after decimal. "1.0" -> "1"; "1.00" -> "1"
-        // Intentionally does not affect partials, eg "1.50" -> "1.50"
-        if ($precision > 0) {
-            $dotzero = '.' . str_repeat('0', $precision);
-            $n_format = str_replace($dotzero, '', $n_format);
-        }
-        return $n_format . $suffix;
-    }
 }

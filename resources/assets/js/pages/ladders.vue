@@ -1,6 +1,17 @@
 <template lang="html">
+<div>
     <div id="ladders" class="ladder-bg">
-        <div class="row filters pb-1 ">
+        <div class="container" style="">
+            <ul class="nav nav-pills char-nav pull-right" v-if="league.type=='public'">
+                <li class="nav-item" v-for="l in leagues">
+                    <a :href="route('ladders.show',l)" class="nav-link" :class="{'active':(l==league.name)}">
+                        {{l}}
+                    </a>
+                </li>
+            </ul>
+            <h3 class="" style="padding:10px;">{{league.name}} Ladder:</h3>
+        </div>
+        <div class="row filters pb-1" v-if="league.indexed">
             <div class="col-sm-1">
                 <strong>Filter by</strong>
             </div>
@@ -36,8 +47,11 @@
             </div>
         </div>
 
-        <list-characters @filter-skill="trigerFilterSkills" @filter-class="trigerFilterClass"
-            :select="filterParms.rank" :delve="true" :compact="true" :load-profile="true"
+        <list-characters
+            @filter-skill="trigerFilterSkills"
+            @filter-class="trigerFilterClass"
+            @selected-twitch="openTwitch"
+            :select="filterParms.rank" :delve="true" :compact="true" showTwitch :showSkills="league.indexed"
             :char-data="(ladderPaginate.data !== 'Undefined') ? ladderPaginate.data : []" >
         </list-characters>
 
@@ -58,7 +72,13 @@
             </ul>
         </nav>
 
+
+
     </div>
+    <div style="background:#000;opacity: 1!important;">
+        <modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal" ></modal-twitch>
+    </div>
+</div>
 </template>
 
 <script>
@@ -66,6 +86,7 @@ import Loader from '../components/Loader.vue';
 import ListCharacters from '../components/ListCharacters.vue';
 import {poeHelpers} from '../helpers/poeHelpers.js';
 var skillsData = require('../helpers/SkillsData.js');
+Vue.component('modal-twitch', require('../components/ModalTwitch.vue'));
 
 export default {
     components: {Loader, ListCharacters},
@@ -74,9 +95,15 @@ export default {
             type: Object,
             required: true,
         },
+        leagues: {
+            type: Array,
+            default: [],
+        },
     },
     data: function(){
         return{
+            isModalVisible: false,
+            stream: null,
             filterParms:{},
             skills: '',
             ladderPaginate: [],
@@ -144,7 +171,7 @@ export default {
         }
         if(this.filterParms.hasOwnProperty('rank')){
             this.filterParms.rank=parseInt(this.filterParms.rank);
-            this.filterParms.page = Math.ceil(this.filterParms.rank / 30);
+            this.filterParms.page = Math.ceil(this.filterParms.rank / 50);
         }
     },
 
@@ -168,7 +195,26 @@ export default {
                 window.history.pushState("", "", stateUrl);
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
+                this.loadTooltips();
+                this.scrollToRnak();
             });
+        },
+
+        loadTooltips(){
+            Vue.nextTick(function () {
+                $('.show-tooltip').tooltip();
+            });
+        },
+
+        scrollToRnak(){
+            if(this.filterParms.hasOwnProperty('rank')){
+                var row = this.filterParms.rank % 50;
+                row=(row==0)?50:row;
+                var scrollTo=(row*40)+100;
+                Vue.nextTick(()=> {
+                    window.scrollTo(0, scrollTo);
+                });
+            }
         },
 
         trigerFilterClass: function(c){
@@ -211,6 +257,15 @@ export default {
             this.filterListCharacters();
         },
 
+        openTwitch: function(stream){
+            this.stream = stream;
+            this.isModalVisible=true;
+        },
+        closeModal: function() {
+            this.stream = null;
+            this.isModalVisible = false;
+        }
+
     }
 
 }
@@ -218,8 +273,8 @@ export default {
 
 <style lang="css">
 .page-link:focus{
-    background-color: #494535;
-    color: #ebb16c;
+    background-color: #332F24;
+    color: #FFFFFF;
 }
 .page-link.active{ background-color: #494535; color: #ebb16c;}
 .page-link{ width: 54px; }
@@ -227,6 +282,6 @@ export default {
     margin-left:auto;margin-right:auto;
 }
 .ladder-bg{
-    background-color: #211F18;opacity: 0.85;min-height:800px;
+    background-color: #211F18;opacity: 0.85;
 }
 </style>

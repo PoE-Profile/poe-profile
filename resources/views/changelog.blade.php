@@ -31,14 +31,15 @@
                     <li>Expirience progress bar</li>
                     <li>Added filters to Ladders URI,  now you are able to share links</li>
                     <li>Displaying private leagues</li>
-                    <li>Added link to twitch if streaming</li>
+                    <li>Added link to twitch</li>
                     <li>List support gems for skills on hover</li>
+                    <li>Added button in skills for updateing skills<l/i>
                 </ul>
             </li>
             <br>
             <li>Added calculation for Fluid Motion Solution transform jewel</li>
         </ul>
-        
+
         <h4>
             If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
             and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
@@ -52,7 +53,6 @@
             <li>Added images for new skills</li>
             <li>Fixed bug: props on flasks now display properly</li>
             <li>Fixed bug: after favoriting an account there is a link to Favorites Page</li>
-            <li>More coming soon ....</li>
     	</ul>
 
         <h2>What is new <small>(version 2.2 - June 8 ,2018)</small> </h2>
@@ -63,7 +63,7 @@
             <li>Added new leagues to ladder</li>
             <li>Skill Tree versioning for snapshots/builds </li>
     	</ul>
-        
+
         <h2>What is new <small>(version 2.1 - Mar 11 ,2018)</small> </h2>
         <ul>
             <li>Automatically make Snapshots of Twitch streamers</li>
@@ -75,7 +75,7 @@
             <li>Added <a href="{{route('tutorial.build')}}" class="about-link">Tutorial</a> for Builds</li>
     	</ul>
 
-        
+
         <h2>What is new <small>(version 2.0 - Mar 5 ,2018)</small> </h2>
         <ul>
             <li>Project updated to Laralve 5.5 using Vuejs 2.x</li>

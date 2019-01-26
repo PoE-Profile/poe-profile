@@ -12,15 +12,12 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" title="no title">
 	<link rel="stylesheet" type="text/css" href="{{ asset('/css/test_race.css') }}">
     <!-- <link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/profile.css"> -->
-    <style media="screen">
-        body {overflow: hidden;}
-        header {opacity: 0.85;}
-    </style>
 </head>
 <body>
     <div id="app">
         <race-page :race="{{$race}}"></race-page>
     </div>
+
     @routes
 	@yield('jsData')
 

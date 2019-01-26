@@ -66,8 +66,7 @@ $(function () {
                 <div style="padding:4px 4px 0 0;">
                     <pob-code :account="account" :character="character.name" class="pull-right" style=""></pob-code>
 
-                    <button class="btn btn-sm poe-btn show-tooltip pull-right"
-                            style="margin-right: 10px;"
+                    <button class="btn btn-sm poe-btn show-tooltip pull-right mr-1"
                             @click.prevent="isSnapshotsVisible = true"
                             data-toggle="tooltip" data-placement="top" title="Show snapshots">
                         <i class="fa fa-clone" aria-hidden="true"></i> Snapshots
@@ -81,12 +80,24 @@ $(function () {
                     <h2 class="info1">Level @{{character.level}} @{{character.class}}
                         <small style="color:white;" v-if="isBuild">(patch @{{ build.poe_version }})</small>
                     </h2>
-                    <a :href="route('ladders.show', character.league)+'?rank=155'">
-                        <h2 class="info2" v-if="!isBuild">
-                        @{{character.league}} League @{{characterRank}}</h2>
+                        <h2 class="info2 show-tooltip" v-if="!isBuild"
+                            title="Click to Load League" data-placement="bottom">
+                            <a v-if="ladderChar" :href="route('ladders.show', ladderChar.league)+'?rank='+ladderChar.rank">
+                                @{{ladderChar.league}} League (Rank: @{{ladderChar.rank}})
+                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
+                            </a>
+                            <a v-else :href="route('ladders.show', character.league)">
+                                @{{character.league}} League
+                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
+                            </a>
+                        </h2>
                     </a>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile')+'/'+original_char">@{{original_char}}</a></h2>
-                    <h2 class="info2" v-if="!isBuild"> @{{delveDepth}} </h2>
+                    <h2 class="info2" v-if="!isBuild">
+                        <span v-if="ladderChar && ladderChar.delve_solo>0">
+                            Delve Solo depth: @{{ladderChar.delve_solo}}
+                        </span>
+                    </h2>
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">

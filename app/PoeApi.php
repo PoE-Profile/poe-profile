@@ -80,7 +80,7 @@ class PoeApi
                 return [];
             }
 
-            
+
 
             $response = json_decode((string)$response->getBody(), true);
             \App\Jobs\AddCharLeague::dispatch($response);
@@ -121,14 +121,17 @@ class PoeApi
             $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league&sort=depth';
         }
         $page_url = $base_url.$parms;
-
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
         try {
             $response = $client->get($page_url);
         }catch (\GuzzleHttp\Exception\ClientException $e) {
             //$response = $e->getResponse();
-            dd($e->getResponse());
             return [];
+        }
+
+        if($response->getStatusCode()==404){
+            flash('404 Ladder "'.$id.'" Not Found. ', 'warning');
+            return false;
         }
 
         return json_decode($response->getBody(), true);

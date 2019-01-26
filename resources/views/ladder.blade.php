@@ -36,22 +36,8 @@
     </div>
 </div>
 <div class="container page-bg" v-cloak>
-    <div class="container" style="background-color: #211F18;opacity: 0.85;">
-        <ul class="nav nav-pills char-nav pull-right">
-            @foreach ($current_leagues as $l)
-            <li class="nav-item">
-                <?php
-                $isActiv=(trim($l)==$league->name)?'active':'';
-                 ?>
-                <a href="{{route('ladders.show',$l)}}" class="nav-link {{$isActiv}}">
-                    {{$l}}
-                </a>
-            </li>
-            @endforeach
-        </ul>
-        <h3 class="" style="padding:10px;">Ladders</h3>
-    </div>
-    <ladders-page :league="{{$league}}" ></ladders-page>
+    @include('flash::message')
+    <ladders-page :league="{{$league}}" :leagues='{{$current_leagues}}'></ladders-page>
 </div>
 
 @endsection

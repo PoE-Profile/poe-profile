@@ -95,7 +95,15 @@ new Vue({
     },
 
     computed: {
-
+        ladderChar: function(){
+            var char=null;
+            this.dbAcc.ladder_chars.forEach(c => {
+                if (c.name === this.character.name) {
+                    char = c;
+                }
+            });
+            return char;
+        },
         characterRank: function(){
             var rank = ''
             this.dbAcc.ladder_chars.forEach(c => {

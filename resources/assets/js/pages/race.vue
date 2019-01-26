@@ -1,6 +1,6 @@
 <template lang="html">
     <main role="main" id="content">
-        <div class="d-flex flex-column bd-highlight h-100">
+        <div class="d-flex flex-column h-100">
           <div class="h-501" style="height:40%!important;">
               <div class="h-100 d-flex flex-row bd-highlight">
                   <iframe src="https://player.twitch.tv/?channel=donthecrown"
@@ -12,8 +12,8 @@
               </div>
           </div>
           <div class="h-501" style="height:60%!important;">
-              <div class="h-100 d-flex flex-row bd-highlight">
-                  <div class="overflow-auto" style="width:75%!important;">
+              <div class="h-100 d-flex flex-row page-bg">
+                  <div class="overflow-auto" style="width:75%!important;opacity: 0.80;">
 
                     <ul class="nav nav-tabs sticky-top" style="padding-left: 10px;background-color: rgb(33, 31, 24);">
                         <li class="nav-item p-1 pr-4">
@@ -36,7 +36,7 @@
                         </list-characters>
                     </div>
                   </div>
-                  <div class="h-100 overflow-auto " style="width:25%!important;">
+                  <div class="h-100 overflow-auto " style="width:25%!important;opacity: 0.90;">
                         <ul class="nav nav-tabs sticky-top" style="padding-left: 10px;background-color: rgb(33, 31, 24);">
                             <li class="nav-item"><a href="/ladders" class="nav-link active">Recent clips from race:</a></li>
                         </ul>
@@ -110,6 +110,9 @@ export default {
                 window.history.pushState("", "", stateUrl);
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
+                Vue.nextTick(function () {
+                    $('.show-tooltip').tooltip();
+                });
             });
         },
 
@@ -180,6 +183,9 @@ export default {
     margin-right: auto;
 }
 
-
+.page-bg {
+    color: white;
+    background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;
+}
 
 </style>
