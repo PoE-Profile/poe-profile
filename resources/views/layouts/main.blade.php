@@ -91,6 +91,11 @@
 							ChangelogV2.4
 						</a>
 					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="/ladders/Kammell Friendship Race (pl3002)" style="color: red;">
+					  		<i class="fa fa-star" aria-hidden="true"></i> Kammell Friendship race
+						</a>
+					</li>
 					<li class="nav-item float-lg-right">
 						<ul class="nav navbar-nav">
 							<form class="form-inline" action="{{route('profile.post')}}" method="post">
