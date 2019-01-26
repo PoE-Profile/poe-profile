@@ -82,6 +82,7 @@ class LadderCharacter extends Model
         $stats = \App\Helpers\LadderStats::char($this);
         $this->stats = $stats->getData($new_char_info);
         $this->rank = $new_char_info['rank'];
+        $this->class = $new_char_info['class'];
         $this->level = $new_char_info['level'];
         $this->dead = $new_char_info['dead'];
         $this->unique_id = $new_char_info['unique_id'];

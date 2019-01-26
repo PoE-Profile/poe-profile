@@ -1,6 +1,10 @@
 <template lang="html">
 <div>
     <div id="ladders" class="ladder-bg">
+        <div class="row" v-if="league.name=='Kammell Friendship Race (PL3002)'">
+            <iframe src="https://player.twitch.tv/?channel=ziggydlive" allowfullscreen="allowfullscreen" 
+            scrolling="no" width="100%" height="540" frameborder="0"></iframe>
+        </div>
         <div class="container" style="">
             <ul class="nav nav-pills char-nav pull-right" v-if="league.type=='public'">
                 <li class="nav-item" v-for="l in leagues">
