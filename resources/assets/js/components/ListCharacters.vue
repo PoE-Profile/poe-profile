@@ -35,9 +35,9 @@
             <tr v-for="(char, index) in charData" :class="{ 'active': (char.rank==select), 'dead': char.dead , 'online': char.online }">
                 <th scope="row" v-if="showRank">
                     {{char.rank}}<br>
-                    <!-- <small v-if="char.stats!=null && char.stats.ranks.length>0"
+                    <small v-if="char.stats!=null && char.stats.ranks.length>0"
                         :class="classRankStats(char.stats.ranks)">
-                        {{char.stats.ranks}}</small> -->
+                        {{char.stats.ranks}}</small>
                 </th>
                 <td class="class-cell">
                     <a href="#" v-if="char.class.length>0" title=""

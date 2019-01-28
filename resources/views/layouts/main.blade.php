@@ -34,7 +34,7 @@
 </head>
 <body >
 	<div class="container" id="app">
-		<nav class="navbar navbar-inverse bg-inverse navbar-fixed-top" style="">
+		<nav class="navbar navbar-inverse bg-inverse navbar-fixed-top" v-cloak>
 			<button class="btn btn-outline-warning pull-right hidden-lg-up" type="button"
                 data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,12 @@
                             <i class="fa fa-twitch" aria-hidden="true"></i> Twitch
                         </a>
 					</li>
-					<li class="nav-item">
+                    <li class="nav-item" v-if="favStore.env.MIX_POE_RACE_NAME.length>0">
+						<a class="nav-link" :href="route('ladders.show',favStore.env.MIX_POE_RACE_NAME)+'?'" style="color: red;">
+					  		<i class="fa fa-list-ol" aria-hidden="true"></i> Live Race
+						</a>
+					</li>
+					<li class="nav-item" v-else>
 						<a class="nav-link" href="{{ route('ladders.index') }}">
                             <i class="fa fa-list-ol" aria-hidden="true"></i> Ladder
                         </a>
@@ -67,7 +72,7 @@
 					  		<i class="fa fa-star" aria-hidden="true"></i> Favorites
 						</a>
 					</li>
-                    <li class="nav-item" v-if="favStore.favAcc.length>0" v-cloak>
+                    <li class="nav-item" v-if="favStore.favAcc.length>0">
                         <div class="" style="width:100%;color: white;">
                             <drop-down v-on:selected="goToAcc" :list="favStore.favAcc">
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -91,11 +96,7 @@
 							ChangelogV2.4
 						</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link" href="/ladders/Kammell Friendship Race (pl3002)" style="color: red;">
-					  		<i class="fa fa-star" aria-hidden="true"></i> Kammell Friendship race
-						</a>
-					</li>
+
 					<li class="nav-item float-lg-right">
 						<ul class="nav navbar-nav">
 							<form class="form-inline" action="{{route('profile.post')}}" method="post">

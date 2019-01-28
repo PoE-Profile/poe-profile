@@ -37,7 +37,7 @@ class Account extends Model
 
     public function updateLastChar(){
         // stop if acc last_character updated in last 60 min
-        $updateAfter=\Carbon\Carbon::now()->subMinutes(60);
+        $updateAfter=\Carbon\Carbon::now()->subMinutes(30);
         if($updateAfter<$this->updated_at){
             return;
         }
@@ -62,7 +62,6 @@ class Account extends Model
             }
             $grouped = collect($item['sockets'])->groupBy('group');
             $item_most_links=count($grouped[0]);
-            // dump($item_most_links);
             $supports = collect($item['socketedItems'])
                         ->where('support',true)
                         ->filter(function ($item) use($item_most_links){
@@ -71,6 +70,7 @@ class Account extends Model
             $level=$itemsData['character']['level'];
             $requiredSupports = $level<30 ? 2 : 3 ;
             $requiredSupports = $level<10 ? 1 : $requiredSupports ;
+
             if ($supports->count()>=$requiredSupports) {
                 $items_most_sockets[] = $item;
             }

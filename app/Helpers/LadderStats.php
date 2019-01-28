@@ -22,19 +22,37 @@ class LadderStats
 
     public function getData($new_char_info)
     {
+        $ranks = $this->ladder_char->rank - $new_char_info['rank'];
         if ($this->ladder_char->online) {
+            //clear records older then 20min
             $this->clearOldRecords();
             $this->addNewRecord($new_char_info);
 
-            $xph = $this->records->last()['exp'] - $this->records->first()['exp'];
-            $ranks = $this->records->last()['rank'] - $this->records->first()['rank'];
+            $xph = $this->calcXPH();
             return [
                 'records' => $this->records,
                 'xph' => $this->number_format_short($xph),
                 'ranks' => $this->ranks_format($ranks),
             ];
+        }else{
+            return [
+                'records' => $this->records,
+                'xph' => 0,
+                'ranks' => $this->ranks_format($ranks),
+            ];
         }
         return $this->ladder_char->stats;
+    }
+
+    private function calcXPH(){
+        $xph = $this->records->last()['exp'] - $this->records->first()['exp'];
+        $lastRecordTime = \Carbon\Carbon::createFromTimestamp($this->records->first()['time']);
+        $minutes = $lastRecordTime->diffInMinutes(now());
+        if($xph==0){
+            return 0;
+        }
+        $per_minute = $xph/$minutes;
+        return $per_minute * 60;
     }
 
     private function clearOldRecords(){
@@ -42,7 +60,7 @@ class LadderStats
             return;
         }
         $this->records = $this->records->filter(function ($item) {
-            return $item['time'] > now()->subMinutes(62)->timestamp;
+            return $item['time'] > now()->subMinutes(31)->timestamp;
         });
     }
 
