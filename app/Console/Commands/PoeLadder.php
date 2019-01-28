@@ -57,7 +57,8 @@ class PoeLadder extends Command
                 $league->save();
             }
             $this->selectedLeague=$name;
-            $currentLeagues[] = $this->selectedLeague;
+            if(!in_array($name, $currentLeagues))
+                $currentLeagues[] = $this->selectedLeague;
         }
 
         foreach ($currentLeagues as $league) {
