@@ -14,7 +14,7 @@ class PoeLadder extends Command
 {
     protected $signature = 'poe:ladder {--select} {--name=} {--update} {--debug} {--delve}';
     protected $description = 'Take all characters from specific League';
-    private $totalIndexedRanks = 3000;
+    private $totalIndexedRanks = 2000;
     private $take=200;
     private $selectedLeague="";
 
@@ -57,7 +57,8 @@ class PoeLadder extends Command
                 $league->save();
             }
             $this->selectedLeague=$name;
-            $currentLeagues[] = $this->selectedLeague;
+            if(!in_array($name, $currentLeagues))
+                $currentLeagues[] = $this->selectedLeague;
         }
 
         foreach ($currentLeagues as $league) {

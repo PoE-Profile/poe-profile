@@ -21,11 +21,12 @@ class TwitchStreamer extends Model
     public function isForSnapshot(){
         $original_char = $this->account->name .'/'. $this->account->last_character;
         $snapshots = Snapshot::where('original_char', '=', $original_char)->get();
-        if(count($snapshots)==0){
+
+        $curent_level = intval($this->account->last_character_info['level']);
+        if($curent_level<10){
             return false;
         }
 
-        $curent_level = intval($this->account->last_character_info['level']);
         if(count($snapshots)==0 && $curent_level>10){
             return true;
         }
