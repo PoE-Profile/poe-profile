@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('poe:twitch update')->everyTenMinutes();
 
-        $schedule->command('poe:ladder')->hourly();
+        // $schedule->command('poe:ladder')->hourly();
 
         $schedule->command('cache:clear')->dailyAt('13:00');
 
