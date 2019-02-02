@@ -373,6 +373,7 @@ new Vue({
                     stat.total += fromRadiantFaith;
 
                     tempAura = self.profileStore.findAura('Discipline');
+                    tempAura = !tempAura ? self.profileStore.findAura('Vaal Discipline') : tempAura;
                     if (tempAura) {
                         auraVal = self.withAuraEffectiveness(tempAura.val, stats)
                         flat = (auraVal * percent) / 100 + auraVal;

@@ -67,7 +67,7 @@
                 </td>
                 <td class="skill-cell text-center" v-if="showSkills">
                     <span v-if="showRank && !char.public">
-                        <span style="color: gray;">private/removed</span>
+                        <span style="color: gray;">private</span>
                     </span>
                     <ul class="home-list-skills" v-else>
                         <li v-for="skill in getActiveSkill(char.items_most_sockets)"
