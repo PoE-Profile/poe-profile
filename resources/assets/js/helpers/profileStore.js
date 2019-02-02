@@ -51,7 +51,7 @@ module.exports = {
         var tempAuras = this.skillGems.filter(function (skill) {
             var tags = skill.tags.split(', ');
             if (_.includes(tags, 'Vaal')) {
-                return false;
+                // return false;
             }
 
             return _.includes(tags, 'Aura');

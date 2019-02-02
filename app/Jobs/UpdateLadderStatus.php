@@ -49,7 +49,7 @@ class UpdateLadderStatus extends Job implements ShouldQueue
         //Beacouse raid limit on Path of Exile API we are making the request from separate ip/server (proxy)
         $responseChars = $client->request(
             'GET',
-            'http://jump.boxbg.net/kas7er/getItemJson.php',[
+            'http://proxy.site/getItemJson.php',[
             'query' => [
                 'accountName' => $ladderChar->account->name,
                 'character' => $ladderChar->name
