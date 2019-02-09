@@ -81,9 +81,9 @@ class LadderController extends Controller
         if($request->input('page')){
             $returnResponse['current_page']=$request->input('page');
             $from = ($returnResponse['current_page']-1)*$this->res_on_page;
-            $response = \App\PoeApi::getLadder($name,$from,$this->res_on_page);
+            $response = \App\PoeApi::getLadder($name,$from,$this->res_on_page,false,$proxy=true);
         }else{
-            $response = \App\PoeApi::getLadder($name,0,$this->res_on_page);
+            $response = \App\PoeApi::getLadder($name,0,$this->res_on_page,false,$proxy=true);
         }
         $total = $response['total'];
         $returnResponse['total']=$total;
@@ -116,7 +116,7 @@ class LadderController extends Controller
         // dd($char_id);
         $accName = $char->account->name;
         $charName = $char->name;
-        $itemsData=\App\PoeApi::getItemsData($accName, $charName);
+        $itemsData=\App\PoeApi::getItemsData($accName, $charName,$proxy=true);
         if(!$char->account->updateLastCharInfo($itemsData)){
             $char->public=false;
             $char->save();

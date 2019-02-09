@@ -59,17 +59,22 @@ class PoeApi
         });
     }
 
-    static public function getItemsData($acc, $char){
+    static public function getItemsData($acc, $char, $proxy=false){
         //get cahce if no cache get from poe api
         $key='items/'.$acc.'/'.$char;
         $time = config('app.poe_cache_time');
-        return \Cache::remember($key, $time, function () use ($acc, $char){
+        return \Cache::remember($key, $time, function () use ($acc, $char,$proxy){
             $client = new \GuzzleHttp\Client();
             //make Requests to PathOfExile website to retrieve Character Items
+            $page_url='https://www.pathofexile.com/character-window/get-items';
+            if($proxy){
+                $page_url = config('app.poe_proxy').$page_url;
+            }
+
             try {
                 $response = $client->request(
                     'POST',
-                    'https://www.pathofexile.com/character-window/get-items', [
+                    $page_url, [
                     'form_params' => [
                         'accountName' => $acc,
                         'character' => $char
@@ -83,7 +88,7 @@ class PoeApi
 
 
             $response = json_decode((string)$response->getBody(), true);
-            \App\Jobs\AddCharLeague::dispatch($response);
+            //\App\Jobs\AddCharLeague::dispatch($response);
             return $response;
         });
     }
@@ -114,13 +119,18 @@ class PoeApi
 
     }
 
-    static public function getLadder($id, $offset, $limit=200, $delve=false){
+    static public function getLadder($id, $offset, $limit=200, $delve=false, $proxy=false){
         $base_url = 'https://www.pathofexile.com/api/ladders';
         $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league';
         if($delve){
-            $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league&sort=depth';
+            $parms = $parms.'&sort=depth';
         }
         $page_url = $base_url.$parms;
+
+        if($proxy){
+            $page_url = config('app.poe_proxy').$page_url;
+        }
+
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
         try {
             $response = $client->get($page_url);
