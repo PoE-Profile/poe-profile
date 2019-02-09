@@ -48,7 +48,7 @@ class LadderStats
         $xph = $this->records->last()['exp'] - $this->records->first()['exp'];
         $lastRecordTime = \Carbon\Carbon::createFromTimestamp($this->records->first()['time']);
         $minutes = $lastRecordTime->diffInMinutes(now());
-        if($xph==0){
+        if($xph==0||$minutes==0){
             return 0;
         }
         $per_minute = $xph/$minutes;

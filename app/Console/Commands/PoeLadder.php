@@ -17,10 +17,14 @@ class PoeLadder extends Command
     private $totalIndexedRanks = 2000;
     private $take=200;
     private $selectedLeague="";
+    private $proxy=false;
 
     public function __construct()
     {
         parent::__construct();
+        if(strlen(config('app.poe_proxy'))>0){
+            $this->proxy=true;
+        }
     }
 
     /**
@@ -73,11 +77,7 @@ class PoeLadder extends Command
             for ($i=0; $i <= $pages; $i++) {
                 $offset = $i*$this->take;
                 $delve = $this->option('delve');
-                if(!$delve){
-                    $response = PoeApi::getLadder($league,$offset);
-                }else{
-                    $response = PoeApi::getLadder($league,$offset,$this->take,$delve);
-                }
+                $response = PoeApi::getLadder($league,$offset,$this->take,$delve,$this->proxy);
                 //if wrong name $league 404 ,skip curent $league
                 if(!$response||$offset>=$response['total']){
                     $i=$pages;
