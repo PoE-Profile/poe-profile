@@ -111,15 +111,14 @@ class PoeTwitch extends Command
         foreach ($this->twitchChannels as $key => $value) {
             $dbAcc = \App\Account::where('name', $key)->first();
             if(!$dbAcc){
-                $newAcc = \App\Account::create(['name' => $key]);
-                $newAcc->updateLastCharInfo();
+                $dbAcc = \App\Account::create(['name' => $key]);
                 $this->info('add acc:'.$key);
-                $dbAcc = $newAcc;
             } else {
-                $dbAcc->updateLastChar();
-                $dbAcc->updateLastCharInfo();
                 $this->info('update acc:'.$key);
             }
+            $dbAcc->updateLastChar();
+            $dbAcc->updateLastCharInfo();
+
             if(!$dbAcc->streamer){
                 $this->info('add twitch:'.$value);
                 $newStreamer = \App\TwitchStreamer::create([

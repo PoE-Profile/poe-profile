@@ -22,10 +22,10 @@ class ApiController extends Controller
         }
 
         $dbAcc = \App\Account::where('name', $acc)->first();
-        if(!$dbAcc){
+        $itemsData=PoeApi::getItemsData($acc, $char);
+        if(!$dbAcc || !array_key_exists('items', $itemsData)){
             return;
         }
-        $itemsData=PoeApi::getItemsData($acc, $char);
         $acc=$dbAcc->name;
         $dbAcc->updateLastCharInfo($itemsData);
         return $itemsData['items'];

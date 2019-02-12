@@ -37,12 +37,12 @@ class Account extends Model
 
     public function updateLastChar(){
         // stop if acc last_character updated in last 60 min
-        $updateAfter=\Carbon\Carbon::now()->subMinutes(30);
-        if($updateAfter<$this->updated_at){
-            return;
-        }
-        $last_character = PoeApi::getLastCharacter($this->name);
-        $this->last_character = $last_character;
+        $chars = PoeApi::getCharsData($this->name);
+        if(!$chars) return;
+        $lastChar = collect($chars)->first(function ($char) {
+            return property_exists($char, 'lastActive');
+        });
+        $this->last_character = $lastChar->name;
         $this->touch();
         $this->save();
     }

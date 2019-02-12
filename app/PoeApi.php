@@ -70,7 +70,6 @@ class PoeApi
             if($proxy){
                 $page_url = config('app.poe_proxy').$page_url;
             }
-
             try {
                 $response = $client->request(
                     'POST',
@@ -91,32 +90,6 @@ class PoeApi
             //\App\Jobs\AddCharLeague::dispatch($response);
             return $response;
         });
-    }
-
-    static public function getLastCharacter($acc){
-        try {
-            $client = new \GuzzleHttp\Client();
-            $response = $client->request(
-                'GET',
-                'https://www.pathofexile.com/account/view-profile/'. $acc .'/characters'
-            );
-        }catch (\GuzzleHttp\Exception\ClientException $e) {
-            return '';
-        }
-
-        $body = $response->getBody()->getContents();
-        $html = HtmlDomParser::str_get_html($body);
-        $temp = $html->find('script',3)->outertext;
-        $test = explode('new C(',$temp);
-        $last_character='';
-
-        if(count($test)>1){
-            $temp=$test[1];
-            $temp = explode(');',$temp)[0];
-            $last_character=json_decode($temp)->name;
-        }
-        return $last_character;
-
     }
 
     static public function getLadder($id, $offset, $limit=200, $delve=false, $proxy=false){
