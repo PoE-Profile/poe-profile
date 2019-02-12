@@ -22,7 +22,7 @@
                     <span v-if="!autoReload">Start </span>Auto <i aria-hidden="true" class="fa fa-refresh"></i>
                 </button>
                 <a :href="'https://www.pathofexile.com/private-leagues/league/'+league.name.replace(/\(PL[0-9]+\)/,'')"
-                 v-if="league.type!='public'" class="btn btn-sm poe-btn form-inline show-tooltip">
+                 v-if="league.type!='public'" class="btn btn-sm poe-btn form-inline show-tooltip" target="_blank">
                     <i class="fa fa-external-link" aria-hidden="true"></i> Open in pathofexile.com
                 </a>
             </h3>

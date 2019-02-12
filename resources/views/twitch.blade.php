@@ -35,8 +35,7 @@
         </script>
     </div>
 </div>
-<div class="container" v-cloak
-    style="color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;">
+<div class="container" v-cloak style="color: white;">
     <div class="tab-pane"  style="background-color: #211F18;opacity: 0.85;">
         <h3 class="" style="padding:7px;">Twitch</h3>
         <twitch-page></twitch-page>
