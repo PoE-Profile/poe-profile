@@ -7,6 +7,8 @@ use App\PoeApi;
 use Illuminate\Http\Request;
 use App\Stash;
 use App\Item;
+use App\Account;
+
 
 class ProfileController extends Controller
 {
@@ -55,17 +57,14 @@ class ProfileController extends Controller
         }
         if($request->has('race')){
             return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
-
         }
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
     private function getDbAcc($acc){
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         if(!$dbAcc){
-            $last_character = PoeApi::getLastCharacter($acc);
-            \App\Account::create(['name' => $acc, 'last_character' => $last_character]);
-            $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+            $dbAcc = Account::create(['name' => $acc]);
         }
         $dbAcc->updateLastChar();
         $dbAcc->updateViews();
@@ -78,14 +77,14 @@ class ProfileController extends Controller
                 ->whereHas('account', function ($query) use (&$acc) {
                     $query->where('name', '=', $acc);
                 })->get();
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
     }
 
     public function getStashs($acc)
     {
         $results=[];
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         $currentLeagues = explode(', ', \Cache::get('current_leagues', config('app.poe_leagues')));
         array_splice($currentLeagues, 2);
         foreach ($currentLeagues as $league) {
@@ -105,7 +104,7 @@ class ProfileController extends Controller
         $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')
                             ->orderBy('created_at', 'DESC')->get()->unique('original_char');
 
-        $dbAcc = \App\Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
+        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('snapshots', compact('acc', 'snapshots', 'dbAcc'));
     }
 

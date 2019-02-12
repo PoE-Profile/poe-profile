@@ -18,9 +18,8 @@
           </div>
 
           <div class="modal-body">
-            <iframe :src="streamUrl"
-                frameborder="0" allowfullscreen="true" scrolling="no"
-                height="540" width="100%"></iframe>
+            <iframe :src="streamUrl" class="twitch-iframe"
+                frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
           </div>
 
         </div>
@@ -99,7 +98,7 @@ export default {
 
 .modal2 {
   /* background: #ffffff; */
-  box-shadow: 2px 2px 20px 1px;
+  box-shadow: 2px 2px 10px 1px;
   overflow-x: auto;
   display: flex;
   flex-direction: column;
@@ -107,9 +106,13 @@ export default {
   z-index: 99999;
 }
 
-.modal-header,
-.modal-footer {
+.modal-header{
   padding: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 40px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 
@@ -138,5 +141,14 @@ export default {
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.5s ease;
+}
+.twitch-iframe {
+    height:300px;
+    width:100%;
+}
+@media (min-width: 750px) {
+    .twitch-iframe {
+        height:540px;
+    }
 }
 </style>

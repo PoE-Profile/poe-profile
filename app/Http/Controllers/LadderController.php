@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\League;
+use App\LadderCharacter;
 
 class LadderController extends Controller
 {
@@ -25,7 +26,6 @@ class LadderController extends Controller
         $league = League::where('name', $name)->first();
 
         if(!$league){
-            //return view('private_ladder', compact('league'));
             $response = \App\PoeApi::getLadder($name,0);
             if(!$response){
                 return redirect()->route('ladders.index');
@@ -43,7 +43,7 @@ class LadderController extends Controller
 
     public function getLadder($name, Request $request)
     {
-        $query = \App\LadderCharacter::with('account','account.streamer');
+        $query = LadderCharacter::with('account','account.streamer');
         if ($request->has('search')) {
             $query->whereHas('account', function ($query) use (&$request) {
                     $query->where('name', 'like', '%' . $request->input('search') . '%');
@@ -89,10 +89,11 @@ class LadderController extends Controller
         $returnResponse['total']=$total;
         $returnResponse['last_page']=(int)ceil($total/$this->res_on_page);
 
-
-        // dd($returnResponse);
+        // map characters entries
         $returnResponse['data'] = array_map(function($entry) use(&$name){
-            $newEntry = \App\LadderCharacter::poeEntryToArray($entry);
+            $newEntry = LadderCharacter::poeEntryToArray($entry);
+            $temp = (new LadderCharacter())->fill($newEntry);
+            $newEntry = $temp->toArray();
             $newEntry['league'] = $name;
             $newEntry['account'] = [
                 'id'=>0,
@@ -103,7 +104,6 @@ class LadderController extends Controller
             if (array_key_exists('twitch', $entry['account'])) {
                 $newEntry['account']['streamer']['name']=$entry['account']['twitch']['name'];
             }
-            // $entry['account']['twitch']['name']
             return $newEntry;
         }, $response['entries']);
 
@@ -112,7 +112,7 @@ class LadderController extends Controller
 
     public function updateCharacterSkill(Request $request){
         $char_id=$request->input('charId');
-        $char=\App\LadderCharacter::findOrFail($char_id);
+        $char=LadderCharacter::findOrFail($char_id);
         // dd($char_id);
         $accName = $char->account->name;
         $charName = $char->name;
