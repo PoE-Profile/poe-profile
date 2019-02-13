@@ -8,12 +8,9 @@
     </head>
 <body>
 
-
     <button class="btn poe-btn" >
         Show Tree Stats
     </button>
-
-
 
 <div id="passiveSkillTree" >
 </div>
@@ -98,116 +95,115 @@
 </div>
 
 <style>
-body{
-    background: #000;
-}
-.btn {
-    display: none;
-    font-weight: 500;
-    width: 320px;
-    line-height: 1.25;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    border: 1px solid transparent;
-    padding: .5rem 1rem;
-    font-size: 1.5rem;
-    border-radius: .25rem;
-}
-.btn-group-sm > .btn, .btn-sm {
-    padding: .25rem .5rem;
-    font-size: .875rem;
-    border-radius: .2rem;
-}
-.poe-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #332F24;
-    color: #FFF;
-    border: 1px solid #ddd;
-    z-index: 99101;
-}
-.poe-btn:hover {
-    background-color: #494535;
-}
-#sidebar {
-	display: block;
-	position: absolute;
-	top: 0px;
-    padding: 5px;
-    padding-top: 45px;
-	left: 0px;
-	bottom: 0px;
-	background: #111;
-	opacity: 0.8;
-	color: #ccc;
-	width: 350px;
-	z-index: 99100;
-	overflow-y: auto;
-    display: none
-}
-.attrCat {
-	text-decoration: underline;
-	line-height: 32px;
-	text-align: center;
-}
-#sidebar-dock {
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 350px;
-	bottom: 0px;
-	background-color: #222;
-	opacity: 0.8;
-	color: #ccc;
-	height: 100%;
-	z-index: 99000;
-	width: 20px;
-}
-.nav {
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none;
-    width: 97%;
-    border-bottom:
-}
-.nav-tabs .nav-item {
-    float: left;
-    margin-bottom: -1px;
-    background:none;
+    body{
+        background: #000;
+    }
+    .btn {
+        display: none;
+        font-weight: 500;
+        width: 320px;
+        line-height: 1.25;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: .5rem 1rem;
+        font-size: 1.5rem;
+        border-radius: .25rem;
+    }
+    .btn-group-sm > .btn, .btn-sm {
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        border-radius: .2rem;
+    }
+    .poe-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #332F24;
+        color: #FFF;
+        border: 1px solid #ddd;
+        z-index: 99101;
+    }
+    .poe-btn:hover {
+        background-color: #494535;
+    }
+    #sidebar {
+    	display: block;
+    	position: absolute;
+    	top: 0px;
+        padding: 5px;
+        padding-top: 45px;
+    	left: 0px;
+    	bottom: 0px;
+    	background: #111;
+    	opacity: 0.8;
+    	color: #ccc;
+    	width: 350px;
+    	z-index: 99100;
+    	overflow-y: auto;
+        display: none
+    }
+    .attrCat {
+    	text-decoration: underline;
+    	line-height: 32px;
+    	text-align: center;
+    }
+    #sidebar-dock {
+    	display: block;
+    	position: absolute;
+    	top: 0px;
+    	left: 350px;
+    	bottom: 0px;
+    	background-color: #222;
+    	opacity: 0.8;
+    	color: #ccc;
+    	height: 100%;
+    	z-index: 99000;
+    	width: 20px;
+    }
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        width: 97%;
+        border-bottom:
+    }
+    .nav-tabs .nav-item {
+        float: left;
+        margin-bottom: -1px;
+        background:none;
 
-}
-.nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover {
-    color: #ebb16c;
-    background-color: rgba(0, 0, 0, 0);
-    border-color: transparent transparent transparent;
-    border-bottom: 5px solid #ebb16c;
-    font-weight: bold;
-}
-.nav-tabs .nav-link {
-    display: block;
-    padding: .5em 1em;
-    border: 1px solid transparent;
-    border-top-right-radius: .25rem;
-    border-top-left-radius: .25rem;
-    text-decoration:none;
-}
-.nav-tabs {
-    margin-top: 15px;
-    height: 35px;
-    border-bottom: 1px solid #ebb16c;
-}
-
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover {
+        color: #ebb16c;
+        background-color: rgba(0, 0, 0, 0);
+        border-color: transparent transparent transparent;
+        border-bottom: 5px solid #ebb16c;
+        font-weight: bold;
+    }
+    .nav-tabs .nav-link {
+        display: block;
+        padding: .5em 1em;
+        border: 1px solid transparent;
+        border-top-right-radius: .25rem;
+        border-top-left-radius: .25rem;
+        text-decoration:none;
+    }
+    .nav-tabs {
+        margin-top: 15px;
+        height: 35px;
+        border-bottom: 1px solid #ebb16c;
+    }
 </style>
 <div id="sidebar-dock1"></div>
 <div id="sidebar" name="sidebar" >
-    <h1>V3_5</h1>
+    <h1>V{{$version}}</h1>
     <!-- <ul class="nav nav-tabs"  style="padding-left:10px;">
         <li class="nav-item" style="">
             <a class="nav-link active" href="#" data-toggle="more-info">
@@ -243,14 +239,14 @@ body{
   */
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
-                paths : {"main":"main.0904cd605302effc314ee2f7c3b64395eb5fcf37","plugins":"plugins.edc1d67db43be05427b144b7621cbad3135705e7","skilltree":"skilltree.d0b0d420aabba1fa24778765fc7a518380d8db5c"},
+                paths : {"main":"main.bb91739425ed657d411cf984508fa223b05ea9c9","plugins":"plugins.5d7aabb9b5f3b58d3b841b515b3fc244b4f3bb71","skilltree":"skilltree.3d37c5c67e15e5ba7faa6011f8a87f48d76e8f12"},
                 shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
             });
             require(["main"], function(){});    //-->
 
 
 </script>
-<script type="text/javascript" src="/js/st_us.js"></script>
+<script type="text/javascript" src="/js/st_us{{$version}}.js"></script>
 
 <script type="text/javascript">
 
@@ -267,8 +263,8 @@ body{
                 height:    967,
                 width: 1300,
                 startClass: 6,
-                version: '3.5.0',
-                fullScreen: false
+                version: '{{$version}}',
+                fullScreen: true
             };
             var treeControls = new PassiveSkillTree.controls(opts);
             // console.log(this);
@@ -588,9 +584,6 @@ body{
         });
     });
 
-
-    // console.log(temp.skillTree.passiveAllocation.allocatedSkills);
-    //-->
 </script>
 
 

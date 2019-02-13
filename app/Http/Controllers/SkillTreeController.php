@@ -18,20 +18,13 @@ class SkillTreeController extends Controller
     }
 
     public function showSkillTree(){
-        // dd(\Input::all());
-        $version = 'tree.'.str_replace(".", "_", config('app.poe_version'));
+        $version = config('app.poe_version');
         if (\Input::has('version')) {
-            $version = 'tree.' . str_replace(".", "_", \Input::get('version'));
+            $version = \Input::get('version');
         }
-        return view($version);
+        return view('passive_skill_tree', compact('version'));
     }
 
-    public function showSkillTreeTwo()
-    {
-        // dd('two');
-        
-        return view('tree.3_3');
-    }
 
     public function getPassiveSkills()
     {
