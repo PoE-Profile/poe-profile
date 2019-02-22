@@ -42,6 +42,9 @@ class Account extends Model
         $lastChar = collect($chars)->first(function ($char) {
             return property_exists($char, 'lastActive');
         });
+        if(!$lastChar){
+            $lastChar = collect($chars)->first();
+        }
         $this->last_character = $lastChar->name;
         $this->touch();
         $this->save();
