@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>skill-tree</title>
         <link href="css/tree_style.css" media="screen" rel="stylesheet" type="text/css" >
-        <link rel="stylesheet" type="text/css" href="https://web.poecdn.com/css/https/screen.css?v=60c79293459e724a04d306480df01949">
+        <link href="https://web.poecdn.com/css/screen.css?v=e3247e72a56348087ac9099deddb5733" media="screen" rel="stylesheet" type="text/css" >
     </head>
 <body>
 
@@ -239,7 +239,7 @@
   */
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
-                paths : {"main":"main.bb91739425ed657d411cf984508fa223b05ea9c9","plugins":"plugins.5d7aabb9b5f3b58d3b841b515b3fc244b4f3bb71","skilltree":"skilltree.3d37c5c67e15e5ba7faa6011f8a87f48d76e8f12"},
+                paths : {"main":"main.5de77c671043f768678705f6b62d33671f01f401","plugins":"plugins.f87f75bfb5d34cb0082cdc839b4477d6cd077f42","skilltree":"skilltree.3315c5b090dca94d3b783e0c7796a2a3b142ed0b"},
                 shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
             });
             require(["main"], function(){});    //-->
