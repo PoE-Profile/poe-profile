@@ -134,6 +134,10 @@ class Stats_Manager
         foreach ($items as $item) {
             $this->type = 'item/' . $item['inventoryId'] . '/' . $this->getTypeFromIcon($item['icon']);
 
+            if (isset($item[ "fracturedMods"])) {
+                $this->addMods($item[ 'fracturedMods']);
+            }
+            
             if (isset($item["explicitMods"])) {
                 $this->addMods($item['explicitMods']);
             }
