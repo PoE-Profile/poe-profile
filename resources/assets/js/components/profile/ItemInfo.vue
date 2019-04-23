@@ -13,13 +13,21 @@
 
     <span class="item-stats">
       <span v-if="showFlask" class="group -textwrap tc -mod">
-        <span :style="{listStyleType: 'none', color: 'grey'}" v-for="prop in flaskProperties">
+        <span
+          :style="{listStyleType: 'none', color: 'grey'}"
+          v-for="prop in flaskProperties"
+          :key="prop.id"
+        >
           {{ prop }}
           <br>
         </span>
       </span>
       <span class="group -textwrap tc -mod" v-if="itemInfo.properties">
-        <span :style="{listStyleType: 'none', color: 'grey'}" v-for="prop in itemInfo.properties">
+        <span
+          :style="{listStyleType: 'none', color: 'grey'}"
+          v-for="prop in itemInfo.properties"
+          :key="prop.id"
+        >
           <p v-if="prop.name.match(/%0/)" style="margin: 0;">{{ displayProp(prop) }}</p>
           <p v-else style="margin: 0;">
             {{ prop.name }}:
@@ -43,6 +51,7 @@
         <p
           :style="{listStyleType: 'none', color: 'grey', display: 'inline'}"
           v-for="(req, index) in itemInfo.requirements"
+          :key="index"
         >
           {{ req.name }}
           <span
@@ -53,7 +62,7 @@
       </span>
 
       <span class="group -textwrap tc -mod" v-if="itemInfo.implicitMods">
-        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.implicitMods">
+        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.implicitMods" :key="mod.id">
           {{ mod }}
           <br>
         </span>
@@ -66,40 +75,43 @@
       >{{itemInfo.enchantMods[0]}}</span>
 
       <span class="group -textwrap tc -mod" v-if="itemInfo.utilityMods">
-        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.utilityMods">
+        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.utilityMods" :key="mod.id">
           {{ mod }}
           <br>
         </span>
       </span>
 
-      <span class="group -textwrap tc -mod" v-if="itemInfo.fracturedMods">
+      <span class="-textwrap tc -mod" v-if="itemInfo.fracturedMods">
         <span
           :style="{listStyleType: 'none',  color: '#a08869'}"
           v-for="mod in itemInfo.fracturedMods"
+          :key="mod.id"
         >
           {{ mod }}
           <br>
         </span>
       </span>
 
-      <span class="group -textwrap tc -mod" v-if="itemInfo.explicitMods">
-        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.explicitMods">
+      <span class="-textwrap tc -mod" v-if="itemInfo.explicitMods">
+        <span :style="{listStyleType: 'none'}" v-for="mod in itemInfo.explicitMods" :key="mod.id">
           {{ mod }}
           <br>
         </span>
+      </span>
+
+      <span class="-textwrap tc -mod" v-if="itemInfo.craftedMods">
         <span
-          :style="{listStyleType: 'none', color: 'lightblue'}"
-          v-if="itemInfo.craftedMods"
-          v-for="craftedMod in itemInfo.craftedMods"
-          :key="craftedMod.id"
+          :style="{listStyleType: 'none',  color: 'lightblue'}"
+          v-for="mod in itemInfo.craftedMods"
+          :key="mod.id"
         >
-          {{craftedMod}}
+          {{ mod }}
           <br>
         </span>
       </span>
 
       <span class="group -textwrap tc -mtx" v-if="cosmeticMods">
-        <span v-for="mod in cosmeticMods">
+        <span v-for="mod in cosmeticMods" :key="mod.id">
           {{ mod }}
           <br>
         </span>
