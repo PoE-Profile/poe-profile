@@ -15,6 +15,10 @@ class LadderController extends Controller
         $str_current_leagues=cache('current_leagues', config('app.poe_leagues'));
         $current_leagues = collect(explode(', ', $str_current_leagues));
         $league = League::where('name', $current_leagues[0])->first();
+        if(!$league){
+            flash('Update Leagues table!', 'warning');
+            return redirect()->back();
+        }
         return view('ladder',compact('league','current_leagues'));
     }
 

@@ -239,7 +239,7 @@
   */
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
-                paths : {"main":"main.5de77c671043f768678705f6b62d33671f01f401","plugins":"plugins.f87f75bfb5d34cb0082cdc839b4477d6cd077f42","skilltree":"skilltree.3315c5b090dca94d3b783e0c7796a2a3b142ed0b"},
+                paths : {"main":"main.7a3174d358e215ad47c089b756c378cc6fa59254","plugins":"plugins.5ba98de7e3d017333712f2389a750340bc9981b1","skilltree":"skilltree.76f51f6f04d55e6ec5e220ffe51376ee9c26055e"},
                 shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
             });
             require(["main"], function(){});    //-->
