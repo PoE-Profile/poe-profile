@@ -300,5 +300,18 @@ module.exports = {
     "Vaal Earthquake": "\/imgs\/skills\/Vaal_Earthquake.png",
     "Vaal Impurity of Fire": "\/imgs\/skills\/Vaal_Impurity_of_Fire.png",
     "Vaal Impurity of Ice": "\/imgs\/skills\/Vaal_Impurity_of_Ice.png",
-    "Vaal Impurity of Lightning": "\/imgs\/skills\/Vaal_Impurity_of_Lightning.png"
+    "Vaal Impurity of Lightning": "\/imgs\/skills\/Vaal_Impurity_of_Lightning.png",
+
+    // version 3.7 legion
+    "Steelskin": "\/imgs\/skills\/Steelskin.png",
+    "Dash": "\/imgs\/skills\/Dash.png",
+    "Bladestorm": "\/imgs\/skills\/Bladestorm.png",
+    "Blood and Sand": "\/imgs\/skills\/Blood_and_Sand.png",
+    "Berserk": "\/imgs\/skills\/Berserk.png",
+    "Frostblink": "\/imgs\/skills\/Frostblink.png",
+    "Precision": "\/imgs\/skills\/Precision.png",
+    "Flesh and Stone": "\/imgs\/skills\/Flesh_and_Stone.png",
+    "Pride": "\/imgs\/skills\/Pride.png",
+    "Perforate": "\/imgs\/skills\/Perforate.png",
+    "Chain Hook": "\/imgs\/skills\/Chain_Hook.png"
 }
