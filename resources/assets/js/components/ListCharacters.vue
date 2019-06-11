@@ -216,7 +216,7 @@ export default {
         return {
             noResults: false,
             skillImages: '',
-            realm: window.PHP.realm,
+            realm: 'pc',
             updatingIndex: -1,
         }
     },
@@ -240,6 +240,9 @@ export default {
 
     mounted: function() {
         this.skillImages = skillsData;
+        if(window.PHP.realm.length>0){
+            this.realm=window.PHP.realm;
+        }
     },
 
     methods: {

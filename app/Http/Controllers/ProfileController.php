@@ -31,7 +31,7 @@ class ProfileController extends Controller
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
-            return redirect()->route('home');
+            return redirect()->back();
         }
         $chars = collect($chars);
 
