@@ -216,6 +216,7 @@ export default {
         return {
             noResults: false,
             skillImages: '',
+            realm: window.PHP.realm,
             updatingIndex: -1,
         }
     },
@@ -244,9 +245,9 @@ export default {
     methods: {
         ranksUrl: function(char, acc=false){
             if (acc) {
-                return route('profile.acc',char.account.name);
+                return route('profile.acc',char.account.name)+'?realm='+this.realm;
             }
-            return route('profile.char', {acc: char.account.name, char: char.name});
+            return route('profile.char', {acc: char.account.name, char: char.name})+'?realm='+this.realm;
         },
 
         selectChar: function(char,event){

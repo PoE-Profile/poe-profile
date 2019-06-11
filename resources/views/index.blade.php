@@ -19,9 +19,11 @@ $('.show-tooltip').tooltip();
 
 @section('content')
 <div class="container text-center home-container-bg" v-cloak>
-    <div class="account" style="width:100%">
+    <div style="width:100%;" class="pt-2">
 
-
+        <div class="jumbotron pt-1 pb-0" style="background-color: #0b0706;opacity: 0.85;margin-left: 7%;width:86%;">
+            
+        
         <div class="inner cover">
             <p class="lead" style="text-align:center">
                 Welcome to PoE-Profile.info, ultimate PoE profile Page. <br>
@@ -30,9 +32,38 @@ $('.show-tooltip').tooltip();
                 with combined stats data from passive skill tree and items. <br>
                 <a href="{{ url('/about') }}" class="btn btn-sm btn-outline-warning">Learn more</a> <br>
             </p>
-            <br>
         </div>
         <form enctype="multipart/form-data" action="{{route('profile.post')}}" method="post">
+            <div style="text-align:center;">
+                <strong style="margin-right:20px;">
+                    <span class="badge" style="background: green;">New</span>
+                    Realm:
+                </strong>
+                <label class="custom-control custom-radio" :class="{'active':(realm=='pc')}">
+                    <input id="radio1" name="realm" type="radio" value="pc" checked="checked" 
+                            v-model="realm" class="custom-control-input">
+                    <!-- <span class="custom-control-indicator realm-indicator"></span> -->
+                    <span class="custom-control-description">
+                        <span class="profile-icon platform-pc"></span> PC
+                    </span>
+                </label>
+                <label class="custom-control custom-radio" :class="{'active':(realm=='xbox')}">
+                    <input id="radio2" name="realm" type="radio" value="xbox" 
+                           v-model="realm" class="custom-control-input">
+                    <!-- <span class="custom-control-indicator realm-indicator"></span> -->
+                    <span class="custom-control-description">
+                        <span class="profile-icon platform-xbox"></span> XBOX
+                    </span>
+                </label>
+                <label class="custom-control custom-radio" :class="{'active':(realm=='sony')}">
+                    <input id="radio2" name="realm" type="radio" value="sony" 
+                            v-model="realm" class="custom-control-input">
+                     <!-- <span class="custom-control-indicator realm-indicator"></span> -->
+                    <span class="custom-control-description">
+                        <span class="profile-icon platform-sony"></span> PlayStation
+                    </span>
+                </label>
+            </div>
             <div class="input-group " style="width:50%;margin-left:auto;margin-right:auto;background:#202624;">
               <input type="text" name="account" class="form-control"
                     style="border-color: #CCCCCC;" placeholder="Account Name...">
@@ -41,6 +72,8 @@ $('.show-tooltip').tooltip();
                 <button type="submit" class="btn btn-outline-warning" >View Profile!</button>
               </span>
             </div>
+
+            
         </form>
         <div class="text-xs-center" style="margin-top: 20px;">
             You can test out with this popular streamer accounts
@@ -54,10 +87,18 @@ $('.show-tooltip').tooltip();
                 How to change your profile characters tab to public.
             </a>
         </div>
+        <div>
+            
+        </div>
+        <ladder-select class="mb-0" style=""
+            :leagues="{{$current_leagues}}" 
+            :realm="'pc'"
+            ></ladder-select>
+        </div>
+
 
          @include('flash::message')
-        <br>
-
+        
        <div class="text-xs-center" style="padding-bottom:5px;">
             <div style="margin: 0 auto;height: 91px;width: 729px;border: 1px solid #FFF;">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

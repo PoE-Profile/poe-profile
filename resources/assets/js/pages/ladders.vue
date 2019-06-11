@@ -8,30 +8,33 @@
             frameborder="0" scrolling="no" height="550" width="24%"></iframe>
         </div>
         <div class="container" style="">
-            <ul class="nav nav-pills char-nav pull-right" v-if="league.type=='public'">
+            <div class="row">
+                <h3 class="col-12" style="padding:10px;" v-if="league.type!='public'">Ladder {{league.name}}:
+                    <a :href="'https://www.pathofexile.com/private-leagues/league/'+league.name.replace(/\(PL[0-9]+\)/,'')"
+                      class="btn btn-sm poe-btn form-inline show-tooltip" target="_blank">
+                        <i class="fa fa-external-link" aria-hidden="true"></i> Open in pathofexile.com
+                    </a>
+                </h3>
+                <LadderSelect v-if="realm!='pc'||league.type=='public'" style="width: 100%"
+                    :leagues="leagues" 
+                    :realm="realm"
+                    :active="league.name"
+                    ></LadderSelect>
+            </div>
+            <!-- <ul class="nav nav-pills char-nav pull-right" v-if="realm!='pc'">
                 <li class="nav-item" v-for="l in leagues">
-                    <a :href="route('ladders.show',l)" class="nav-link" :class="{'active':(l==league.name)}">
+                    <a :href="route('ladders.show',l)+'?realm='+realm" class="nav-link" :class="{'active':(l==league.name)}">
                         {{l}}
                     </a>
                 </li>
-            </ul>
-            <h3 class="" style="padding:10px;">{{league.name}} Ladder:
-                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Start Auto reload every min."
-                    class="btn btn-sm poe-btn form-inline show-tooltip"  v-if="league.type=='public'"
-                    @click.prevent="startAutoReload" :class="{'active': autoReload}">
-                    <span v-if="!autoReload">Start </span>Auto <i aria-hidden="true" class="fa fa-refresh"></i>
-                </button>
-                <a :href="'https://www.pathofexile.com/private-leagues/league/'+league.name.replace(/\(PL[0-9]+\)/,'')"
-                 v-if="league.type!='public'" class="btn btn-sm poe-btn form-inline show-tooltip" target="_blank">
-                    <i class="fa fa-external-link" aria-hidden="true"></i> Open in pathofexile.com
-                </a>
-            </h3>
+            </ul> -->
+            
         </div>
         <div class="row filters pb-1" v-if="league.indexed">
             <div class="col-sm-1">
                 <strong>Filter by</strong>
             </div>
-            <drop-down class="col-sm-2" v-on:selected="trigerFilterClass" :list="classes">
+            <drop-down class="col-sm-1" v-on:selected="trigerFilterClass" :list="classes">
                 <span v-if="filterParms.hasOwnProperty('class')">{{filterParms.class}}</span>
                 <span v-else>Class</span>
             </drop-down>
@@ -60,6 +63,13 @@
             <div class="col-sm-1">
                 <button type="submit" class="btn btn-outline-warning"
                     @click.prevent="clearFilters">Clear</button>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Start Auto reload every min."
+                    class="btn poe-btn show-tooltip"  v-if="league.type=='public'"
+                    @click.prevent="startAutoReload" :class="{'active': autoReload}">
+                    <span v-if="!autoReload"></span>Auto <i aria-hidden="true" class="fa fa-refresh"></i>
+                </button>
             </div>
         </div>
 
@@ -100,12 +110,13 @@
 <script>
 import Loader from '../components/Loader.vue';
 import ListCharacters from '../components/ListCharacters.vue';
+import LadderSelect from '../components/LadderSelect.vue';
 import {poeHelpers} from '../helpers/poeHelpers.js';
 var skillsData = require('../helpers/SkillsData.js');
 Vue.component('modal-twitch', require('../components/ModalTwitch.vue'));
 
 export default {
-    components: {Loader, ListCharacters},
+    components: {Loader, ListCharacters, LadderSelect},
     props: {
         league: {
             type: Object,
@@ -120,6 +131,7 @@ export default {
         return{
             raceName: process.env.MIX_POE_RACE_NAME,
             raceTwitchChannel: process.env.MIX_POE_RACE_TWITCH_CHANNEL,
+            realm: window.PHP.realm,
             isModalVisible: false,
             autoReload: false,
             stream: null,
@@ -211,9 +223,10 @@ export default {
                 this.isLoading = true;
             }
             var base_url = '/api/ladders/'+this.league.name;
-            if(!this.league.indexed){
+            if(!this.league.indexed||this.realm!="pc"){
                 base_url = '/api/private-ladders/'+this.league.name;
             }
+            this.filterParms['realm']=window.PHP.realm;
 
             axios.get(base_url,{ params: this.filterParms }).then((response) => {
                 var responsUrl =  new URL(response.request.responseURL);

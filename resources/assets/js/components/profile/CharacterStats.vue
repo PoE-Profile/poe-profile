@@ -183,16 +183,16 @@ export default {
 
     methods: {
         getCharacterStats: function () {
-            var vm = this;
             this.loading=true;
             if(this.account === ''){
                 var build = favStore.favBuilds[0];
-                vm.account = 'build::'+build.buildId,
-                vm.character = build
+                this.account = 'build::'+build.buildId,
+                this.character = build
             }
             var formData = new FormData();
-            formData.append('account', vm.account);
-            formData.append('character', vm.character.name);
+            formData.append('account', this.account);
+            formData.append('character', this.character.name);
+            formData.append('realm', window.PHP.realm);
 
             //start loading bar for items and stats
             var url="/api/char/stats"
@@ -201,9 +201,9 @@ export default {
             }
             axios.post(url, formData).then((response) => {
                 //stop loading bar for stats
-                vm.profileStore.setAllStats(response.data);
-                vm.$emit('stat-loaded');
-                vm.loading=false;
+                this.profileStore.setAllStats(response.data);
+                this.$emit('stat-loaded');
+                this.loading=false;
             });
         },
 

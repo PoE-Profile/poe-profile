@@ -8,6 +8,7 @@
         <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots' ||selectedTab=='stashes'">
             <li class="pull-left" >
                 <h3 style="margin-right:20px;color:#eee;">
+                    <span :class="'profile-icon platform-'+realm"></span>
                     {{account}}
                     <button href="#" class="btn btn-sm poe-btn show-tooltip"
                     data-toggle="tooltip" data-placement="bottom" v-if="twitch!=null"
@@ -170,6 +171,7 @@ export default {
         return {
             buildLink: window.location.href,
             buildName: '',
+            realm:window.PHP.realm,
             stream: {},
             saving: false,
             favStore: favStore,

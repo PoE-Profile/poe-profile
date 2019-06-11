@@ -8,7 +8,8 @@
         chars: {!! $chars or "null" !!},
         dbAcc: {!! $dbAcc or 'null' !!},
         loadBuild: {{ $loadBuild or 'false' }},
-        build: {!! $build or "null" !!}
+        build: {!! $build or "null" !!},
+        realm: '{!! $_GET["realm"] or "pc" !!}',
     }
 </script>
 @stop

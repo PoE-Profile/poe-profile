@@ -28,6 +28,10 @@ class LadderController extends Controller
         $current_leagues = collect(explode(', ', $str_current_leagues));
 
         $league = League::where('name', $name)->first();
+        $realm="pc";
+        if(isset($_GET['realm'])){
+            $realm = $_GET['realm'];
+        }
 
         if(!$league){
             $response = \App\PoeApi::getLadder($name,0);
@@ -81,14 +85,21 @@ class LadderController extends Controller
         //regex : find (PL1873) for private ladders name 'Betraying Pohx (PL1873)'
         //preg_match('/\(PL[0-9]+\)/', 'Betraying Pohx (PL1873)', $matches, PREG_OFFSET_CAPTURE);
         // dd($response);
+        $realm="pc";
+        if(isset($_GET['realm'])){
+            $realm = $_GET['realm'];
+        }
+
         $returnResponse['current_page']=1;
+        $from=0;
         if($request->input('page')){
             $returnResponse['current_page']=$request->input('page');
             $from = ($returnResponse['current_page']-1)*$this->res_on_page;
-            $response = \App\PoeApi::getLadder($name,$from,$this->res_on_page,false,$proxy=true);
-        }else{
-            $response = \App\PoeApi::getLadder($name,0,$this->res_on_page,false,$proxy=true);
         }
+
+        $response = \App\PoeApi::getLadder(
+            $name,$from,$this->res_on_page,false,$proxy=false,$realm
+        );
         $total = $response['total'];
         $returnResponse['total']=$total;
         $returnResponse['last_page']=(int)ceil($total/$this->res_on_page);
@@ -120,7 +131,7 @@ class LadderController extends Controller
         // dd($char_id);
         $accName = $char->account->name;
         $charName = $char->name;
-        $itemsData=\App\PoeApi::getItemsData($accName, $charName,$proxy=true);
+        $itemsData=\App\PoeApi::getItemsData($accName, $charName);
         if(!$char->account->updateLastCharInfo($itemsData)){
             $char->public=false;
             $char->save();

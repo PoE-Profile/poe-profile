@@ -190,3 +190,53 @@ html, body {
 .page-bg{
     color: white;background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;
 }
+
+.custom-radio.active{
+
+cursor: pointer;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+padding: .5rem 1rem;
+font-size: 1rem;
+border-radius: .25rem;
+    background-color: #332F24;
+    color: #FFF;
+
+}
+[name="realm"]{
+  display: none;
+}
+
+
+.profile-icon{
+  display: inline-block;
+  content: ' ';
+  background-image: url('/imgs/platform.png');
+  vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  margin-right: 3px;
+  opacity: 0.9;
+}
+
+.platform-sony{
+  background-position: -22px 0px;
+}
+
+.platform-xbox{
+  background-position: -22px 22px;
+}
+.platform-pc{
+  background-position: 0px 0px;
+}
+
+.custom-control-input:checked ~ .custom-control-indicator{
+  background-color: orange!important;
+}

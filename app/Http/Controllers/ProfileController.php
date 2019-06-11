@@ -20,11 +20,14 @@ class ProfileController extends Controller
 
     public function postProfile(Request $request)
     {
+        // dd($request->input('realm'));
         $acc = $request->input('account');
-        return redirect()->route('profile.acc',$acc);
+        return redirect()->route('profile.acc',
+            ['acc' => $acc,'realm'=>$request->input('realm')]
+        );
     }
 
-    public function getProfile($acc)
+    public function getProfile(Request $request, $acc)
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
@@ -46,7 +49,7 @@ class ProfileController extends Controller
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
-            return redirect()->route('home');
+            return redirect()->back();
         }
         $chars = collect($chars);
         $dbAcc = $this->getDbAcc($acc);
@@ -65,6 +68,7 @@ class ProfileController extends Controller
         $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         if(!$dbAcc){
             $dbAcc = Account::create(['name' => $acc]);
+            $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         }
         $dbAcc->updateLastChar();
         $dbAcc->updateViews();
