@@ -20,6 +20,29 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
+        <h2>What is new <small>(version 2.5 - June 12 ,2019)</small> </h2>
+        <ul>
+            <li>We have added support for Xbox and PlayStation, you can watch the league progression and profiles.</li>
+            <li>PoE 3.7 changes
+                <ul>
+                    <li>Added images for new skills</li>
+                    <li>Passive skill Tree changed</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>
+            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
+            and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
+        </h4>
+
+        
+
+        
+
+        <br><br>
+        <h1>Changes from older versions:</h1>
+
         <h2>What is new <small>(version 2.4 - January 26 ,2019)</small> </h2>
         <ul>
             <li>Complete refactoring on Ladder page and UI changes
@@ -40,13 +63,6 @@
             <li>Added calculation for Fluid Motion Solution transform jewel</li>
         </ul>
 
-        <h4>
-            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a>
-            and <a href="https://www.reddit.com/r/pathofexile/comments/83oydq/tool_poeprofile_21_with_github/" class="about-link">reddit</a> posts.
-        </h4>
-
-        <br><br>
-        <h1>Changes from older versions:</h1>
         <h2>What is new <small>(version 2.3 - December 7 ,2018)</small> </h2>
         <ul>
             <li>Passive skill Tree updated to 3.5</li>
