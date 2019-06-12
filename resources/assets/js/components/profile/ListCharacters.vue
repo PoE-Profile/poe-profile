@@ -11,7 +11,7 @@
                   <li class="nav-item" v-for="league in leagues">
                       <a href="#" @click.prevent="setLeague(league.name)"
                       :class="['nav-link', league.name===currentLeague ? 'active' : '']">
-                      {{league.name}}({{league.count}})
+                      {{withEllipsis(league.name,18)}}({{league.count}})
                       </a>
                   </li>
                 </ul>

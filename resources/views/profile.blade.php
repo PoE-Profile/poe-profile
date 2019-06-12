@@ -87,7 +87,7 @@ $(function () {
                                 @{{ladderChar.league}} League (Rank: @{{ladderChar.rank}})
                                 <i class="fa fa-external-link-square"  style="color: orange;"></i>
                             </a>
-                            <a v-else :href="route('ladders.show', character.league)">
+                            <a v-else :href="route('ladders.show', character.league)+'?realm='+realm">
                                 @{{character.league}} League
                                 <i class="fa fa-external-link-square"  style="color: orange;"></i>
                             </a>
