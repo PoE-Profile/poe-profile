@@ -5,9 +5,13 @@ use Sunra\PhpSimple\HtmlDomParser;
 
 class PoeApi
 {
-    static public function getCharsData($acc)
+    static public function getCharsData($acc, $realm="pc")
     {
-        return \Cache::remember($acc, config('app.poe_cache_time'), function () use ($acc) {
+        if(isset($_GET['realm'])){
+            $realm = $_GET['realm'];
+        }
+        $cacheKey=$acc.'/'.$realm;
+        return \Cache::remember($cacheKey, config('app.poe_cache_time'), function () use ($acc,$realm) {
             $client = new \GuzzleHttp\Client();
             try {
                 $response = $client->request(
@@ -15,13 +19,15 @@ class PoeApi
                     'https://www.pathofexile.com/character-window/get-characters',
                     [
                     'form_params' => [
-                        'accountName' => $acc
+                        'accountName' => $acc,
+                        'realm' => $realm
                     ]
                 ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
                 // dd('ClientException');
-                flash('pathofexile.com is currently down for maintenance. Please try again later. ', 'warning');
+                // flash('pathofexile.com is currently down for maintenance. Please try again later. ', 'warning');
+                flash('Аccount is private or does not exist. ', 'warning');
                 return false;
             }
             $result = json_decode((string)$response->getBody());
@@ -35,11 +41,11 @@ class PoeApi
         });
     }
 
-    static public function getTreeData($acc, $char)
+    static public function getTreeData($acc, $char, $realm="pc")
     {
-        $key='tree/'.$acc.'/'.$char;
+        $key='tree/'.$acc.'/'.$char.'/'.$realm;
         $time = config('app.poe_cache_time');
-        return \Cache::remember($key, $time, function () use ($acc,$char) {
+        return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
             $client = new \GuzzleHttp\Client();
             try {
             $responseTree = $client->request(
@@ -48,7 +54,8 @@ class PoeApi
                         [
                             'query' => [
                                 'accountName' => $acc,
-                                'character' => $char
+                                'character' => $char,
+                                'realm' => $realm
                             ]
                         ]
                     );
@@ -59,11 +66,11 @@ class PoeApi
         });
     }
 
-    static public function getItemsData($acc, $char, $proxy=false){
+    static public function getItemsData($acc, $char, $realm="pc", $proxy=false){
         //get cahce if no cache get from poe api
-        $key='items/'.$acc.'/'.$char;
+        $key='items/'.$acc.'/'.$char.'/'.$realm;
         $time = config('app.poe_cache_time');
-        return \Cache::remember($key, $time, function () use ($acc, $char,$proxy){
+        return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
             $client = new \GuzzleHttp\Client();
             //make Requests to PathOfExile website to retrieve Character Items
             $page_url='https://www.pathofexile.com/character-window/get-items';
@@ -76,7 +83,8 @@ class PoeApi
                     $page_url, [
                     'form_params' => [
                         'accountName' => $acc,
-                        'character' => $char
+                        'character' => $char,
+                        'realm' => $realm
                     ]
                 ]);
             }catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -92,9 +100,9 @@ class PoeApi
         });
     }
 
-    static public function getLadder($id, $offset, $limit=200, $delve=false, $proxy=false){
+    static public function getLadder($id, $offset, $limit=200, $delve=false, $proxy=false, $realm="pc"){
         $base_url = 'https://www.pathofexile.com/api/ladders';
-        $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league';
+        $parms = '?offset='.$offset.'&limit='.$limit.'&id='.$id.'&type=league&realm='.$realm;
         if($delve){
             $parms = $parms.'&sort=depth';
         }

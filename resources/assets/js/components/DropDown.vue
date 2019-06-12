@@ -5,7 +5,6 @@
 <div class="dropdown">
     <a class="dropdown-toggle w-100" href="#" :class="[lclass]" data-toggle="dropdown" aria-haspopup="true"
     aria-expanded="false" style="padding: 5px 0.3rem;margin-left:0px;"
-    id="dropdownMenuButton"
     @click.prevent="toggleDropdown()"
     >
         <slot></slot>

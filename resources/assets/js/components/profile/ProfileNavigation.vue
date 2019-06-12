@@ -7,7 +7,8 @@
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
         <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots' ||selectedTab=='stashes'">
             <li class="pull-left" >
-                <h3 style="margin-right:20px;color:#eee;">
+                <h3 style="margin-right:10px;color:#eee;">
+                    <span :class="'profile-icon platform-'+realm"></span>
                     {{account}}
                     <button href="#" class="btn btn-sm poe-btn show-tooltip"
                     data-toggle="tooltip" data-placement="bottom" v-if="twitch!=null"
@@ -55,7 +56,6 @@
                 :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
             </li>
             <li class="pull-right " v-if="selectedTab=='profile'||favStore.isBuildPublic(account)" style="display: block;">
-                <span class="badge badge-success" style="background-color: #f0ad4e;color: black;">New</span>
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link "
                         @click.prevent="" style="color:white; margin-right:10px;">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> Save Build/Snapshot
@@ -170,6 +170,7 @@ export default {
         return {
             buildLink: window.location.href,
             buildName: '',
+            realm:window.PHP.realm,
             stream: {},
             saving: false,
             favStore: favStore,

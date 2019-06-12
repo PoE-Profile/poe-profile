@@ -3,7 +3,7 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        account: '',
+        realm: '{!! $_GET["realm"] or "pc" !!}',
     }
 </script>
 @stop

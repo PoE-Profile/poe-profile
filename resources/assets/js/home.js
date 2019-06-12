@@ -7,6 +7,7 @@ Vue.component('race-page', require('./pages/race.vue'));
 Vue.component('twitch-page', require('./pages/twitch.vue'));
 Vue.component('list-characters', require('./components/ListCharacters.vue'));
 Vue.component('drop-down', require('./components/DropDown.vue'));
+Vue.component('ladder-select', require('./components/LadderSelect.vue'));
 
 var favStore = require('./helpers/FavStore.js');
 
@@ -23,6 +24,7 @@ const app = new Vue({
         favAccChars: [],
         isLoading:false,
         listCharsError:'',
+        realm:'pc',
     },
 
     watch : {},

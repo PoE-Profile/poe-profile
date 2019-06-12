@@ -216,6 +216,7 @@ export default {
         return {
             noResults: false,
             skillImages: '',
+            realm: 'pc',
             updatingIndex: -1,
         }
     },
@@ -239,14 +240,17 @@ export default {
 
     mounted: function() {
         this.skillImages = skillsData;
+        if(window.PHP.realm.length>0){
+            this.realm=window.PHP.realm;
+        }
     },
 
     methods: {
         ranksUrl: function(char, acc=false){
             if (acc) {
-                return route('profile.acc',char.account.name);
+                return route('profile.acc',char.account.name)+'?realm='+this.realm;
             }
-            return route('profile.char', {acc: char.account.name, char: char.name});
+            return route('profile.char', {acc: char.account.name, char: char.name})+'?realm='+this.realm;
         },
 
         selectChar: function(char,event){

@@ -7,7 +7,9 @@
 Route::group(['middleware' => 'web'], function () {
     //Main Page
     Route::get('/',function () {
-        return view('index');
+        $str_current_leagues=cache('current_leagues', config('app.poe_leagues'));
+        $current_leagues = collect(explode(', ', $str_current_leagues));
+        return view('index',compact('current_leagues'));
     })->name('home');
 
     Route::get('/ladders/', 'LadderController@index')->name('ladders.index');
@@ -50,7 +52,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/build/{hash}', 'ProfileController@showBuild')->name('build.show');
 
     //profile routes
-    Route::get('/profile', 'ProfileController@profileDefault')->name('profile');
+    Route::get('/profile', 'ProfileController@getProfile')->name('profile');
     Route::post('/profile', 'ProfileController@postProfile')->name('profile.post');
     Route::get('/profile/{acc}/ranks', 'ProfileController@getProfileRanks')->name('profile.ranks');
     Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');

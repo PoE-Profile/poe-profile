@@ -35,6 +35,7 @@ new Vue({
     data: {
         dbAcc: window.PHP.dbAcc,
         build: window.PHP.build,
+        realm: window.PHP.realm,
         isBuild: false,
         isModalVisible: false,
         isSnapshotsVisible: false,
@@ -502,6 +503,7 @@ new Vue({
                 {params:  {
                     accountName: this.account,
                     character: this.character.name,
+                    realm: this.realm
                 }}).then(response);
         },
 
@@ -526,6 +528,7 @@ new Vue({
             var formData = new FormData();
             formData.append('account', this.account);
             formData.append('character', this.character.name);
+            formData.append('realm', this.realm);
             axios.post('/api/char/items', formData).then((response) => {
                 this.items = response.data;
                 this.loadingItems=false;

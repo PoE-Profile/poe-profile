@@ -15,6 +15,7 @@ class ApiController extends Controller
     {
         $acc=$request->input('account');
         $char=$request->input('character');
+        $realm=$request->input('realm');
 
         $b = explode('::', $acc);
         if($b[0] == 'build'){
@@ -22,7 +23,7 @@ class ApiController extends Controller
         }
 
         $dbAcc = \App\Account::where('name', $acc)->first();
-        $itemsData=PoeApi::getItemsData($acc, $char);
+        $itemsData=PoeApi::getItemsData($acc, $char, $realm);
         if(!$dbAcc || !array_key_exists('items', $itemsData)){
             return;
         }
@@ -35,6 +36,7 @@ class ApiController extends Controller
     {
         $acc=$request->input('account');
         $char=$request->input('character');
+        $realm=$request->input('realm');
 
         $b = explode('::', $acc);
         if ($b[0] == 'build') {
@@ -48,8 +50,8 @@ class ApiController extends Controller
         //get acc from db to get real name
         $dbAcc = \App\Account::where('name', $acc)->first();
         $acc = $dbAcc->name;
-        $itemsRes = PoeApi::getItemsData($acc, $char);
-        $tree = PoeApi::getTreeData($acc, $char);
+        $itemsRes = PoeApi::getItemsData($acc, $char, $realm);
+        $tree = PoeApi::getTreeData($acc, $char, $realm);
         $stManager = new Stats_Manager($itemsRes, $tree, isset($_GET['offHand']));
         return $stManager->getStats();
     }

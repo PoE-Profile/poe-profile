@@ -36,7 +36,8 @@ class SkillTreeController extends Controller
         $dbAcc = \App\Account::where('name', $_GET['accountName'])->first();
         $acc=$dbAcc->name;
         $char=$_GET['character'];
-        $responseThree = PoeApi::getTreeData($acc, $char);
+        $realm=$_GET['realm'];
+        $responseThree = PoeApi::getTreeData($acc, $char, $realm);
         return $responseThree;
     }
 }

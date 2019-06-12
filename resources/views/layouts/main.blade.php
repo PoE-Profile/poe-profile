@@ -23,7 +23,10 @@
     #iPZUemdYKrpcjyd {
         display: none;
         padding: 10px 10px;
-        background: #D30000;
+        /*background: #D30000;*/
+        border-style: solid;
+        border-width: 1px;
+        border-color: orange; 
         text-align: center;
         font-weight: bold;
         color: #fff;
@@ -145,7 +148,7 @@
 
 	@yield('script')
 	<script type="text/javascript">
-		$('div.alert').not('.alert-important').delay(2500).fadeOut(350);
+		$('div.alert').not('.alert-important').delay(6500).fadeOut(350);
 	</script>
 
 	<script>
