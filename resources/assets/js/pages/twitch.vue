@@ -3,6 +3,7 @@
     <div class="" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
         <list-characters :char-data="twitchAccChars" :league="true"
             show-twitch @selected-twitch="openTwitch"></list-characters>
+        <loader :loading="isLoading" style="margin-left:auto;margin-right:auto;width:150px; margin-top: 50px;" ></loader>
     </div>
     <modal-twitch :stream="stream" v-show="isModalVisible" @close="closeModal"></modal-twitch>
 </div>
