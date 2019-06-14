@@ -11,7 +11,7 @@
       {{withEllipsis(typeLine,35)}}
     </span>
 
-    <span class="item-stats">
+    <span class="item-stats" style="max-width:400px!important;">
       <span v-if="showFlask" class="group -textwrap tc -mod">
         <span
           :style="{listStyleType: 'none', color: 'grey'}"

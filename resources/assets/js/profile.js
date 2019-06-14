@@ -510,7 +510,7 @@ new Vue({
         setTreeUrl: function(){
             var version = '';
             if (this.build) {
-                version = "&version=" + this.build.poe_version;
+                //version = "&version=" + this.build.poe_version;
             }
             var userStr="?accountName="+this.account+"&characterName="+this.character.name+version;
             var tempStr = "/passive-skill-tree/hash"+userStr;
