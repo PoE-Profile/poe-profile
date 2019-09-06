@@ -107,20 +107,21 @@ class PoeTwitch extends Command
                 break;
         }
     }
-    private function seedTwitchTable(){
+    private function seedTwitchTable()
+    {
         foreach ($this->twitchChannels as $key => $value) {
             $dbAcc = \App\Account::where('name', $key)->first();
-            if(!$dbAcc){
+            if (!$dbAcc) {
                 $dbAcc = \App\Account::create(['name' => $key]);
-                $this->info('add acc:'.$key);
+                $this->info('add acc:' . $key);
             } else {
-                $this->info('update acc:'.$key);
+                $this->info('update acc:' . $key);
             }
             $dbAcc->updateLastChar();
             $dbAcc->updateLastCharInfo();
 
-            if(!$dbAcc->streamer){
-                $this->info('add twitch:'.$value);
+            if (!$dbAcc->streamer) {
+                $this->info('add twitch:' . $value);
                 $newStreamer = \App\TwitchStreamer::create([
                     'name' => $value,
                     'account_id' => $dbAcc->id
@@ -129,45 +130,49 @@ class PoeTwitch extends Command
         }
     }
 
-    public function updateTwitchInfo(){
+    public function updateTwitchInfo()
+    {
         \DB::statement("UPDATE `twitch_streamers` set online=0 ,viewers=0");
         $client = new \GuzzleHttp\Client();
         $response = $client->request(
             'GET',
-            'https://api.twitch.tv/kraken/streams?game=Path%20of%20Exile&limit=40', [
-            'headers' => [
-                'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',
-                'User-Agent' => 'testing/1.0',
-                'Accept'     => 'application/json',
+            'https://api.twitch.tv/helix/streams?game_id=29307&first=50',
+            [
+                'headers' => [
+                    'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',
+                    'User-Agent' => 'testing/1.0',
+                    'Accept'     => 'application/json',
+                ]
             ]
-        ]);
-        $data=json_decode((string)$response->getBody());
-        foreach ($data->streams as $stream) {
-            $this->info($stream->channel->name);
-            $dbStreamer=\App\TwitchStreamer::where('name', $stream->channel->name)->first();
+        );
+        $data = json_decode((string) $response->getBody())->data;
+        // dd($data);
+        foreach ($data as $stream) {
+
+            $this->info($stream->user_name);
+            $dbStreamer = \App\TwitchStreamer::where('name', $stream->user_name)->first();
             // if in DB update info
-            if($dbStreamer){
-                $dbStreamer->viewers=$stream->viewers;
-                $dbStreamer->fallowers=$stream->channel->followers;
-                $dbStreamer->status=$stream->channel->status;
-                $dbStreamer->img_preview=$stream->preview->medium;
-                $dbStreamer->channel_id=$stream->channel->_id;
-                $dbStreamer->online=true;
-                $dbStreamer->last_online=\Carbon\Carbon::now();
+            if ($dbStreamer) {
+                $thumbnail = str_replace('{width}', 240, $stream->thumbnail_url);
+                $thumbnail = str_replace('{height}', 135, $thumbnail);
+
+                $dbStreamer->viewers = $stream->viewer_count;
+                $dbStreamer->status = $stream->title;
+                $dbStreamer->img_preview = $thumbnail;
+                $dbStreamer->channel_id = $stream->user_id;
+                $dbStreamer->online = true;
+                $dbStreamer->last_online = \Carbon\Carbon::now();
                 $dbStreamer->save();
 
                 $dbStreamer->account->updateLastChar();
                 $dbStreamer->account->updateLastCharInfo();
-                if($dbStreamer->isForSnapshot()){
+                if ($dbStreamer->isForSnapshot()) {
                     $acc = $dbStreamer->account->name;
                     $char = $dbStreamer->account->last_character;
                     Snapshot::create($acc, $char);
                 }
-
             }
         }
         \Cache::forget('OnlineStreamers');
     }
-
-
 }
