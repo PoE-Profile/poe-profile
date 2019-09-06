@@ -264,9 +264,6 @@ class Jewels
     {
         foreach ($jewels as $jewel) {
             $this->jewel_slots[$jewel['x']]['slot'] = $jewel;
-            if (!array_key_exists('jewels', $jewel['category'])) {
-                continue;
-            }
 
             if (isset($jewel['properties'])) {
                 $this->jewel_slots[$jewel['x']]['radius'] = $this->jewelRadius($jewel['properties']);
