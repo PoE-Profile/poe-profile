@@ -313,5 +313,15 @@ module.exports = {
     "Flesh and Stone": "\/imgs\/skills\/Flesh_and_Stone.png",
     "Pride": "\/imgs\/skills\/Pride.png",
     "Perforate": "\/imgs\/skills\/Perforate.png",
-    "Chain Hook": "\/imgs\/skills\/Chain_Hook.png"
+    "Chain Hook": "\/imgs\/skills\/Chain_Hook.png",
+
+    // version 3.8 Blight
+    "Stormblast Mine": "\/imgs\/skills\/LightningExplosionMine.png",
+    "Summon Carrion Golem": "\/imgs\/skills\/SummonCarrionGolem.png",
+    "Summon Skitterbots": "\/imgs\/skills\/LightningFireSkitterbots.png",
+    "Cobra Lash": "\/imgs\/skills\/CobraLash.png",
+    "Pestilent Strike": "\/imgs\/skills\/MambaStrike.png",
+    "Plague Bearer": "\/imgs\/skills\/PlagueBearerStoring.png",
+    "Venom Gyre": "\/imgs\/skills\/SnappingAdder.png",
+    "Withering Step": "\/imgs\/skills\/WitheringStep.png",
 }
