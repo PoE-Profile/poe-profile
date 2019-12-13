@@ -55,12 +55,12 @@ require.config({
 
 to be like path of exile site https://www.pathofexile.com/passive-skill-tree
 
--update or add new version of skill tree in "public/js/st_us{version}.js" in var
+- update or add new version of skill tree in "public/js/st_us{version}.js" in var
 
 ```
 var passiveSkillTreeData = {json_skill_tree_data};
 ```
 
--update {nodes} skill tree data in "app\Parse_mods\tree_versions\{version}.json"
+- take {nodes} from passiveSkillTreeData and create new "app\Parse_mods\tree_versions\{version}.json"
 
--update .env with the new version
+- update .env with the new version
