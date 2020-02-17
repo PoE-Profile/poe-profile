@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>skill-tree</title>
         <link href="css/tree_style.css" media="screen" rel="stylesheet" type="text/css" >
-        <link href="https://web.poecdn.com/css/screen.css?v=e3247e72a56348087ac9099deddb5733" media="screen" rel="stylesheet" type="text/css" >
+        <link href="https://web.poecdn.com/css/screen.css?v=6f03cfe2997c9f753abdf5b41e56a1ac" media="screen" rel="stylesheet" type="text/css" >
     </head>
 <body>
 
@@ -219,7 +219,7 @@
 
 	<div id="summary" name="summary"></div>
 </div>
-        <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=fb734febccaaa258d2fe03b3dca5e0a6"></script>    <!-- <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=fb734febccaaa258d2fe03b3dca5e0a6"></script> -->
+        <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=53f6b5a112b20a13c435d7b4630b8320"></script>    <!-- <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=fb734febccaaa258d2fe03b3dca5e0a6"></script> -->
 <script type="text/javascript">
     //<!--
                 document.body.className = document.body.className.replace( /(?:^|\s)noJS(?!\S)/ , '');
@@ -239,7 +239,7 @@
   */
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
-                paths : {"main":"main.ae811ffe3dc764eea727a17ea822f10bee7aebb7","plugins":"plugins.dede7347b24adda10d379970799ab49c53aaf7f3","skilltree":"skilltree.31429c9be558995934071c0d089e4158d331c164"},
+                paths : {"main":"main.ec6ba113020f467ba890095e38b0d0247c2e7522","plugins":"plugins.3969f39d17a09125aa97f240ec53337f489db098","skilltree":"skilltree.31429c9be558995934071c0d089e4158d331c164"},
             });
             require(["main"], function(){});    //-->
 
