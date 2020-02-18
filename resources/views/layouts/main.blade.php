@@ -13,11 +13,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" title="no title">
 
 	@routes
-	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/main.css">
-	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/profile.css">
-	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/sockets.css">
-	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/skills.css">
-	{{-- <link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/vue-loading.css"> --}}
+	<link rel="stylesheet" type="text/css" href="{{ asset('/css/main.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('/css/profile.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('/css/sockets.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('/css/skills.css') }}">
 	@yield('styleSheets')
 	<style type="text/css">
     #iPZUemdYKrpcjyd {

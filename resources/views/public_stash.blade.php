@@ -17,7 +17,7 @@
 
 @section('script')
 <script type="text/javascript" src="{{ mix('/js/build/profile.js') }}"></script>
-<script type="text/javascript" src="http://www.jqueryscript.net/demo/Base64-Decode-Encode-Plugin-base64-js/jquery.base64.js"></script>
+<script type="text/javascript" src="{{ asset('/js/jquery.base64.js') }}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 <script type="text/javascript">
 $('.show-tooltip').tooltip();

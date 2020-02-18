@@ -31,8 +31,11 @@ class TwitchStreamer extends Model
             return true;
         }
 
-
-        $last_level = intval($snapshots->last()->original_level);
+        $last_level = 0;
+        if($snapshots->last()){
+            $last_level = intval($snapshots->last()->original_level);
+        }
+        
         $diff=$curent_level-$last_level;
         if($curent_level>20 && $curent_level<80 && $diff>=10){
             return true;
