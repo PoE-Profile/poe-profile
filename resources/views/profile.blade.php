@@ -1,5 +1,28 @@
 @extends('layouts.main')
 
+@section('metatags')
+    @php
+        $currentChar = $chars->filter(function ($value, $key) use(&$char) {
+            return $value->name == $char;
+        });
+        $currentChar = $currentChar->first();
+        // dd($dbAcc->toArray());
+        $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+    @endphp
+
+
+    <meta property="og:title" content="{{$acc or "" }} / {{$char or "" }} {{$currentChar->class or "" }} L{{$currentChar->level or "" }} " />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ config('app.name')}}" />
+    <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/{{$acc or "" }}/{{$char or "" }}" />
+    <meta property="og:image" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $classImgPath }}"/>
+    <meta property="og:description" content="Welcome to PoE-Profile.info, ultimate PoE profile Page.
+                    Here you can see all of your characters
+                    from PathOfExile.com
+                    with combined stats data from passive skill tree and items. "/>
+    
+@endsection
+
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
