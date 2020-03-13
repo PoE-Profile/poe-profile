@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
+	@yield('metatags')
 
 	 <title> @yield('title', 'PoE Profile Info')</title>
 
@@ -83,7 +84,7 @@
                                         style="text-align: center;">
                                         -- Show All Favs --
                                     </a>
-                                </sapn>
+                                </span>
                             </drop-down>
                         </div>
                     </li>
