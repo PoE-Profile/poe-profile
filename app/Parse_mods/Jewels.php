@@ -298,7 +298,7 @@ class Jewels
         if(count($jewels)) {
             foreach($jewels as $jewel){
                 //filter point if its in Radius 
-                if (!in_array($point->id, $this->pointsInRadius($jewel))) {
+                if (!in_array($point->skill, $this->pointsInRadius($jewel))) {
                     continue;
                 }
 

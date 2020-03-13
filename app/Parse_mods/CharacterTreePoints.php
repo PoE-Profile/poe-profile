@@ -39,14 +39,14 @@ class CharacterTreePoints
 
 
         $version = (float) str_replace("_", ".", $this->version);
-        if ($version > 3.2) {
+        if ($version > 3.2 || $version == 3.10) {
             foreach ($tree['hashes'] as $id) {
                 if (!property_exists($this->allPoints, $id)) {
                     return [];
                 }
                 $charTree[] = [
                     'type' => 'tree',
-                    'mods' => $jewelsObj->uniqueJewels($this->allPoints->{$id})->sd
+                    'mods' => $jewelsObj->uniqueJewels($this->allPoints->{$id})->stats
                 ];
             }
         } else {
