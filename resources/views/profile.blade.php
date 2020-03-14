@@ -2,12 +2,17 @@
 
 @section('metatags')
     @php
+    if(($loadBuild??false)){
+        $currentChar = (object)$build->item_data['character'];
+        $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+    }else{
         $currentChar = $chars->filter(function ($value, $key) use(&$char) {
             return $value->name == $char;
         });
         $currentChar = $currentChar->first();
         // dd($dbAcc->toArray());
         $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+    }
     @endphp
 
 
