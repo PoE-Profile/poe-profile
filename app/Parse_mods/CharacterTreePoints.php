@@ -29,6 +29,9 @@ class CharacterTreePoints
         
 
         foreach ($jewels as $jewel) { 
+            if (str_contains($jewel['slot']['typeLine'], 'Cluster') ) {
+                continue;
+            }
             if ( in_array($jewel['id'], $tree['hashes']) ) {
                 $charTree[] = [
                     'type' => 'jewel',
@@ -37,7 +40,7 @@ class CharacterTreePoints
             }
         }
 
-
+        
         $version = (float) str_replace("_", ".", $this->version);
         if ($version > 3.2 || $version == 3.10) {
             foreach ($tree['hashes'] as $id) {
