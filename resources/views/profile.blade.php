@@ -2,32 +2,32 @@
 
 @section('metatags')
     @php
+    $account_char = '';
     if(($loadBuild??false)){
         $classImgPath = "";
         if($build){
             $currentChar = (object)$build->item_data['character'];
-            $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+            $account_char = 'Snapshot of: ' . $build['original_char'];
         }
     }else{
         $currentChar = $chars->filter(function ($value, $key) use(&$char) {
             return $value->name == $char;
-        });
-        $currentChar = $currentChar->first();
-        // dd($dbAcc->toArray());
-        $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+        })->first();
+            $account_char = $acc . ' / ' . $char;
     }
+    $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
     @endphp
 
 
-    <meta property="og:title" content="{{$acc or "" }} / {{$char or "" }} {{$currentChar->class or "" }} L{{$currentChar->level or "" }} " />
+<meta property="og:title" content="{{$currentChar->class or "" }} L{{$currentChar->level or "" }} {{$currentChar->league or ""}} "/>
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="{{ config('app.name')}}" />
+    <meta property="og:site_name" content="Ultimate PoE profile Page" />
     <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/{{$acc or "" }}/{{$char or "" }}" />
     <meta property="og:image" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $classImgPath }}"/>
-    <meta property="og:description" content="Welcome to PoE-Profile.info, ultimate PoE profile Page.
-                    Here you can see all of your characters
-                    from PathOfExile.com
-                    with combined stats data from passive skill tree and items. "/>
+    <meta property="og:description" content="
+                    {{$account_char or "" }}
+                    Here you can see Skill Gems, Items and Combined Stats Data (from passive skill tree and items).
+                    "/>
     
 @endsection
 

@@ -324,4 +324,16 @@ module.exports = {
     "Plague Bearer": "\/imgs\/skills\/PlagueBearerStoring.png",
     "Venom Gyre": "\/imgs\/skills\/SnappingAdder.png",
     "Withering Step": "\/imgs\/skills\/WitheringStep.png",
+
+    // version 3.9 Metamorph
+    "Artillery Ballista": "\/imgs\/skills\/Artillery_Ballista.png",
+    "Ensnaring Arrow": "\/imgs\/skills\/Ensnaring_Arrow.png",
+    "Shrapnel Ballista": "\/imgs\/skills\/Shrapnel_Ballista.png",
+
+    // version 3.10 Delirium
+    "Arcane Cloak": "\/imgs\/skills\/Arcane_Cloak.png",
+    "Kinetic Bolt": "\/imgs\/skills\/Kinetic_Bolt.png",
+    "Spellslinger": "\/imgs\/skills\/Spellslinger.png",
+    "Stormbind": "\/imgs\/skills\/Stormbind.png",
+    "Blade Blast": "\/imgs\/skills\/Blade_Blast.png"
 }
