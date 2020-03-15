@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\PoeApi;
-use Illuminate\Http\Request;
-use App\Stash;
 use App\Item;
+use App\Stash;
+use App\PoeApi;
 use App\Account;
+use App\Snapshot;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 
 
 class ProfileController extends Controller
@@ -35,6 +36,7 @@ class ProfileController extends Controller
         }
         $chars = collect($chars);
 
+        
         $dbAcc = $this->getDbAcc($acc);
         //select chars check if last_character exist in $chars cache and set as $char
         $char = $chars[0]->name;
@@ -58,10 +60,11 @@ class ProfileController extends Controller
                     .$acc.' or is removed.', 'warning');
             $char = $chars[0]->name;
         }
+        $build = Snapshot::getAccChar($acc,$char);
         if($request->has('race')){
             return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
         }
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'build'));
     }
 
     private function getDbAcc($acc){
@@ -80,7 +83,7 @@ class ProfileController extends Controller
         $rankArchives = \App\LadderCharacter::with('account')
                 ->whereHas('account', function ($query) use (&$acc) {
                     $query->where('name', '=', $acc);
-                })->get();
+        })->get();
         $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
     }
@@ -107,7 +110,9 @@ class ProfileController extends Controller
     {
         $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')
                             ->orderBy('created_at', 'DESC')->get()->unique('original_char');
-
+        $snapshots = $snapshots->map(function($item){
+            return $item->toLadderChar();
+        });
         $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('snapshots', compact('acc', 'snapshots', 'dbAcc'));
     }

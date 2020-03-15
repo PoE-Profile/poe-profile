@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Sunra\PhpSimple\HtmlDomParser;
 use App\PoeApi;
+use App\Helpers\Items;
 
 class Account extends Model
 {
@@ -58,27 +59,8 @@ class Account extends Model
         if (!array_key_exists('items', $itemsData)) {
             return false;
         }
-        $items_most_sockets = [];
-        foreach ($itemsData['items'] as $item) {
-            if (!array_key_exists('sockets', $item)) {
-                continue;
-            }
-            $grouped = collect($item['sockets'])->groupBy('group');
-            $item_most_links=count($grouped[0]);
-            $supports = collect($item['socketedItems'])
-                        ->where('support',true)
-                        ->filter(function ($item) use($item_most_links){
-                            return $item['socket'] < $item_most_links;
-                        });
-            $level=$itemsData['character']['level'];
-            $requiredSupports = $level<30 ? 2 : 3 ;
-            $requiredSupports = $level<10 ? 1 : $requiredSupports ;
-
-            if ($supports->count()>=$requiredSupports) {
-                $items_most_sockets[] = $item;
-            }
-        }
-
+        $items_most_sockets = Items::withMostSockets($itemsData);
+        
         if ($this->last_character==$itemsData['character']['name']) {
             $lastChar=[
                 'league'=>$itemsData['character']['league'],
