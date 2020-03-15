@@ -304,75 +304,75 @@ class Jewels
 
                 // Transform % Energy Shield to Armour 200% / Energised Armour jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Energised Armour')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Energy Shield', 'Armour', $point->sd[$i]);
+                    for ($i=0; $i < count($point->stats); $i++) { 
+                        $point->stats[$i] =  str_replace('Energy Shield', 'Armour', $point->stats[$i]);
                     }
                 }
 
                 // Transform % Life to Mana 200% / Healthy Mind jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Healthy Mind')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Life', 'Mana', $point->sd[$i]);
+                    for ($i=0; $i < count($point->stats); $i++) { 
+                        $point->stats[$i] =  str_replace('Life', 'Mana', $point->stats[$i]);
                     }
                 }
 
                 // Transform % Life to Energy Shield / Energy From Within jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Energy From Within')) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  str_replace('Life', 'Energy Shield', $point->sd[$i]);
+                    for ($i=0; $i < count($point->stats); $i++) { 
+                        $point->stats[$i] =  str_replace('Life', 'Energy Shield', $point->stats[$i]);
                     }
                 }
                 
                 // Transform Strength to Intelligence / Brute Force Solution jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Brute Force')) {
-                    $point->sd = $this->replaceMod($point->sd, 'Brute');
+                    $point->stats = $this->replaceMod($point->stats, 'Brute');
                 }
 
                 // Transform Strength to Dexterity / Fluid Force Solution jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Fluid Motion')) {
-                    $point->sd = $this->replaceMod($point->sd, 'Fluid');
+                    $point->stats = $this->replaceMod($point->stats, 'Fluid');
                 }
 
                 // Transform Intelligence to Dexterity / Careful Planning jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Careful Planning')) {
-                    $point->sd = $this->replaceMod($point->sd, 'Careful');
+                    $point->stats = $this->replaceMod($point->stats, 'Careful');
                 }
 
                 // Transform Intelligence to Strength / Efficient Training jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Efficient Training')) {
-                    $point->sd = $this->replaceMod($point->sd, 'Efficient');
+                    $point->stats = $this->replaceMod($point->stats, 'Efficient');
                 }
                 
                 // Transform Dexterity to Intelligence / Fertile Mind jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Fertile Mind')) {
-                    $point->sd  = $this->replaceMod($point->sd, 'Fertile');
+                    $point->stats  = $this->replaceMod($point->stats, 'Fertile');
                 }
 
                 // Transform Strength to Dexterity / Inertia jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Inertia')) {
-                    $point->sd = $this->replaceMod($point->sd, 'Inertia');
+                    $point->stats = $this->replaceMod($point->stats, 'Inertia');
                 }
 
                 // Transform Melee and Melee Weapon Type to Bow / Lioneye's Fall jewel
                 if(str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), "Lioneye's Fall")) {
-                    for ($i=0; $i < count($point->sd); $i++) { 
-                        $point->sd[$i] =  $this->lioneyesFall($point->sd[$i]);
+                    for ($i=0; $i < count($point->stats); $i++) { 
+                        $point->stats[$i] =  $this->lioneyesFall($point->stats[$i]);
                     }
                 }
 
                 // Transform 50% increased Effect of non-Keystone Passive Skills / Might of the Meek jewel
                 if (str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Might of the Meek')) {
-                    for ($i = 0; $i < count($point->sd); $i++) {
+                    for ($i = 0; $i < count($point->stats); $i++) {
                         // if Keystone continue
                         if ($point->ks) {
                             continue;
                         }
-                        $mod = $point->sd[$i];
+                        $mod = $point->stats[$i];
 
                         $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
                         $modValue += $modValue * 0.5; 
                         $modName = preg_replace('/\d+/u', '#', $mod);
-                        $point->sd[$i] = str_replace('#', round($modValue), $modName);
+                        $point->stats[$i] = str_replace('#', round($modValue), $modName);
                     }
                 }
                 
