@@ -36,12 +36,12 @@ class Items
     }
 
     public static function getSkillsFrom($items){
-        $skills = [];
+        $skills = collect();
         foreach($items as $item){
-            $skills = collect($item['socketedItems'])->where('support',false)->map(function($gem){
+            $skills[]= collect($item['socketedItems'])->where('support',false)->map(function($gem){
                 return $gem['typeLine'];
             });
         }
-        return implode(',',$skills->toArray());
+        return implode(',',$skills->collapse()->toArray());
     }
 }

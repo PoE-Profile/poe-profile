@@ -82,8 +82,8 @@ class Snapshot extends Model
 
     public function getSkills()
     {
-        $item = Items::withMostSockets($this->item_data);
-        return Items::getSkillsFrom($item);
+        $items = Items::withMostSockets($this->item_data);
+        return Items::getSkillsFrom($items);
     }
 
     public function toLadderChar()
