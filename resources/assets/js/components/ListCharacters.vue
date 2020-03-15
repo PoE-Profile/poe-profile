@@ -11,7 +11,7 @@
                     <th v-else>
                         <span>Class</span>
                     </th>
-                    <th>Account</th>
+                    <th v-if="account">Account</th>
                     <th>
                         <span v-if="showRank">Character</span>
                         <span v-else>Last Character</span>
@@ -51,13 +51,19 @@
                     </div>
                     </a>
                 </td>
-                <td>
+                <td v-if="account">
                     <i aria-hidden="true" v-if="char.online" class="fa fa-circle show-tooltip"
                         style="color: #02a600;font-size: 14px;"
                         data-toggle="tooltip" data-placement="top" title="online"></i>
                     <a :href="ranksUrl(char, true)" @click="selectChar(char,$event)">{{char.account.name}}</a>
                 </td>
-                <td>
+                <td v-if="'snapshot' in char">
+                    <a :href="'/build/'+char.snapshot"
+                        @click="selectChar(char,$event)">
+                        {{char.name}}@{{char.snapshot}}
+                    </a>
+                </td>
+                <td v-else>
                     <span v-if="char.name.length>0">
                         <a v-if="!char.dead" :href="ranksUrl(char)"
                             @click="selectChar(char,$event)">{{char.name}}</a>
@@ -200,6 +206,10 @@ export default {
             default: false,
         },
         showSkills:{
+            type: Boolean,
+            default: true,
+        },
+        account:{
             type: Boolean,
             default: true,
         }

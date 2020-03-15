@@ -2,20 +2,25 @@
 
 @section('metatags')
     @php
+    $skills = 'Skills: (no snapshot)';
+    if($build){
+        $skills = 'Skills: '. $build->getSkills();
+    }
+
     $account_char = '';
     if(($loadBuild??false)){
         $classImgPath = "";
         if($build){
             $currentChar = (object)$build->item_data['character'];
-            $account_char = 'Snapshot of: ' . $build['original_char'];
+            $account_char = 'Snapshot of: ' . $build->original_char;
         }
     }else{
         $currentChar = $chars->filter(function ($value, $key) use(&$char) {
             return $value->name == $char;
         })->first();
-            $account_char = $acc . ' / ' . $char;
+        $account_char = $acc . ' / ' . $char;
     }
-    $classImgPath = '/imgs/classes/' . $currentChar->class . '.png';
+    $classImgPath = '/imgs/classes/' . ($currentChar->class ?? "") . '.png';
     @endphp
 
 
@@ -26,6 +31,7 @@
     <meta property="og:image" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $classImgPath }}"/>
     <meta property="og:description" content="
                     {{$account_char or "" }}
+                    {{$skills}}
                     Here you can see Skill Gems, Items and Combined Stats Data (from passive skill tree and items).
                     "/>
     

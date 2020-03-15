@@ -2,10 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Parse_mods\Stats_Manager;
+use App\Helpers\Items;
 use App\Parse_mods\Base_Stats;
+use App\Parse_mods\Stats_Manager;
 use App\Parse_mods\CharacterTreePoints;
+use Illuminate\Database\Eloquent\Model;
 
 class Snapshot extends Model
 {
@@ -72,6 +73,58 @@ class Snapshot extends Model
         $snapshot->original_level = $itemsData['character']['level'];
         $snapshot->save();
         return $snapshot;
+    }
+
+    public static function getAccChar($acc, $char){
+        $original_char = $acc.'/'.$char;
+        return \App\Snapshot::where('original_char',$original_char)->latest()->first();
+    }
+
+    public function getSkills()
+    {
+        $item = Items::withMostSockets($this->item_data);
+        return Items::getSkillsFrom($item);
+    }
+
+    public function toLadderChar()
+    {
+        // dump($this->tree_data);
+        $accName = explode('/',$this->original_char)[0];
+        $data=$this->item_data;
+        return [
+            "id" => 0,
+            "snapshot" => $this->hash,
+            "snapshot_name" => $data['character']['name'],
+            "league" => $data['character']['league'],
+            "name" => $data['character']['name'],
+            "class" => $data['character']['class'],
+            "level" => $data['character']['level'],
+            "items_most_sockets" => Items::withMostSockets($data),
+            "account_id" => 0,
+            "dead" => false,
+            "public" => true,
+            "created_at" => now(),
+            "updated_at" => now(),
+            "unique_id" => "",
+            "experience" => 0,
+            "online" => false,
+            "stats" => null,
+            "delve_default" => 0,
+            "delve_solo" => 0,
+            "retired" => 0,
+            "levelProgress" => 0,
+            "account" => [
+                "id" => 0,
+                "user_id" => 0,
+                "name" => $accName,
+                "guild" => "",
+                "poe_avatar_url" => "",
+                "challenges_completed" => 0,
+                "last_character" => "",
+                "last_character_info" => [],
+                "views" => 0
+            ]
+        ];
     }
 
 }

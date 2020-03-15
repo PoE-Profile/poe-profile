@@ -4,6 +4,7 @@
 <script type="text/javascript">
     window.PHP = {
         account: '{!! $acc !!}',
+        rankArchives: {!! $snapshots !!},
         poe_leagues: "{{ env('POE_LEAGUES') }}",
         dbAcc: {!! $dbAcc !!},
         build: {!! $build or "null" !!},
@@ -50,33 +51,9 @@ $(function () {
                 :character="isBuild ? character : character.name">
     </profile-nav>
 
-    @if(count($snapshots) == 0)
-        <div class="noSnapshots bottom-info-content" style="text-align:center;">
-            <br><br>
-            <h3 >We have't have indexed ranks for this account from previous leagues!</h3>
-            <br><br><br><br><br><br>
-        </div>
-    @else
-        <div class="list-snapshots">
-            <table width="100%" class="table table-hover homapage-table" style="color:white">
-                <tr>
-                    <th>Hash</th>
-                    <th>Original Character</th>
-                    <th>Original Level</th>
-                    <th>Created at</th>
-                </tr>
-                @foreach($snapshots as $snap)
-                
-                    <tr>
-                        <td ><a href="/build/{{$snap->hash}}">{{ $snap->hash }}</a></td>
-                        <td>{{ $snap->original_char }}</td>
-                        <td>{{ $snap->original_level }}</td>
-                        <td>{{ $snap->created_at }}</td>
-                    </tr>
-                @endforeach
-            </table>
-        </div>
-    @endif
-
+   
+    <div class="list-ranks">
+        <list-characters-rank league :account="false" :char-data="rankArchives"></list-characters-rank>
+    </div>
 </div>
 @endsection
