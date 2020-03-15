@@ -2,11 +2,6 @@
 
 @section('metatags')
     @php
-    $skills = 'Skills: (no snapshot)';
-    if($build){
-        $skills = 'Skills: '. $build->getSkills();
-    }
-
     $account_char = '';
     if(($loadBuild??false)){
         $classImgPath = "";
@@ -21,6 +16,11 @@
         $account_char = $acc . ' / ' . $char;
     }
     $classImgPath = '/imgs/classes/' . ($currentChar->class ?? "") . '.png';
+    
+    $skills = 'Skills: (no snapshot)';
+    if($build??null){
+        $skills = 'Skills: '. $build->getSkills();
+    }
     @endphp
 
 
