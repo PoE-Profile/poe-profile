@@ -106,10 +106,14 @@ class ProfileController extends Controller
         return view('public_stash', compact('acc', 'results', 'dbAcc'));
     }
 
-    public function getProfileSnapshots($acc)
+    public function getProfileSnapshots(Request $request, $acc)
     {
-        $snapshots = \App\Snapshot::where('original_char', 'like', '%'.$acc.'%')
-                            ->orderBy('created_at', 'DESC')->get()->unique('original_char');
+        $q = \App\Snapshot::query();
+        if($request->has('version')){
+            $q->where('poe_version',$request->input('version'));
+        }
+        $q->where('original_char', 'like', '%'.$acc.'%');
+        $snapshots = $q->orderBy('created_at', 'DESC')->get()->unique('original_char');
         $snapshots = $snapshots->map(function($item){
             return $item->toLadderChar();
         });

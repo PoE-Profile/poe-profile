@@ -116,8 +116,8 @@ https://www.pathofexile.com/character-window/get-passive-skills?character=[Charn
 		</ul> -->
 		<br>
 		<h4>
-			If you see problems or bugs with the site you can report on our
-			<a href="https://www.reddit.com/r/pathofexile/comments/828qlt/tool_poeprofile_20_with_github_and_snapshots/" target="_blank" class="about-link">reddit</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum</a> post.
+			If you see problems or bugs with the site you can report them on our 
+			<a href="https://github.com/PoE-Profile/poe-profile/issues/" target="_blank" class="about-link">GitHub issues</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">Forum post</a>.
 		</h4>
 		<br>
 		<h4>You can support us by using the button below.</h4>

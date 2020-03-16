@@ -1,5 +1,14 @@
 @extends('layouts.main')
 
+@section('metatags')
+<meta property="og:title" content="Ultimate PoE-profile Page"/>
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PoE-profile" />
+<meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/" />
+<meta property="og:image" content="http://{{ $_SERVER['HTTP_HOST'] }}/imgs/icon.png"/>
+<meta property="og:description" content="Here you can see Skill Gems, Items and Combined Stats Data (from passive skill tree and items)."/>
+@endsection
+
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {

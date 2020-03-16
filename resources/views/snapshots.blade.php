@@ -29,7 +29,7 @@ $(function () {
 @endsection
 
 @section('content')
-<div class="container" v-cloak>
+<div class="container ladder-bg" style="background-color: #211F18;" v-cloak>
     <div class="text-xs-center" style="padding-bottom:5px;">
         <div style="margin: 0 auto;">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -51,8 +51,33 @@ $(function () {
                 :character="isBuild ? character : character.name">
     </profile-nav>
 
-   
-    <div class="list-ranks">
+    <div class="container ">
+        <div class="row">
+             <div class="p-1" style="width: 100%;color:white;">
+                Filter by version : 
+                <?php
+                $versions = [
+                    '3.5'=>'3.5 Betrayal',
+                    '3.6'=>'3.6 Synthesis',
+                    '3.7'=>'3.7 Legion',
+                    '3.8'=>'3.8 Blight',
+                    '3.9'=>'3.9 Metamorph',
+                    '3.10'=>'3.10 Delirium'
+                ];
+                ?>
+                @foreach($versions as $key=>$text)
+                <a href="?version={{$key}}" class="btn btn-sm poe-btn">{{$text}}</a></li>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div class="noRanks bottom-info-content" style="text-align:center;" v-if="rankArchives.length ===0">
+        <br><br>
+        <h3 >We have't have indexed ranks for this account from previous leagues!</h3>
+        <br><br><br><br><br><br>
+    </div>
+    <div class="list-ranks" v-else>
         <list-characters-rank league :account="false" :char-data="rankArchives"></list-characters-rank>
     </div>
 </div>

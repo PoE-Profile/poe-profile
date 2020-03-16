@@ -21,15 +21,14 @@ class CharacterTreePoints
     }
 
     public function getPoints($tree)
-    {      
+    {
         $charTree = [];
 
         $jewelsObj = new Jewels;
         $jewels = $jewelsObj->addJewels($tree['items']);
-        
 
         foreach ($jewels as $jewel) { 
-            if (str_contains($jewel['slot']['typeLine'], 'Cluster') ) {
+            if (str_contains($jewel['slot']['typeLine'], 'Cluster') || !array_key_exists('id',$jewel)) {
                 continue;
             }
             if ( in_array($jewel['id'], $tree['hashes']) ) {
