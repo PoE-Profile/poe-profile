@@ -35,7 +35,7 @@ a:hover { color: #f0ad4e;; text-decoration: none; }
             @else
             <p>{{$exception->getMessage()}}</p>
             @endif
-            <p>If you see problems or bugs with the site you can report them on our <a href="https://github.com/PoE-Profile/poe-profile/issues">GitHub issues</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424">forum post</a> .</p>
+            <p>If you see problems or bugs with the site you can report them on our <a href="https://github.com/PoE-Profile/poe-profile/issues">GitHub issues</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424">Forum post</a> .</p>
             <p>&mdash; Poe-Profile Team</p>
         </div>    
     </div>

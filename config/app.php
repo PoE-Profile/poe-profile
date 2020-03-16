@@ -10,6 +10,7 @@ return [
     'poe_leagues' => env('POE_LEAGUES', 'Standard,Hardcore'),
     'poe_version' => env('POE_VERSION', '3.2'),
     'poe_proxy' => env('POE_PROXY', ''),
+    'version' => '2.6',
 
     /*
     |--------------------------------------------------------------------------

@@ -20,7 +20,7 @@
 @section('content')
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
-        <h2>What is new <small>(version 2.6 - March ,2020)</small> </h2>
+        <h2>What is new <small>(version {{config('app.version')}} - March ,2020)</small> </h2>
         <ul>
             <li>Update profile snapshot page to show more info like Ranks page.</li>
             <li>Added OGP metatags.</li>
@@ -34,7 +34,7 @@
         </ul>
 
         <h4>
-            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">forum posts</a>
+            If you see problems or bugs with the site you can report on our <a href="https://www.pathofexile.com/forum/view-thread/1818424" target="_blank" class="about-link">Forum posts</a>
             and <a href="https://github.com/PoE-Profile/poe-profile/issues/" target="_blank" class="about-link">GitHub issues</a> .
         </h4>
 

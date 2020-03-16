@@ -57,6 +57,8 @@ $(function () {
                 Filter by version : 
                 <?php
                 $versions = [
+                    '3.5'=>'3.5 Betrayal',
+                    '3.6'=>'3.6 Synthesis',
                     '3.7'=>'3.7 Legion',
                     '3.8'=>'3.8 Blight',
                     '3.9'=>'3.9 Metamorph',
