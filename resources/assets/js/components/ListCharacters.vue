@@ -60,7 +60,7 @@
                 <td v-if="'snapshot' in char">
                     <a :href="'/build/'+char.snapshot"
                         @click="selectChar(char,$event)">
-                        {{char.name}}@{{char.snapshot}}
+                        {{char.name}}[{{char.snapshot}}]
                     </a>
                 </td>
                 <td v-else>

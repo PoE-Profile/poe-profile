@@ -22,9 +22,7 @@
         $skills = 'Skills: '. $build->getSkills();
     }
     @endphp
-
-
-<meta property="og:title" content="{{$currentChar->class or "" }} L{{$currentChar->level or "" }} {{$currentChar->league or ""}} "/>
+    <meta property="og:title" content="{{$currentChar->class or "" }} L{{$currentChar->level or "" }} {{$currentChar->league or ""}} "/>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Ultimate PoE profile Page" />
     <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/{{$acc or "" }}/{{$char or "" }}" />
@@ -34,7 +32,6 @@
                     {{$skills}}
                     Here you can see Skill Gems, Items and Combined Stats Data (from passive skill tree and items).
                     "/>
-    
 @endsection
 
 @section('jsData')
