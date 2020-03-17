@@ -68,7 +68,7 @@ class PobXMLBuilder
 
         $jews = [];
         foreach ($treeJson['items'] as $k => $item) {
-            $hash = $treeJson['jewel_slots'][$item['x']];
+            $hash = $treeJson['hashes'][$item['x']];
             $jews[$hash] = $k+1;
         }
 

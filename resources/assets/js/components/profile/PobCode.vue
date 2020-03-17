@@ -88,7 +88,8 @@ export default {
             var formData = new FormData();
             formData.append('account', this.account);
             formData.append('char', this.character);
-            axios.post('/api/getPoBCode', formData).then((response) => {
+            formData.append('realm', window.PHP.realm);
+            axios.post('/api/pob_code', formData).then((response) => {
                 this.pobXml = response.data;
                 this.loading=false;
                 new Clipboard('.clipboard');

@@ -85,11 +85,14 @@ export default {
             currentLeague: 'All',
             searchChar: '',
             showAllChars:false,
-
+            real: 'pc'
         }
     },
     created: function () {
         this.currentLeague=this.currentCharacter.league;
+        if(window.PHP.realm.length>0){
+            this.realm=window.PHP.realm;
+        }
     },
     computed: {
         'computetChars': function () {
@@ -151,7 +154,7 @@ export default {
             if (this.isBuild) {
                 return route('build.show', char.buildId);
             }
-            return route('profile.char', {acc: this.account, char: char.name});
+            return route('profile.char', {acc: this.account, char: char.name})+ '?realm=' + this.realm;
         },
 
         withEllipsis: function(text,after){

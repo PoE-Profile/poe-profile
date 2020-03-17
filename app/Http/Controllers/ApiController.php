@@ -131,6 +131,7 @@ class ApiController extends Controller
     {
         $acc = $request->input('account');
         $char = $request->input('char');
+        $realm = $request->input('realm');
 
         $b = explode('::', $request->input('account'));
         if($b[0] == 'build'){
@@ -138,8 +139,8 @@ class ApiController extends Controller
             $itemsData = $snapshot->item_data;
             $treeJson = $snapshot->tree_data;
         }else{
-            $itemsData = PoeApi::getItemsData($acc, $char);
-            $treeJson = PoeApi::getTreeData($acc, $char);
+            $itemsData = PoeApi::getItemsData($acc, $char, $realm);
+            $treeJson = PoeApi::getTreeData($acc, $char, $realm);
         }
 
         $pob = new PobXMLBuilder($itemsData, $treeJson);

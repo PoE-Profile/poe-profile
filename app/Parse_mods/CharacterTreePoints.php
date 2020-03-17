@@ -2,6 +2,7 @@
 
 namespace App\Parse_mods;
 use App\Parse_mods\Jewels;
+use App\Parse_mods\TreePoint;
 
 class CharacterTreePoints
 {
@@ -18,12 +19,12 @@ class CharacterTreePoints
 
         $file = \File::get($path); // string
         $this->allPoints = json_decode($file);
+        $this->apiChanges();
     }
 
     public function getPoints($tree)
     {
         $charTree = [];
-
         $jewelsObj = new Jewels;
         $jewels = $jewelsObj->addJewels($tree['items']);
 
@@ -39,31 +40,30 @@ class CharacterTreePoints
             }
         }
 
-        
-        $version = (float) str_replace("_", ".", $this->version);
-        if ($version > 3.2 || $version == 3.10) {
-            foreach ($tree['hashes'] as $id) {
-                if (!property_exists($this->allPoints, $id)) {
-                    return [];
-                }
-                $charTree[] = [
-                    'type' => 'tree',
-                    'mods' => $jewelsObj->uniqueJewels($this->allPoints->{$id})->stats
-                ];
+        foreach ($tree['hashes'] as $id) {
+            if (!property_exists($this->allPoints, $id)) {
+                return [];
             }
-        } else {
-            foreach ($this->allPoints as $point) {
-                if (in_array($point->id, $tree['hashes'])) {
-                    $charTree[] = [
-                        'type' => 'tree',
-                        'mods' => $jewelsObj->uniqueJewels($point)->sd
-                    ];
-                }
-            }
+
+            $treePoint = new TreePoint($this->allPoints->{$id});
+
+            $charTree[] = [
+                'type' => 'tree',
+                'mods' => $jewelsObj->uniqueJewels($treePoint)
+            ];
         }
-        
-        
 
         return $charTree;
+    }
+
+    public function apiChanges()
+    {
+        if (config('app.poe_version') == '3.2') {
+            $newPoints = [];
+            foreach ($this->allPoints as $point) {
+                $newPoints[$point->id] = $point;
+            }
+            $this->allPoints = (object)$newPoints;
+        }
     }
 }
