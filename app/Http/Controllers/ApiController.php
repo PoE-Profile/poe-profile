@@ -131,18 +131,21 @@ class ApiController extends Controller
     {
         $acc = $request->input('account');
         $char = $request->input('char');
+        $realm = $request->input('realm');
 
         $b = explode('::', $request->input('account'));
         if($b[0] == 'build'){
             $snapshot = Snapshot::where('hash','=',$b[1])->first();
             $itemsData = $snapshot->item_data;
             $treeJson = $snapshot->tree_data;
+            $version = $snapshot->poe_version;
         }else{
-            $itemsData = PoeApi::getItemsData($acc, $char);
-            $treeJson = PoeApi::getTreeData($acc, $char);
+            $itemsData = PoeApi::getItemsData($acc, $char, $realm);
+            $treeJson = PoeApi::getTreeData($acc, $char, $realm);
+            $version =  $version = config('app.poe_version');
         }
 
-        $pob = new PobXMLBuilder($itemsData, $treeJson);
+        $pob = new PobXMLBuilder($itemsData, $treeJson, $version);
 
         // show XML ---->
         // Header('Content-type: text/xml');

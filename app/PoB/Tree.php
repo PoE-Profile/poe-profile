@@ -11,20 +11,26 @@ class Tree
     public $tree = '';
     public $treeJewels = [];
 
-    public function __construct($xml, $tree, $char, $treeJewels)
+    public function __construct($xml, $tree, $char, $treeJewels, $version)
     {
         $this->tree = $tree;
         $this->xml = $xml;
         $this->treeJewels = $treeJewels;
-        $this->addTree($char);
+        $this->addTree($char, $version);
     }
 
-    public function addTree($char)
+    public function addTree($char, $version)
     {
+        $version = str_replace('.', '_', $version);
+        if (explode('_', $version)[1] < 6) {
+            $version = '3_6'; // PoB breaks for tree version below 3_6
+        }
+        
         // Tree
         $tree = $this->xml->addChild('Tree');
         $tree->addAttribute('activeSpec', '1');
         $spec = $tree->addChild('Spec');
+        $spec->addAttribute('treeVersion', $version);
         $spec->addChild('URL', 'https://www.pathofexile.com/passive-skill-tree/'.$this->getTreeUrl($char['classId'], $char['ascendancyClass'], $this->tree['hashes']));
         $sockets = $spec->addChild('Sockets');
         $socketsArr=['7960', '61834', '28475', '26196', '36634', '33989', '21984', '46882', '26725', '41263', '60735', '55190', '48768', '32763', '6230', '54127', '34483', '33631', '31683', '61419', '2491'];

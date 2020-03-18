@@ -34,6 +34,7 @@ class Items
         $slots =[];
         $numberOfItems = count($gear);
         foreach ($gear as $key => $item) {
+            
             $slots[] = $this->fixName($item);
             $itemString = "";
             $itemString = 'Rarity: '.$rarity[$item['frameType']].PHP_EOL;
@@ -175,7 +176,7 @@ class Items
         }
 
         if ($name == 'Weapon2') {
-            return 'Weapon 2';
+            return 'Weapon 1 Swap';
         }
 
         if ($name == 'Ring2') {

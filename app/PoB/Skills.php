@@ -26,12 +26,7 @@ class Skills
         //Add Gems from Itemss
         $gear = $this->items;
 
-        $gemsArr = [];
-        $handle = fopen(app_path('/PoB/gems.txt'), "r");
-        while (($line = fgets($handle)) !== false) {
-            $gemsArr[] = ['nameSpec' => explode("|", $line)[0], 'skillId' => explode("|", $line)[1] ];
-        }
-        fclose($handle);
+       
         foreach ($gear as $item) {
             if (array_key_exists('socketedItems', $item)) {
                 $skill = $skills->addChild('Skill');
@@ -41,15 +36,22 @@ class Skills
                 $skill->addAttribute('slot', $this->fixName($item['inventoryId']));
 
                 foreach ($item['socketedItems'] as $g) {
-                    $skillId = '';
-                    $nameSpec = '';
-                    foreach ($gemsArr as $gg) {
-                        if (strpos($g['typeLine'], $gg['nameSpec']) !== false) {
-                            $skillId = $gg['skillId'];
-                            $nameSpec = $gg['nameSpec'];
-                        }
+                    if ($g['frameType'] != 4) {// skip if not Gems
+                        continue;
                     }
 
+                    $gemName = $g['typeLine'];
+                    if (str_contains($gemName, 'Support')) {
+                        $gemName = 'Support ' . str_replace(' Support', '', $gemName);
+
+                        $skillId = str_replace(' ', '', $gemName);
+                        $nameSpec = str_replace('Support ', '', $gemName);
+                    } else {
+                        $skillId = str_replace(' ', '', $gemName);
+                        $nameSpec = $gemName;
+                    }
+                    
+                    
                     $quality = '0';
                     $level = '1';
                     foreach ($g['properties'] as $prop) {
@@ -68,6 +70,7 @@ class Skills
                     $gem->addAttribute('enabled', 'true');
                     $gem->addAttribute('nameSpec', $nameSpec);
                 }
+                // dd();
             }
         }
     }
@@ -86,7 +89,7 @@ class Skills
         }
 
         if ($name == 'Weapon2') {
-            return 'Weapon 2';
+            return 'Weapon 1 Swap';
         }
 
         if ($name == 'Ring2') {
