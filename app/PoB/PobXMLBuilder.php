@@ -4,6 +4,7 @@ namespace App\PoB;
 use App\PoB\Skills;
 use App\PoB\Items;
 use App\PoB\Tree;
+use App\Parse_mods\Jewels;
 
 // Store all items from Tree and Item requests then send them all to Item class
 
@@ -13,7 +14,7 @@ class PobXMLBuilder
     public $currentItemStats = [];
     public $type = '';
 
-    public function __construct($charDetails, $treeJson)
+    public function __construct($charDetails, $treeJson, $version)
     {
         $classIds = ['Scion', 'Marauder', 'Ranger', 'Witch', 'Duelist', 'Templar', 'Shadow'];
         $this->xml = new \SimpleXMLElement('<PathOfBuilding/>');
@@ -37,7 +38,7 @@ class PobXMLBuilder
         $items = new Items($this->xml, $allItems);
         $this->xml = $items->getXML();
 
-        $tree = new Tree($this->xml, $treeJson, $charDetails['character'], $this->getJewelsCoords($treeJson));
+        $tree = new Tree($this->xml, $treeJson, $charDetails['character'], $this->getJewelsCoords($treeJson), $version);
         $this->xml = $tree->getXML();
 
         // Calcs
@@ -68,7 +69,12 @@ class PobXMLBuilder
 
         $jews = [];
         foreach ($treeJson['items'] as $k => $item) {
-            $hash = $treeJson['hashes'][$item['x']];
+            if ($item['x'] > 21) {
+                continue;
+            }
+
+            $jewel = new Jewels;
+            $hash = $jewel->jewel_slots[$item['x']]['id'];
             $jews[$hash] = $k+1;
         }
 

@@ -45,7 +45,7 @@ class CharacterTreePoints
                 return [];
             }
 
-            $treePoint = new TreePoint($this->allPoints->{$id});
+            $treePoint = new TreePoint($this->allPoints->{$id}, $this->version);
 
             $charTree[] = [
                 'type' => 'tree',
@@ -58,12 +58,12 @@ class CharacterTreePoints
 
     public function apiChanges()
     {
-        if (config('app.poe_version') == '3.2') {
-            $newPoints = [];
+        if ($this->version == '3_2') {
+            $newPoints = (object) [];
             foreach ($this->allPoints as $point) {
-                $newPoints[$point->id] = $point;
+                $newPoints->{$point->id} = $point;
             }
-            $this->allPoints = (object)$newPoints;
+            $this->allPoints = $newPoints;
         }
     }
 }

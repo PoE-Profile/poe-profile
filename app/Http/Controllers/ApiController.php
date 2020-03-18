@@ -138,12 +138,14 @@ class ApiController extends Controller
             $snapshot = Snapshot::where('hash','=',$b[1])->first();
             $itemsData = $snapshot->item_data;
             $treeJson = $snapshot->tree_data;
+            $version = $snapshot->poe_version;
         }else{
             $itemsData = PoeApi::getItemsData($acc, $char, $realm);
             $treeJson = PoeApi::getTreeData($acc, $char, $realm);
+            $version =  $version = config('app.poe_version');
         }
 
-        $pob = new PobXMLBuilder($itemsData, $treeJson);
+        $pob = new PobXMLBuilder($itemsData, $treeJson, $version);
 
         // show XML ---->
         // Header('Content-type: text/xml');
