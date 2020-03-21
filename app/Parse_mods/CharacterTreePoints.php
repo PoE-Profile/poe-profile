@@ -29,9 +29,7 @@ class CharacterTreePoints
         $jewels = $jewelsObj->addJewels($tree['items']);
 
         foreach ($jewels as $jewel) { 
-            if (str_contains($jewel['slot']['typeLine'], 'Cluster') || !array_key_exists('id',$jewel)) {
-                continue;
-            }
+          
             if ( in_array($jewel['id'], $tree['hashes']) ) {
                 $charTree[] = [
                     'type' => 'jewel',
@@ -39,7 +37,7 @@ class CharacterTreePoints
                 ];
             }
         }
-
+        
         foreach ($tree['hashes'] as $id) {
             if (!property_exists($this->allPoints, $id)) {
                 return [];
