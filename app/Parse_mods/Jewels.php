@@ -374,7 +374,7 @@ class Jewels
                 if (str_contains(str_replace("<<set:MS>><<set:M>><<set:S>>", "", $jewel['slot']['name']), 'Might of the Meek')) {
                     for ($i = 0; $i < count($point->stats); $i++) {
                         // if Keystone continue
-                        if ($point->ks) {
+                        if ($point->keystone) {
                             continue;
                         }
                         $mod = $point->stats[$i];
