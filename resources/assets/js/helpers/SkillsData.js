@@ -285,7 +285,7 @@ module.exports = {
     "Zealotry": "\/imgs\/skills\/Zealotry.png",
 
     "Volatile Dead": "\/imgs\/skills\/Volatile_Dead_skill_icon.png",
-    "Despair": "\/imgs\/skills\/Despair_skill_icon.png",
+    "Despair": "\/imgs\/skills\/Despair.png",
     "Bodyswap": "\/imgs\/skills\/Bodyswap_skill_icon.png",
     "Cremation": "\/imgs\/skills\/Cremation_skill_icon.png",
     "Unearth": "\/imgs\/skills\/Unearth_skill_icon.png",
