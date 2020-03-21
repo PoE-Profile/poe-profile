@@ -69,7 +69,7 @@ class PobXMLBuilder
 
         $jews = [];
         foreach ($treeJson['items'] as $k => $item) {
-            if ($item['x'] > 21) {
+            if ($item['x'] > 20) {
                 continue;
             }
 

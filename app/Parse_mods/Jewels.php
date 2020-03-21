@@ -5,6 +5,7 @@ namespace App\Parse_mods;
 
 class Jewels
 {
+    public $clusterJewels = [];
     public $jewel_slots = [
             // 0
             [
@@ -263,6 +264,14 @@ class Jewels
     public function addJewels($jewels)
     {
         foreach ($jewels as $jewel) {
+            if ($jewel['x'] > 20) {
+                $this->clusterJewels[] = $jewel;
+                continue;
+            } elseif ( str_contains($jewel['typeLine'], 'Cluster') ) { // if main jewel_slots[0..20] cluster is large/medium 
+                $this->clusterJewels['main'] = $jewel;
+                continue;
+            }
+
             $this->jewel_slots[$jewel['x']]['slot'] = $jewel;
 
             if (isset($jewel['properties'])) {
@@ -296,6 +305,7 @@ class Jewels
         });
 
         if(count($jewels)) {
+
             foreach($jewels as $jewel){
                 //filter point if its in Radius 
                 if (!in_array($point->id, $this->pointsInRadius($jewel))) {
@@ -380,6 +390,7 @@ class Jewels
             }
            
         }
+
         return $point->stats;
     }
 
@@ -403,18 +414,16 @@ class Jewels
 
             $modName = preg_replace('/\d+/u', '#', $mods[$i]);
             $modValue = filter_var($mods[$i], FILTER_SANITIZE_NUMBER_INT);
-            // dd('hey');
+
             if ($jewelName == 'Efficient') {
-                // dump($mods[$i]);
                 if ($modName === '+# to Intelligence') {
                     $mods[$i] = str_replace('Intelligence', 'Strength', $mods[$i]);
                 }
                 if ($modName === '+# to Strength and Intelligence') {
                     $mods[$i] = '+' . ($modValue * 2) . ' to Strength';
                 }
-                // dump($mods[$i]);
             }
-            // dump('zzzz');
+
             if ($jewelName == 'Inertia') {
                 if ($modName === '+# to Dexterity') {
                     $mods[$i] = str_replace('Dexterity', 'Strength', $mods[$i]);
@@ -432,6 +441,7 @@ class Jewels
                     $mods[$i] = '+' . ($modValue * 2) . ' to Dexterity';
                 }
             }
+            
             if ($jewelName == 'Fluid') {
                 if ($modName === '+# to Strength') {
                     $mods[$i] = str_replace('Strength', 'Dexterity', $mods[$i]);
@@ -449,6 +459,7 @@ class Jewels
                     $mods[$i] = '+' . ($modValue * 2) . ' to Intelligence';
                 }
             }
+
             if ($jewelName == 'Brute') {
                 if ($modName === '+# to Strength') {
                     $mods[$i] = str_replace('Strength', 'Intelligence', $mods[$i]);
