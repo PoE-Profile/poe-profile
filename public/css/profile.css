@@ -731,7 +731,7 @@ a:focus {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffef11', endColorstr='#282200', GradientType=1); /* IE6-9 fallback on horizontal gradient */
 
     /*background: #ffef11; /* Old browsers */
-    */ border: 2px solid #ffef11;
+    border: 2px solid #ffef11;
     border-radius: 5px;
     /*box-shadow: 0 0 8px 2px rgba(0,0,0,0.1);*/
     -webkit-box-shadow: 1px 1px 8px 2px #ffef11; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */

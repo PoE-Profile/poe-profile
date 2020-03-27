@@ -1,0 +1,382 @@
+/*poe classes for char item*/
+
+.marked {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid rgba(81, 203, 238, 1);
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.home-container-bg {
+    color: white;
+    background: #000 url(/imgs/atlas-bg.jpg?1476327587) no-repeat top center;
+}
+
+body {
+    padding-top: 70px;
+}
+
+// Prevent scroll on narrow devices
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+/*my classes for char item*/
+
+.character {
+    .icon {
+        background: url('https://web.poecdn.com/image/gen/inventory/inventory-sprite-sae995ad842.png') no-repeat;
+    }
+
+    position: relative;
+    margin: 2px;
+    padding: 0px;
+    height: 115px;
+    color: #000;
+    background: rgba(0, 0, 0, 0.75);
+    border-style: solid;
+    border-width: 1px;
+    border-color: orange;
+    filter: brightness(50%);
+
+    .name {
+        display: inline-block;
+
+        /*list-style-type: none;*/
+        color: DarkOrange;
+        padding: 3px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .icon {
+        background: url('https://web.poecdn.com/image/gen/inventory/inventory-sprite-sae995ad842.png') no-repeat;
+    }
+
+    &:hover {
+        filter: brightness(130%);
+
+        /*opacity: 1;*/
+    }
+}
+
+/* darken images on hover*/
+
+.current {
+    filter: brightness(130%);
+
+    /*opacity: 1.5 !important;*/
+}
+
+.icon {
+    &.Marauder {
+        background-position: -80px -1457px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Juggernaut {
+        background-position: -240px -1377px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Berserker {
+        background-position: -220px 0;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Chieftain {
+        background-position: -190px -1185px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Shadow {
+        background-position: -80px -1297px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Assassin {
+        background-position: 0 -1457px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Saboteur {
+        background-position: -240px -1297px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Trickster {
+        background-position: -160px -1377px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Witch {
+        background-position: -220px -385px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Occultist {
+        background-position: -220px -545px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Elementalist {
+        background-position: -220px -865px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Necromancer {
+        background-position: -220px -705px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Templar {
+        background-position: -160px -1297px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Inquisitor {
+        background-position: 0 -1297px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Hierophant {
+        background-position: -80px -1377px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Guardian {
+        background-position: -240px -1457px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Duelist {
+        background-position: -110px -1105px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Slayer {
+        background-position: -110px -945px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Gladiator {
+        background-position: -110px -465px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Champion {
+        background-position: -110px -305px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Ranger {
+        background-position: -220px -1025px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Raider {
+        background-position: -110px -1185px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Deadeye {
+        background-position: -160px -1457px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Pathfinder {
+        background-position: 0 -1377px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Scion {
+        background-position: -110px -785px;
+        width: 75px;
+        height: 79px;
+    }
+
+    &.Ascendant {
+        background-position: -110px -625px;
+        width: 75px;
+        height: 79px;
+    }
+}
+
+.character {
+    .infoLine1 {
+        top: 0px;
+        width: 174px;
+    }
+
+    .infoLine2 {
+        top: 28px;
+    }
+
+    .infoLine3 {
+        font-size: 90%;
+        top: 64px;
+        color: #757575;
+    }
+
+    .infoLine1,
+    .infoLine2,
+    .infoLine3 {
+        left: 85px;
+        position: absolute;
+    }
+}
+
+/*siteBar panels*/
+
+.panel-body {
+    padding: 2px;
+}
+
+.panel-heading {
+    font-weight: bold;
+}
+
+/* Other */
+
+.main-content {}
+
+/*.list-group-poe-item{
+  height: 275px;
+}*/
+
+.list-group-poe-item:hover {
+    background-color: #eee;
+}
+
+.affix {
+    position: fixed;
+    top: 55px;
+    right: 0;
+}
+
+.char-menu {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/*dashboard example sitebar*/
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+
+.sidebar {
+    /*display: none;
+  padding:0px;*/
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        margin: 5px;
+        padding: 25px;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 55px;
+        bottom: 0;
+        padding-right: 0px;
+        right: 0px;
+        margin-right: 15px;
+        z-index: 100;
+
+        /*z-index: -1;*/
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        /* Scrollable contents if viewport is shorter than content. */
+        /*background-color: #f5f5f5;*/
+        /*border-right: 1px solid #eee;*/
+    }
+}
+
+.page-bg {
+    color: white;
+    background: #000 url(https://web.poecdn.com/image/layout/atlas-bg.jpg?1476327587) no-repeat top center;
+}
+
+.custom-radio.active {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    background-color: #332F24;
+    color: #FFF;
+}
+
+[name="realm"] {
+    display: none;
+}
+
+.profile-icon {
+    display: inline-block;
+    content: ' ';
+    background-image: url('/imgs/platform.png');
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;
+    margin-right: 3px;
+    opacity: 0.9;
+}
+
+.platform-sony {
+    background-position: -22px 0px;
+}
+
+.platform-xbox {
+    background-position: -22px 22px;
+}
+
+.platform-pc {
+    background-position: 0px 0px;
+}
+
+.custom-control-input:checked~.custom-control-indicator {
+    background-color: orange !important;
+}
