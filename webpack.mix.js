@@ -13,7 +13,7 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/home.js', 'public/js/build')
 mix.js('resources/assets/js/profile.js', 'public/js/build')
-
+mix.sass('resources/assets/sass/app.scss', 'public/css/build');
 
 if (mix.inProduction()) {
     mix.version().disableNotifications();
@@ -30,4 +30,4 @@ if (mix.inProduction()) {
 }
 
 
-mix.sass('resources/assets/sass/app.scss', 'public/css/build');
+
