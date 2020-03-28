@@ -22,13 +22,13 @@
         $skills = 'Skills: '. $build->getSkills();
     }
     @endphp
-    <meta property="og:title" content="{{$currentChar->class or "" }} L{{$currentChar->level or "" }} {{$currentChar->league or ""}} "/>
+    <meta property="og:title" content="{{$currentChar->class ?? "" }} L{{$currentChar->level ?? "" }} {{$currentChar->league ?? ""}} "/>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Ultimate PoE profile Page" />
-    <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/{{$acc or "" }}/{{$char or "" }}" />
+    <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}/{{$acc ?? "" }}/{{$char ?? "" }}" />
     <meta property="og:image" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $classImgPath }}"/>
     <meta property="og:description" content="
-                    {{$account_char or "" }}
+                    {{$account_char ?? "" }}
                     {{$skills}}
                     Here you can see Skill Gems, Items and Combined Stats Data (from passive skill tree and items).
                     "/>
@@ -38,18 +38,18 @@
 <script type="text/javascript">
     window.PHP = {
         account: '{{ $acc }}',
-        char: '{{ $char or "" }}',
-        chars: {!! $chars or "null" !!},
-        dbAcc: {!! $dbAcc or 'null' !!},
-        loadBuild: {{ $loadBuild or 'false' }},
-        build: {!! $build or "null" !!},
-        realm: '{!! $_GET["realm"] or "pc" !!}',
+        char: '{{ $char ?? "" }}',
+        chars: {!! $chars ?? "null" !!},
+        dbAcc: {!! $dbAcc ?? 'null' !!},
+        loadBuild: {{ $loadBuild ?? 'false' }},
+        build: {!! $build ?? "null" !!},
+        realm: '{!! $_GET["realm"] ?? "pc" !!}',
     }
 </script>
 @stop
 
 @section('title')
-    PoE Profile Info {{$acc or "" }} / {{$char or "" }}
+    PoE Profile Info {{$acc ?? "" }} / {{$char ?? "" }}
 @endsection
 
 @section('script')

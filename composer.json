@@ -10,11 +10,12 @@
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.4",
         "laracasts/flash": "^3.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/horizon": "^2.0",
         "laravel/tinker": "~1.0",
         "sunra/php-simple-html-dom-parser": "^1.5",
-        "tightenco/ziggy": "^0.6.9"
+        "tightenco/ziggy": "^0.6.9",
+        "symfony/translation": "4.3.8"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
