@@ -218,6 +218,11 @@ em.tc {
   white-space: normal;
 }
 
+.-textwrap > span{
+  max-width: 370px;
+  white-space: normal;
+}
+
 .gem-textwrap{
     max-width: 370px;
     white-space: normal;

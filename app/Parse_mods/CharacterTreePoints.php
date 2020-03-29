@@ -40,7 +40,7 @@ class CharacterTreePoints
         
         foreach ($tree['hashes'] as $id) {
             if (!property_exists($this->allPoints, $id)) {
-                return [];
+                continue;
             }
 
             $treePoint = new TreePoint($this->allPoints->{$id}, $this->version);

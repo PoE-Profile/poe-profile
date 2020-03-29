@@ -14,10 +14,7 @@
 	<link rel="apple-touch-icon" href="/imgs/icon.png" type="image/png" id='iosicon'/>
 	<link rel="shortcut icon" href="/imgs/icon.png"/>
 	@routes
-	<link rel="stylesheet" type="text/css" href="{{ asset('/css/main.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('/css/profile.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('/css/sockets.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('/css/skills.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ mix('/css/build/app.css') }}">
 	@yield('styleSheets')
 	<style type="text/css">
     #iPZUemdYKrpcjyd {

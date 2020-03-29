@@ -6,7 +6,7 @@
         account: '{!! $acc !!}',
         poe_leagues: "{{ env('POE_LEAGUES') }}",
         dbAcc: {!! $dbAcc !!},
-        build: {!! $build or "null" !!},
+        build: {!! $build ?? "null" !!},
     }
 </script>
 @stop

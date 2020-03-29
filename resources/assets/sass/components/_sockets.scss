@@ -1,0 +1,292 @@
+/* pop-up css for compered item*/
+
+#tooltip {
+    display: none;
+    position: absolute;
+    width: auto;
+    font-family: Arial;
+    font-size: 14px;
+    color: gray;
+    background: #FFFFEE;
+
+    /* Slightly yellow background */
+    border-radius: 5px;
+
+    /* Rounded corners */
+    box-shadow: 5px 5px 10px #DDD;
+
+    /* tool tip shadow */
+    z-index: 2147483647;
+
+    /* Highest value available */
+}
+
+ul.itemLevel {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        float: left;
+    }
+}
+
+.socketRed {
+    placeholder: red;
+
+    &::-webkit-input-placeholder {
+        /* Chrome */
+        color: red;
+    }
+
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: red;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: red;
+        opacity: 1;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 4 - 18 */
+        color: red;
+        opacity: 1;
+    }
+}
+
+.socketGreen {
+    &::-webkit-input-placeholder {
+        /* Chrome */
+        color: green;
+    }
+
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: green;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: green;
+        opacity: 1;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 4 - 18 */
+        color: green;
+        opacity: 1;
+    }
+}
+
+.socketBlue {
+    &::-webkit-input-placeholder {
+        /* Chrome */
+        color: lightblue;
+    }
+
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: lightblue;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: lightblue;
+        opacity: 1;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 4 - 18 */
+        color: lightblue;
+        opacity: 1;
+    }
+}
+
+.socketWhite {
+    &::-webkit-input-placeholder {
+        /* Chrome */
+        color: #c9c9c9;
+    }
+
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: #c9c9c9;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: #c9c9c9;
+        opacity: 1;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 4 - 18 */
+        color: #c9c9c9;
+        opacity: 1;
+    }
+}
+
+.socket {
+    z-index: 1022;
+    width: 47px;
+    height: 47px;
+    float: left;
+}
+
+/* Empty Sockets*/
+
+.socketS {
+    background-image: url(/imgs/str.png);
+}
+
+.socketD {
+    background-image: url(/imgs/dex.png);
+}
+
+.socketI {
+    background-image: url(/imgs/int.png);
+}
+
+.socketG {
+    background-image: url(/imgs/gen.png);
+}
+
+/* Socketed gems Support*/
+
+.socketS-full-Support {
+    background-image: url(/imgs/strFullSupport.png);
+}
+
+.socketD-full-Support {
+    background-image: url(/imgs/dexFullSupport.png);
+}
+
+.socketI-full-Support {
+    background-image: url(/imgs/intFullSupport.png);
+}
+
+/* Socketed gems Skill*/
+
+.socketS-full-Skill {
+    background-image: url(/imgs/strFullSkill.png);
+}
+
+.socketD-full-Skill {
+    background-image: url(/imgs/dexFullSkill.png);
+}
+
+.socketI-full-Skill {
+    background-image: url(/imgs/intFullSkill.png);
+}
+
+/* Socketed gems Support*/
+
+.socketG-full-S-Support {
+    background-image: url(/imgs/genStrFullSupport.png);
+}
+
+.socketG-full-D-Support {
+    background-image: url(/imgs/genDexFullSupport.png);
+}
+
+.socketG-full-I-Support {
+    background-image: url(/imgs/genIntFullSupport.png);
+}
+
+/* Socketed gems Skill*/
+
+.socketG-full-S-Skill {
+    background-image: url(/imgs/genStrFullSkill.png);
+}
+
+.socketG-full-D-Skill {
+    background-image: url(/imgs/genDexFullSkill.png);
+}
+
+.socketG-full-I-Skill {
+    background-image: url(/imgs/genIntFullSkill.png);
+}
+
+.socketD-full-G-Skill {
+    background-image: url(/imgs/dexGenFullSkill.png);
+}
+
+.socketI-full-G-Skill {
+    background-image: url(/imgs/intGenFullSkill.png);
+}
+
+.socketS-full-G-Skill {
+    background-image: url(/imgs/strGenFullSkill.png);
+}
+
+.socket.socketAbyss {
+    background-image: url("/imgs/socketAbyss.png");
+
+    &.abyssJewel {
+        background-image: url("/imgs/socketAbyssFull.png");
+    }
+}
+
+.sockets {
+    margin: 0;
+    padding: 0;
+    direction: ltr;
+}
+
+.icon {
+    text-align: center;
+    position: relative;
+    width: 95px;
+}
+
+.socketLink0 {
+    left: 30px;
+    top: 16px;
+}
+
+.socketLink1 {
+    left: 63px;
+    top: 29.60041px;
+}
+
+.socketLink2 {
+    left: 30px;
+    top: 63.59026px;
+}
+
+.socketLink3 {
+    left: 16.12576px;
+    top: 76.06491px;
+}
+
+.socketLink4 {
+    left: 30px;
+    top: 111.05477px;
+}
+
+.socketLink0,
+.socketLink2,
+.socketLink4 {
+    background-image: url(/imgs/Socket_Link_Horizontal.png);
+    width: 31.72819px;
+    height: 15.21298px;
+}
+
+.socketLink1,
+.socketLink3 {
+    background-image: url(/imgs/Socket_Link_Vertical.png);
+    width: 15.21298px;
+    height: 32.72819px;
+}
+
+.socketLink {
+    position: absolute;
+    z-index: 101;
+}
+
+.socketRight {
+    float: right;
+}

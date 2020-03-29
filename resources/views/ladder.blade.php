@@ -12,7 +12,7 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        realm: '{!! $_GET["realm"] or "pc" !!}',
+        realm: '{!! $_GET["realm"] ?? "pc" !!}',
     }
 </script>
 @stop
