@@ -1,5 +1,4 @@
 <template>
-    <!-- Modal -->
 <transition name="modal-fade">
 <div class="modal-backdrop2">
     <div class="modal2 bd-example-modal-lg2" style="top: 70px;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

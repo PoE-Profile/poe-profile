@@ -1,13 +1,14 @@
 
 require('./bootstrap');
 
-Vue.component('loader', require('./components/Loader.vue'));
-Vue.component('ladders-page', require('./pages/ladders.vue'));
-Vue.component('race-page', require('./pages/race.vue'));
-Vue.component('twitch-page', require('./pages/twitch.vue'));
-Vue.component('list-characters', require('./components/ListCharacters.vue'));
-Vue.component('drop-down', require('./components/DropDown.vue'));
-Vue.component('ladder-select', require('./components/LadderSelect.vue'));
+Vue.component('loader', require('./components/Loader.vue').default);
+Vue.component('ladders-page', require('./pages/ladders.vue').default);
+Vue.component('race-page', require('./pages/race.vue').default);
+Vue.component('twitch-page', require('./pages/twitch.vue').default);
+Vue.component('list-characters', require('./components/ListCharacters.vue').default);
+Vue.component('drop-down', require('./components/DropDown.vue').default);
+Vue.component('ladder-select', require('./components/LadderSelect.vue').default);
+Vue.component('modal-twitch', require('./components/ModalTwitch.vue').default);
 
 var favStore = require('./helpers/FavStore.js');
 

@@ -1,24 +1,24 @@
 require('./bootstrap');
 
-Vue.component('item', require('./components/profile/Item.vue'));
-Vue.component('jewel', require('./components/profile/Jewel.vue'));
+Vue.component('item', require('./components/profile/Item.vue').default);
+Vue.component('jewel', require('./components/profile/Jewel.vue').default);
 //GRID
-Vue.component('list-characters', require('./components/profile/ListCharacters.vue'));
+Vue.component('list-characters', require('./components/profile/ListCharacters.vue').default);
 //LIST
-Vue.component('list-characters-rank', require('./components/ListCharacters.vue'));
+Vue.component('list-characters-rank', require('./components/ListCharacters.vue').default);
 
-Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue'));
-Vue.component('character-stats', require('./components/profile/CharacterStats.vue'));
-Vue.component('list-skills', require('./components/profile/ListSkills.vue'));
-Vue.component('item-info', require('./components/profile/ItemInfo.vue'));
-Vue.component('loader', require('./components/Loader.vue'));
-Vue.component('bubble', require('./components/profile/Bubble.vue'));
-Vue.component('bandits', require('./components/profile/Bandits.vue'));
-Vue.component('pob-code', require('./components/profile/PobCode.vue'));
+Vue.component('profile-nav', require('./components/profile/ProfileNavigation.vue').default);
+Vue.component('character-stats', require('./components/profile/CharacterStats.vue').default);
+Vue.component('list-skills', require('./components/profile/ListSkills.vue').default);
+Vue.component('item-info', require('./components/profile/ItemInfo.vue').default);
+Vue.component('loader', require('./components/Loader.vue').default);
+Vue.component('bubble', require('./components/profile/Bubble.vue').default);
+Vue.component('bandits', require('./components/profile/Bandits.vue').default);
+Vue.component('pob-code', require('./components/profile/PobCode.vue').default);
 
-Vue.component('modal-twitch', require('./components/ModalTwitch.vue'));
-Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue'));
-Vue.component('drop-down', require('./components/DropDown.vue'));
+Vue.component('modal-twitch', require('./components/ModalTwitch.vue').default);
+Vue.component('modal-snapshots', require('./components/profile/ModalSnapshots.vue').default);
+Vue.component('drop-down', require('./components/DropDown.vue').default);
 
 import {poeHelpers} from './helpers/poeHelpers.js';
 var favStore = require('./helpers/FavStore.js');

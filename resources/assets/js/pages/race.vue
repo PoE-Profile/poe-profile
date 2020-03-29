@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
     <main role="main" id="content">
         <div class="d-flex flex-column h-100">
           <div class="h-501" style="height:40%!important;">
