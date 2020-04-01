@@ -13,7 +13,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" title="no title">
 	<link rel="apple-touch-icon" href="/imgs/icon.png" type="image/png" id='iosicon'/>
 	<link rel="shortcut icon" href="/imgs/icon.png"/>
-	@routes
 	<link rel="stylesheet" type="text/css" href="{{ mix('/css/build/app.css') }}">
 	@yield('styleSheets')
 	<style type="text/css">
@@ -131,6 +130,8 @@
 		</div>
 	</div>
 
+	@routes
+	
 	@yield('jsData')
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>

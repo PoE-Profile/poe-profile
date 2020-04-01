@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
 <div class="">
     <div class="" style="background-color: #211F18;opacity: 0.85;min-height:800px;">
         <list-characters :char-data="twitchAccChars" :league="true"

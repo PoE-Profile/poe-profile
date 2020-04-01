@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
 <div>
     <div id="ladders" class="ladder-bg">
         <div class="row" v-if="league.name.toLowerCase()==raceName.toLowerCase()">
@@ -20,15 +20,7 @@
                     :realm="realm"
                     :active="league.name"
                     ></LadderSelect>
-            </div>
-            <!-- <ul class="nav nav-pills char-nav pull-right" v-if="realm!='pc'">
-                <li class="nav-item" v-for="l in leagues">
-                    <a :href="route('ladders.show',l)+'?realm='+realm" class="nav-link" :class="{'active':(l==league.name)}">
-                        {{l}}
-                    </a>
-                </li>
-            </ul> -->
-            
+            </div>            
         </div>
         <div class="row filters pb-1" v-if="league.indexed">
             <div class="col-sm-1">
@@ -113,7 +105,6 @@ import ListCharacters from '../components/ListCharacters.vue';
 import LadderSelect from '../components/LadderSelect.vue';
 import {poeHelpers} from '../helpers/poeHelpers.js';
 var skillsData = require('../helpers/SkillsData.js');
-Vue.component('modal-twitch', require('../components/ModalTwitch.vue'));
 
 export default {
     components: {Loader, ListCharacters, LadderSelect},

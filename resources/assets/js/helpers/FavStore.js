@@ -2,7 +2,10 @@ module.exports = {
     favAcc: JSON.parse(localStorage.getItem('favAcc')) ? JSON.parse(localStorage.getItem('favAcc')) : [],
     favBuilds: JSON.parse(localStorage.getItem('favBuilds')) ? JSON.parse(localStorage.getItem('favBuilds')) : [],
     favStats: JSON.parse(localStorage.getItem('favStats')) ? JSON.parse(localStorage.getItem('favStats')) : [],
-    env:process.env,
+    env:{
+        'MIX_POE_RACE_NAME':process.env.MIX_POE_RACE_NAME,
+        'MIX_POE_RACE_TWITCH_CHANNEL':process.env.MIX_POE_RACE_TWITCH_CHANNEL,
+        },
 
     addStat (stat) {
         this.favStats.push(stat)
