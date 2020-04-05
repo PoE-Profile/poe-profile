@@ -98,7 +98,7 @@ class ApiController extends Controller
 
     public function getTwitchChars()
     {
-        $streamers = \Cache::remember('OnlineStreamers', 10, function () {
+        $streamers = \Cache::remember('OnlineStreamers', 10*60, function () {
             $online = \App\TwitchStreamer::with('account','account.streamer')->where('online', true)
                                 ->orderBy('viewers', 'desc')->get();
             $online = $online->map(function ($streamerItem, $key) {
