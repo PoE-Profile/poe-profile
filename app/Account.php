@@ -85,22 +85,16 @@ class Account extends Model
 
 
     public function getPublicStash($league){
-        $key='stash/'.$this->name.'/'.$league;
-        $requestData = $this->getStashRequestData();
-        $response = \Cache::remember($key, config('app.poe_cache_time')+10,
-            function () use ($league){
-                $client = new \GuzzleHttp\Client();
-                try {
-                    $url='https://www.pathofexile.com/api/trade/search/'.rawurlencode($league).'/';
-                    $response = $client->post($url, [
-                        \GuzzleHttp\RequestOptions::JSON => $this->getStashRequestData()
-                    ]);
-                    return json_decode((string)$response->getBody());
-                }catch (\GuzzleHttp\Exception\ClientException $e) {
-                    return (Object)["total"=>0];
-                }
-            });
-        return $response;
+        $client = new \GuzzleHttp\Client();
+        try {
+            $url='https://www.pathofexile.com/api/trade/search/'.rawurlencode($league);
+            $response = $client->post($url, [
+                \GuzzleHttp\RequestOptions::JSON => $this->getStashRequestData()
+            ]);
+            return json_decode((string)$response->getBody());
+        }catch (\GuzzleHttp\Exception\ClientException $e) {
+            return (Object)["total"=>0];
+        }
     }
 
     private function getStashRequestData(){
