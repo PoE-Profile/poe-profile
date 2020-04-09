@@ -31,11 +31,11 @@ a:hover { color: #f0ad4e;; text-decoration: none; }
         <h1>We&rsquo;ll be back soon!</h1>
         <div>
             @if(!$exception->getMessage())
-            <p>Preparing for the start of the new league .</p>
+            <p>Sorry, we are doing some maintenance. Please check back soon.</p>
             @else
             <p>{{$exception->getMessage()}}</p>
             @endif
-            <p>If you see problems or bugs with the site you can report them on our <a href="https://github.com/PoE-Profile/poe-profile/issues">GitHub issues</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424">Forum post</a> .</p>
+            <p>If you see problems or bugs with the site you can report them on our <a href="https://github.com/PoE-Profile/poe-profile/issues">GitHub issues</a> or <a href="https://www.pathofexile.com/forum/view-thread/1818424">Forum post</a>.</p>
             <p>&mdash; Poe-Profile Team</p>
         </div>    
     </div>

@@ -110,6 +110,7 @@ module.exports = {
     "Frost Wall": "\/imgs\/skills\/Frost_Wall.png",
     "Frostbite": "\/imgs\/skills\/Frostbite.png",
     "Frostbolt": "\/imgs\/skills\/Frostbolt.png",
+    "Galvanic Arrow": "\/imgs\/skills\/Galvanic_Arrow.png",
     "Glacial Cascade": "\/imgs\/skills\/Glacial_Cascade.png",
     "Glacial Hammer": "\/imgs\/skills\/Glacial_Hammer.png",
     "Gluttony of Elements": "\/imgs\/skills\/Gluttony_of_Elements.png",
