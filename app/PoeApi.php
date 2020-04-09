@@ -10,8 +10,9 @@ class PoeApi
         if(isset($_GET['realm'])){
             $realm = $_GET['realm'];
         }
+        $time = config('app.poe_cache_time') * 60;
         $cacheKey=$acc.'/'.$realm;
-        return \Cache::remember($cacheKey, config('app.poe_cache_time'), function () use ($acc,$realm) {
+        return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
             $client = new \GuzzleHttp\Client();
             try {
                 $response = $client->request(
@@ -44,7 +45,7 @@ class PoeApi
     static public function getTreeData($acc, $char, $realm="pc")
     {
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
-        $time = config('app.poe_cache_time');
+        $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
             $client = new \GuzzleHttp\Client();
             try {
@@ -69,7 +70,8 @@ class PoeApi
     static public function getItemsData($acc, $char, $realm="pc", $proxy=false){
         //get cahce if no cache get from poe api
         $key='items/'.$acc.'/'.$char.'/'.$realm;
-        $time = config('app.poe_cache_time');
+        $time = config('app.poe_cache_time') * 60;
+
         return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
             $client = new \GuzzleHttp\Client();
             //make Requests to PathOfExile website to retrieve Character Items
