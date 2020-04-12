@@ -44,7 +44,7 @@ class Intelligence extends Stat
 
         //if Percent Strength on items / tree
         if ($modName === '#% increased Intelligence' || $modName === '#% reduced Intelligence' || $modName === '#% increased Attributes') {
-            $this->intPercent += str_contains($modName, 'reduced') ? $modValue*-1 : $modValue;
+            $this->intPercent += \Str::contains($modName, 'reduced') ? $modValue*-1 : $modValue;
             $this->tempNote = '<br>Stat include ' . $this->intPercent . '% Intelligence';
             $this->note = $this->noteBase . $this->tempNote;
         }

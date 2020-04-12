@@ -19,11 +19,11 @@ class Mines extends Stat
         $modValue = count($matches)>0 ? $matches[0] : 1;
         $modName = preg_replace('/\d+/u', '#', $mod);
 
-        if ($this->currentType === 'base' && str_contains($modName, 'additional Mine')) {
+        if ($this->currentType === 'base' && \Str::contains($modName, 'additional Mine')) {
             $this->baseVal += $modValue;
         }
 
-        if (str_contains($modName, 'additional Mine')) {
+        if (\Str::contains($modName, 'additional Mine')) {
             $this->setVal($modValue);
             $this->setItemVal($modValue, $mod);
         }

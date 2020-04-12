@@ -19,11 +19,11 @@ class Traps extends Stat
         $modValue = count($matches)>0 ? $matches[0] : 1;
         $modName = preg_replace('/\d+/u', '#', $mod);
 
-        if ($this->currentType === 'base' && str_contains($modName, 'additional Trap')) {
+        if ($this->currentType === 'base' && \Str::contains($modName, 'additional Trap')) {
             $this->baseVal += $modValue;
         }
 
-        if (str_contains($modName, 'additional Trap')) {
+        if (\Str::contains($modName, 'additional Trap')) {
             $this->setVal($modValue);
             $this->setItemVal($modValue, $mod);
         }

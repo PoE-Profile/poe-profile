@@ -26,11 +26,11 @@ class Attack_Speed extends Stat
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // Combined Attack Speed From different Weapon Types
-        if (str_contains($mod, 'Weapon type:') && str_contains($this->currentItemType, 'Weapon')) {
+        if (\Str::contains($mod, 'Weapon type:') && \Str::contains($this->currentItemType, 'Weapon')) {
             $this->weaponType = explode(':', $mod)[1];
         }
 
-        if (str_contains($mod, 'Weapon type:') && str_contains($this->currentItemType, 'Offhand')) {
+        if (\Str::contains($mod, 'Weapon type:') && \Str::contains($this->currentItemType, 'Offhand')) {
             $this->dualWield = true;
             $this->note =  $this->note  . $this->br . 'Included 10% More Attack Speed while dual wielding';
         }
@@ -56,7 +56,7 @@ class Attack_Speed extends Stat
             $this->setVal($modValue);
         }
 
-        if ($modName === '#% increased Melee Attack Speed' && !str_contains($this->weaponType, ['Bow', 'Wand'])) {
+        if ($modName === '#% increased Melee Attack Speed' && !\Str::contains($this->weaponType, ['Bow', 'Wand'])) {
             $this->setVal($modValue);
         }
 
@@ -67,13 +67,13 @@ class Attack_Speed extends Stat
     }
 
     private function checkWeaponTypes($modName){
-        if ($this->currentType !== 'item' && str_contains($modName, '#% increased Attack Speed with')) {
+        if ($this->currentType !== 'item' && \Str::contains($modName, '#% increased Attack Speed with')) {
             $modName = str_replace('#% increased Attack Speed with ', '', $modName);
             $modName = str_replace(' Melee Weapons', '', $modName);
-            $modName = str_singular($modName);
+            $modName = \Str::singular($modName);
             // var_dump($modName);
-            if (str_contains($this->weaponType, $modName)) {
-                if (!str_contains($this->note, $modName)) {
+            if (\Str::contains($this->weaponType, $modName)) {
+                if (!\Str::contains($this->note, $modName)) {
                    $this->note = $this->note . $this->br . 'Stat include ' . $modName . ' Attack Speed';
                 }
                 return true;

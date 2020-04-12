@@ -19,11 +19,11 @@ class Totems extends Stat
         $modValue = count($matches)>0 ? $matches[0] : 1;
         $modName = preg_replace('/\d+/u', '#', $mod);
 
-        if ($this->currentType === 'base' && str_contains($modName, 'additional Totem')) {
+        if ($this->currentType === 'base' && \Str::contains($modName, 'additional Totem')) {
             $this->baseVal += $modValue;
         }
 
-        if (str_contains($modName, 'additional Totem')) {
+        if (\Str::contains($modName, 'additional Totem')) {
             $this->setVal($modValue);
             $this->setItemVal($modValue, $mod);
         }

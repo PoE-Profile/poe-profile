@@ -53,7 +53,7 @@ class Life extends Stat
         }
 
         // From items // tree // jews
-        if ( str_contains($mod, 'Maximum Life becomes 1, Immune to Chaos Damage')) {
+        if ( \Str::contains($mod, 'Maximum Life becomes 1, Immune to Chaos Damage')) {
             $this->ci = true;
             $this->note = $this->note . $this->br . 'Maximum Life becomes 1, Immune to Chaos Damage (Chaos Inoculation passive node)';
         }
@@ -66,7 +66,7 @@ class Life extends Stat
         $this->total = $this->treeVal + $this->itemVal + $this->jewVal + $this->baseVal + $this->strVal;
         if ( $this->chayla ) {
             $this->chaylaVal = round((($this->total * 20) / 100));
-            $this->chaylaVal = str_contains($this->note, 'Presence of of Chayla') ? $this->chaylaVal : 0;
+            $this->chaylaVal = \Str::contains($this->note, 'Presence of of Chayla') ? $this->chaylaVal : 0;
         }
         $this->total = $this->total - round((($this->total * $this->reducedPercent) / 100));
         

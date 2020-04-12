@@ -65,11 +65,11 @@ class Energy_Shield extends Stat
             $this->note = $this->note . $this->br .'Included ' . $this->infusedShield . '% more maximum Energy Shield from Infused Shield passive tree point';
         }
 
-        if (str_contains($mod, 'Grants maximum Energy Shield equal to 15% of your Reserved Mana ')) {
+        if (\Str::contains($mod, 'Grants maximum Energy Shield equal to 15% of your Reserved Mana ')) {
             $this->radiantFaith = true;
         }
 
-        if (str_contains($mod, '50% less Armour and Energy Shield')) {
+        if (\Str::contains($mod, '50% less Armour and Energy Shield')) {
             $this->acrobatics = true;
             $this->note = $this->note . $this->br .'50% less Energy Shield from Acrobatics Keystone';
         }

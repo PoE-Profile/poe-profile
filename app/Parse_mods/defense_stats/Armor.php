@@ -55,7 +55,7 @@ class Armor extends Stat
         }
 
         //Check for Acrobatics Keystone
-        if (str_contains($mod, '50% less Armour and Energy Shield')) {
+        if (\Str::contains($mod, '50% less Armour and Energy Shield')) {
             $this->acrobatics = true;
             $this->note = $this->note . $this->br .'50% less Armour from Acrobatics Keystone';
         }
