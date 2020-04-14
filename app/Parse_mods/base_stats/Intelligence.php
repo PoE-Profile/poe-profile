@@ -29,7 +29,7 @@ class Intelligence extends Stat
         if ($this->note == '') {
             $this->note =  $this->noteBase;
         }
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
 

@@ -16,7 +16,7 @@ class Attack_Critical_Multiplier extends Stat
     {
         $this->setType($type);
         $this->name ='% Critical Multiplier for Attacks';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // Combined Critical Multiplier From different Weapon Types

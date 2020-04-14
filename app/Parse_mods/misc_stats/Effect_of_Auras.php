@@ -15,7 +15,7 @@ class Effect_of_Auras extends Stat
 
         $mod=str_replace("Non-Curse", "Non Curse", $mod);
 
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased effect of Non Curse Auras you Cast') {

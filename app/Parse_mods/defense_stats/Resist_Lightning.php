@@ -20,7 +20,7 @@ class Resist_Lightning extends Stat
     {
         $this->setType($type);
         $this->name ='% Lightning Resistance';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
 

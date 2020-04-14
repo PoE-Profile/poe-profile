@@ -12,7 +12,7 @@ class Totem_Physical_Reduction extends Stat
     {
         $this->setType($type);
         $this->name ='% Totem Physical Reduction';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === 'Totems have #% additional Physical Damage Reduction') {

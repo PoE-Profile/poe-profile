@@ -12,7 +12,7 @@ class Endurance_Charges_Duration extends Stat
     {
         $this->setType($type);
         $this->name ='% Endurance Charge Duration';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Endurance Charge Duration') {

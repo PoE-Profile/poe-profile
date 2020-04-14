@@ -378,9 +378,8 @@ class Jewels
                             continue;
                         }
                         $mod = $point->stats[$i];
-
-                        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
-                        $modValue += $modValue * 0.5; 
+                        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+                        $modValue += ($modValue * 0.5); 
                         $modName = preg_replace('/\d+/u', '#', $mod);
                         $point->stats[$i] = str_replace('#', round($modValue), $modName);
                     }

@@ -12,7 +12,7 @@ class Totem_Resistances extends Stat
     {
         $this->setType($type);
         $this->name ='% Totem Elemental Resistances';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === 'Totems gains #% to all Elemental Resistances') {

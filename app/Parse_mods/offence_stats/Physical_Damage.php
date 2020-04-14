@@ -21,7 +21,7 @@ class Physical_Damage extends Stat
         }
         $this->setType($type);
         $this->name ='% Physical Damage';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // Combined Physical Damage From different Weapon Types

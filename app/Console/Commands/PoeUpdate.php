@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\LadderCharacter;
+use Symfony\Component\DomCrawler\Crawler;
 
 class PoeUpdate extends Command
 {
@@ -12,7 +13,7 @@ class PoeUpdate extends Command
      *
      * @var string
      */
-    protected $signature = 'poe:update {--leagues} {--league_table}';
+    protected $signature = 'poe:update {--leagues} {--league_table} {--tree}';
 
     /**
      * The console command description.
@@ -50,6 +51,11 @@ class PoeUpdate extends Command
 
         if ($this->option('league_table')) {
             $this->addLeagues();
+            return;
+        }
+
+        if ($this->option('tree')) {
+            $this->update_tree_data();
             return;
         }
     }
@@ -121,5 +127,24 @@ class PoeUpdate extends Command
 
     public function remove_last_char($string) {
         return substr($string, 0, -1) == null ? '' : substr($string, 0, -1);
+    }
+
+    public function update_tree_data(){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request(
+                    'GET',
+                    'https://www.pathofexile.com/passive-skill-tree',
+                    []
+                );
+        $c = new Crawler((string)$response->getBody());
+        $tree=null;
+        $c->filter('script')->each(function ($node) use (&$tree){
+            $script=$node->html();
+      	    $pattern = "/(?:var passiveSkillTreeData = )(.+);/";
+            preg_match($pattern, $script, $matches);
+            if(count($matches)>0){
+                dump($script);
+            }
+        });
     }
 }

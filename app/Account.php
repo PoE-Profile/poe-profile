@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Sunra\PhpSimple\HtmlDomParser;
 use App\PoeApi;
 use App\Helpers\Items;
 

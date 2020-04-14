@@ -13,7 +13,7 @@ class Endurance_Charges extends Stat
     {
         $this->setType($type);
         $this->name ='Endurance Charges';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '+# to Maximum Endurance Charges') {

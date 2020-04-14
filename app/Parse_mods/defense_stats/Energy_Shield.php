@@ -31,7 +31,7 @@ class Energy_Shield extends Stat
 
         $this->setType($type);
         $this->name ='Energy Shield';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         //flat Energy Shield from Jewelery

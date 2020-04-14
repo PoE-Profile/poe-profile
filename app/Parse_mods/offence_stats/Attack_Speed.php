@@ -22,7 +22,7 @@ class Attack_Speed extends Stat
 
         $this->setType($type);
         $this->name ='% Attack Speed';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // Combined Attack Speed From different Weapon Types
