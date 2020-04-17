@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\LadderCharacter;
+use Symfony\Component\DomCrawler\Crawler;
 
 class PoeUpdate extends Command
 {
@@ -12,7 +13,7 @@ class PoeUpdate extends Command
      *
      * @var string
      */
-    protected $signature = 'poe:update {--leagues} {--league_table}';
+    protected $signature = 'poe:update {--leagues} {--league_table} {--tree}';
 
     /**
      * The console command description.
@@ -52,6 +53,11 @@ class PoeUpdate extends Command
             $this->addLeagues();
             return;
         }
+
+        if ($this->option('tree')) {
+            $this->update_tree_data();
+            return;
+        }
     }
 
     public function leaguesStringify($leagues) {
@@ -86,7 +92,7 @@ class PoeUpdate extends Command
 
         $old_leagues = LadderCharacter::groupBy('league')->get()->pluck('league')->toArray();
         foreach ($old_leagues as $id) {
-            if (str_contains($main_leagues_string, $id)) {
+            if (\Str::contains($main_leagues_string, $id)) {
                 continue;
             }
             \App\League::firstOrCreate([
@@ -108,11 +114,11 @@ class PoeUpdate extends Command
             return $this->remove_last_char($temp_rules);
         }
 
-        if (str_contains($name, 'hardcore') || str_contains($name, 'hc')) {
+        if (\Str::contains($name, 'hardcore') || \Str::contains($name, 'hc')) {
             $temp_rules .= 'A character killed in Hardcore is moved to its parent league./';
         }
 
-        if (str_contains($name, 'ssf')) {
+        if (\Str::contains($name, 'ssf')) {
             $temp_rules .= 'You may not party in this league./';
         }
 
@@ -121,5 +127,24 @@ class PoeUpdate extends Command
 
     public function remove_last_char($string) {
         return substr($string, 0, -1) == null ? '' : substr($string, 0, -1);
+    }
+
+    public function update_tree_data(){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request(
+                    'GET',
+                    'https://www.pathofexile.com/passive-skill-tree',
+                    []
+                );
+        $c = new Crawler((string)$response->getBody());
+        $tree=null;
+        $c->filter('script')->each(function ($node) use (&$tree){
+            $script=$node->html();
+      	    $pattern = "/(?:var passiveSkillTreeData = )(.+);/";
+            preg_match($pattern, $script, $matches);
+            if(count($matches)>0){
+                dump($script);
+            }
+        });
     }
 }

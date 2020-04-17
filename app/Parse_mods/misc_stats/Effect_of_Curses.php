@@ -13,7 +13,7 @@ class Effect_of_Curses extends Stat
         $this->setType($type);
         $this->name ='% Effect of Curses';
 
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Effect of your Curses') {

@@ -12,7 +12,7 @@ class Damage_Over_Time extends Stat
     {
         $this->setType($type);
         $this->name ='% Damage over Time';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Damage over Time') {

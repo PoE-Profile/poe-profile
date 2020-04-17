@@ -17,10 +17,10 @@ class SkillTreeController extends Controller
         // $this->middleware('auth');
     }
 
-    public function showSkillTree(){
+    public function showSkillTree(Request $request){
         $version = config('app.poe_version');
-        if (\Input::has('version')) {
-            $version = \Input::get('version');
+        if ($request->has('version')) {
+            $version = $request->input('version');
         }
         return view('passive_skill_tree', compact('version'));
     }

@@ -12,7 +12,7 @@ class Increased_Damage extends Stat
     {
         $this->setType($type);
         $this->name ='% increased Damage';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Damage') {

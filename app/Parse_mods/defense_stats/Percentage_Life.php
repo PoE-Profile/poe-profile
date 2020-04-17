@@ -16,7 +16,7 @@ class Percentage_Life extends Stat
     {
         $this->setType($type);
         $this->name ='% Life';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // From items // tree // jews

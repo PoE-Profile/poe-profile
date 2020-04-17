@@ -20,10 +20,10 @@ class Block extends Stat
         
         $this->setType($type);
         $this->name ='% Block Chance';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
-        if (str_contains($mod, '50% less Armour and Energy Shield')) {
+        if (\Str::contains($mod, '50% less Armour and Energy Shield')) {
             $this->acrobatics = true;
             $this->note = $this->note . $this->br .'30% less Block from Acrobatics Keystone';
         }

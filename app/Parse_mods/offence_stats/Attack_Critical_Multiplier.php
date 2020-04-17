@@ -16,11 +16,11 @@ class Attack_Critical_Multiplier extends Stat
     {
         $this->setType($type);
         $this->name ='% Critical Multiplier for Attacks';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // Combined Critical Multiplier From different Weapon Types
-        if (str_contains($mod, 'Weapon type:') && str_contains($this->currentItemType, 'Weapon')) {
+        if (\Str::contains($mod, 'Weapon type:') && \Str::contains($this->currentItemType, 'Weapon')) {
             $this->weaponType = explode(':', $mod)[1];            
         }
 
@@ -41,13 +41,13 @@ class Attack_Critical_Multiplier extends Stat
     }
 
     private function checkWeaponTypes($modName){
-        if ($this->currentType !== 'item' && str_contains($modName, '#% to Critical Strike Multiplier with')) {
+        if ($this->currentType !== 'item' && \Str::contains($modName, '#% to Critical Strike Multiplier with')) {
             $modName = str_replace('+#% to Critical Strike Multiplier with ', '', $modName);
             $modName = str_replace(' Melee Weapons', '', $modName);
-            $modName = str_singular($modName);
+            $modName = \Str::singular($modName);
             // var_dump('From Crit Multi:' . $modName);
-            if (str_contains($this->weaponType, $modName)) {
-                if (!str_contains($this->note, $modName)) {
+            if (\Str::contains($this->weaponType, $modName)) {
+                if (!\Str::contains($this->note, $modName)) {
                    $this->note = $this->note . 'Stat include ' . $modName . ' Critical Multiplier <br>';
                 }
                 return true;

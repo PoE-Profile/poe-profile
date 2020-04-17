@@ -29,7 +29,7 @@ class Armor extends Stat
 
         $this->setType($type);
         $this->name ='Armour';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // check for other Grand Spectrum jewels
@@ -55,7 +55,7 @@ class Armor extends Stat
         }
 
         //Check for Acrobatics Keystone
-        if (str_contains($mod, '50% less Armour and Energy Shield')) {
+        if (\Str::contains($mod, '50% less Armour and Energy Shield')) {
             $this->acrobatics = true;
             $this->note = $this->note . $this->br .'50% less Armour from Acrobatics Keystone';
         }

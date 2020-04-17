@@ -23,7 +23,7 @@ class Percentage_ES extends Stat
     {
         $this->setType($type);
         $this->name ='% Energy Shield';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
         // From  tree // jews
         if ($this->currentType !== 'item' &&  $modName === '#% increased maximum Energy Shield') {

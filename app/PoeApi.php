@@ -1,8 +1,6 @@
 <?php
 namespace App;
 
-use Sunra\PhpSimple\HtmlDomParser;
-
 class PoeApi
 {
     static public function getCharsData($acc, $realm="pc")
@@ -97,7 +95,6 @@ class PoeApi
 
 
             $response = json_decode((string)$response->getBody(), true);
-            //\App\Jobs\AddCharLeague::dispatch($response);
             return $response;
         });
     }

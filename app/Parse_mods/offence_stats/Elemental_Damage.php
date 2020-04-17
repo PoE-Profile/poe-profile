@@ -17,7 +17,7 @@ class Elemental_Damage extends Stat
     {
         $this->setType($type);
         $this->name ='% Elemental Damage';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         // check for other Grand Spectrum jewels

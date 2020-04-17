@@ -29,7 +29,7 @@ class Intelligence extends Stat
         if ($this->note == '') {
             $this->note =  $this->noteBase;
         }
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
 
@@ -44,7 +44,7 @@ class Intelligence extends Stat
 
         //if Percent Strength on items / tree
         if ($modName === '#% increased Intelligence' || $modName === '#% reduced Intelligence' || $modName === '#% increased Attributes') {
-            $this->intPercent += str_contains($modName, 'reduced') ? $modValue*-1 : $modValue;
+            $this->intPercent += \Str::contains($modName, 'reduced') ? $modValue*-1 : $modValue;
             $this->tempNote = '<br>Stat include ' . $this->intPercent . '% Intelligence';
             $this->note = $this->noteBase . $this->tempNote;
         }

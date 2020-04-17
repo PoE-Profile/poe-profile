@@ -31,7 +31,7 @@ class Mana extends Stat
         }
         $this->setType($type);
         $this->name ='Mana';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
 
@@ -56,12 +56,12 @@ class Mana extends Stat
         }
 
         // Sanctuary of Thought
-        if ( str_contains($mod, 'Maximum Mana as Extra Maximum Energy Shield')) {
+        if ( \Str::contains($mod, 'Maximum Mana as Extra Maximum Energy Shield')) {
             $this->sanctuary = true;
         }
 
         // From items // tree // jews
-        if ( str_contains($mod, 'Removes all mana. Spend Life instead of Mana for Skills')) {
+        if ( \Str::contains($mod, 'Removes all mana. Spend Life instead of Mana for Skills')) {
             $this->bm = true;
             $this->note = $this->note . $this->br . '<br>Removes all mana. Spend Life instead of Mana for Skills (Blood Magic passive node)';
         }

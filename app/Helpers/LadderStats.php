@@ -1,8 +1,6 @@
 <?php
 namespace App\Helpers;
 
-use Sunra\PhpSimple\HtmlDomParser;
-
 class LadderStats
 {
     private $ladder_char;

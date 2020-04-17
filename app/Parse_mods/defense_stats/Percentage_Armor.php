@@ -17,7 +17,7 @@ class Percentage_Armor extends Stat
     {
         $this->setType($type);
         $this->name ='% Armour';
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $this->currentType !== 'item' && ($modName === '#% increased Armour') || $modName === '#% increased Evasion Rating and Armour') {

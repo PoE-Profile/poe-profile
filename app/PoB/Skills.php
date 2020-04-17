@@ -41,7 +41,7 @@ class Skills
                     }
 
                     $gemName = $g['typeLine'];
-                    if (str_contains($gemName, 'Support')) {
+                    if (\Str::contains($gemName, 'Support')) {
                         $gemName = 'Support ' . str_replace(' Support', '', $gemName);
 
                         $skillId = str_replace(' ', '', $gemName);

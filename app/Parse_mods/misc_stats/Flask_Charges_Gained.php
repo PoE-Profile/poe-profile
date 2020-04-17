@@ -13,7 +13,7 @@ class Flask_Charges_Gained extends Stat
         $this->setType($type);
         $this->name ='% Flask Charges gained';
 
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Flask Charges gained') {

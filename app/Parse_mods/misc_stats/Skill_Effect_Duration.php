@@ -13,7 +13,7 @@ class Skill_Effect_Duration extends Stat
         $this->setType($type);
         $this->name ='% Skill Effect Duration';
 
-        $modValue = filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
+        $modValue = (int) filter_var($mod, FILTER_SANITIZE_NUMBER_INT);
         $modName = preg_replace('/\d+/u', '#', $mod);
 
         if ( $modName === '#% increased Skill Effect Duration') {
