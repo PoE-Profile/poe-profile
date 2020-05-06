@@ -15,45 +15,7 @@ class PoeTwitch extends Command
      * @var string
      */
     protected $signature = 'poe:twitch {operation}';
-    public $twitchChannels = [
-        'RaizQT' => 'raizqt',
-        'nugiyen' => 'nugiyen',
-        'chistor_' => 'chistor_',
-        'DismantleTime' => 'dismantletime',
-        'norseman21' => 'norse_tv',
-        'Walter_Cronkite' => 'morikiopa',
-        'Aducat' => 'sirkultan',
-        'tarke' => 'tarkecat',
-        'Ghazzy' => 'ghazzy',
-        'Karvarousku' => 'karvarouskugaming',
-        'sefearion' => 'sefearionpvp',
-        'Blattos' => 'blatty',
-        'Empyrianwarpgate' => 'empyriangaming',
-        'Morsexier' => 'MorsRageNG',
-        'Anafobia' => 'anafobia',
-        'Dsfarblarwaggle' => 'waggle',
-        'mathil' => 'mathil1',
-        'AlkaizerX' => 'alkaizerx',
-        'etup' => 'etup',
-        'Zizaran' => 'zizaran',
-        'fandabear1' => 'cutedog_',
-        'poizntv' => 'poizntv',
-        'FleepQc' => 'fleepqc',
-        'LiftingNerdBro' => 'lifting_',
-        'yojimoji' => 'itsyoji',
-        'pohx' => 'pohx',
-        'blasting_cap' => 'blasting_cap',
-        'ZiggyD' => 'ziggydlive',
-        'Helman' => 'helmannn',
-        'Angryafrican' => 'angryaa',
-        'HegemonyTV' => 'hegemonytv',
-        'Rexitus' => 'rexitus',
-        'xtreme1330' => 'xxtremetv',
-        'DeMiGodking102' => 'demigodkinglol',
-        'Shinrha' => 'shinrha',
-        'Krippers' => 'nl_kripp',
-        'DCLara' => 'dclara1',
-    ];
+    
 
     /**
      * The console command description.
@@ -82,14 +44,14 @@ class PoeTwitch extends Command
 
         // take acounts
         switch ($this->argument('operation')) {
-            case 'seeds':
-                $this->info("start seeding twtich table");
-                $this->seedTwitchTable();
+            case 'update-token':
+                $this->info("Request token from Twitch api");
+                $this->update_token();
                 break;
 
             case 'update':
                 $this->info("start update twtich table");
-                $this->updateTwitchInfo();
+                $this->update_info();
                 break;
             case 'add':
                 $poeAcc = $this->ask('Path of Exile profile');
@@ -107,46 +69,44 @@ class PoeTwitch extends Command
                 break;
         }
     }
-    private function seedTwitchTable()
+    private function update_token()
     {
-        foreach ($this->twitchChannels as $key => $value) {
-            $dbAcc = \App\Account::where('name', $key)->first();
-            if (!$dbAcc) {
-                $dbAcc = \App\Account::create(['name' => $key]);
-                $this->info('add acc:' . $key);
-            } else {
-                $this->info('update acc:' . $key);
-            }
-            $dbAcc->updateLastChar();
-            $dbAcc->updateLastCharInfo();
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request(
+            'POST',
+            'https://id.twitch.tv/oauth2/token?client_id=gi3es6sr9cmscw4aww6lbt309dyj8e&client_secret=g68pe92grxt37fayigrl1w6xcl6807&grant_type=client_credentials'
+        );
 
-            if (!$dbAcc->streamer) {
-                $this->info('add twitch:' . $value);
-                $newStreamer = \App\TwitchStreamer::create([
-                    'name' => $value,
-                    'account_id' => $dbAcc->id
-                ]);
-            }
-        }
+        \Storage::put('access_token.json', (string) $response->getBody());
     }
 
-    public function updateTwitchInfo()
+    public function get_token()
+    {
+        $data = json_decode(\Storage::get('access_token.json'));
+        return 'Bearer '. $data->access_token;
+    }
+
+    public function update_info()
     {
         \DB::statement("UPDATE `twitch_streamers` set online=0 ,viewers=0");
+
         $client = new \GuzzleHttp\Client();
+        $token = $this->get_token();
         $response = $client->request(
             'GET',
             'https://api.twitch.tv/helix/streams?game_id=29307&first=50',
             [
                 'headers' => [
                     'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',
+                    'Authorization' =>  $token,
                     'User-Agent' => 'testing/1.0',
                     'Accept'     => 'application/json',
                 ]
             ]
         );
+        
         $data = json_decode((string) $response->getBody())->data;
-        // dd($data);
+
         foreach ($data as $stream) {
 
             $this->info($stream->user_name);
