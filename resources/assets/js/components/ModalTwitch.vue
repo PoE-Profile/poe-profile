@@ -59,7 +59,7 @@ export default {
                 return;
             }
             console.log("watch stream");
-            this.streamUrl='https://player.twitch.tv/?channel=' + this.stream.name;
+            this.streamUrl='https://player.twitch.tv/?channel=' + this.stream.name + '&parent=poe-profile.test';
             this.loadStream=true;
         },
         loadStream : function (value) {
