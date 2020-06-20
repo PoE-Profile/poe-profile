@@ -219,7 +219,8 @@
 
 	<div id="summary" name="summary"></div>
 </div>
-        <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=53f6b5a112b20a13c435d7b4630b8320"></script>    <!-- <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=fb734febccaaa258d2fe03b3dca5e0a6"></script> -->
+        <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=53f6b5a112b20a13c435d7b4630b8320"></script>
+         <!-- <script type="text/javascript" src="https://web.poecdn.com/js/lib/require-2.3.2.js?v=fb734febccaaa258d2fe03b3dca5e0a6"></script> -->
 <script type="text/javascript">
     //<!--
                 document.body.className = document.body.className.replace( /(?:^|\s)noJS(?!\S)/ , '');
@@ -240,6 +241,7 @@
             require.config({
                 baseUrl: "https://web.poecdn.com/js",
                 paths : {"main":"main.e7a184ee03b7595b763bfb5a9d8245ec206ad710","plugins":"plugins.fba22274dc3520c88a10bc27431e90615239367a","skilltree":"skilltree.88a405683eaef0e980fad1ba8054a8e47e4ba89e"},
+                shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
             });
             require(["main"], function(){});    //-->
 
@@ -252,7 +254,7 @@
     //<!--
     var temp='';
     var oldPoints=[];
-
+    
     require(['main'], function() {
         require(['skilltree'], function (PassiveSkillTree) {
             var opts = {
@@ -264,7 +266,8 @@
                 startClass: 6,
                 version: '{{$version}}',
                 fullScreen: true,
-                circles: {"Small":[{"level":0.1246,"width":199},{"level":0.2109,"width":337},{"level":0.2972,"width":476},{"level":0.3835,"width":614}],"Medium":[{"level":0.1246,"width":299},{"level":0.2109,"width":506},{"level":0.2972,"width":713},{"level":0.3835,"width":920}],"Large":[{"level":0.1246,"width":374},{"level":0.2109,"width":633},{"level":0.2972,"width":892},{"level":0.3835,"width":1151}]} 
+                realm: 'pc',
+                build: {}
             };
             var treeControls = new PassiveSkillTree.controls(opts);
             // console.log(this);
