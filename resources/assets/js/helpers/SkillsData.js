@@ -336,5 +336,15 @@ module.exports = {
     "Kinetic Bolt": "\/imgs\/skills\/Kinetic_Bolt.png",
     "Spellslinger": "\/imgs\/skills\/Spellslinger.png",
     "Stormbind": "\/imgs\/skills\/Stormbind.png",
-    "Blade Blast": "\/imgs\/skills\/Blade_Blast.png"
+    "Blade Blast": "\/imgs\/skills\/Blade_Blast.png",
+
+    // version 3.11 Harvest
+    "Ancestral Cry": "\/imgs\/skills\/WarCryAncestral.png",
+    "Earthshatter": "\/imgs\/skills\/SpikeSlam.png",
+    "General's Cry": "\/imgs\/skills\/WarCryGenerals.png",
+    "Intimidating Cry": "\/imgs\/skills\/WarCryIntimidating.png",
+    "Seismic Cry": "\/imgs\/skills\/SeismicCry.png",
+    "Arcanist Brand": "\/imgs\/skills\/ConduitSigilPurple.png",
+    "Penance Brand": "\/imgs\/skills\/PhysicalLightningBrand.png",
+    "Wintertide Brand": "\/imgs\/skills\/ColdBrand.png"
 }
