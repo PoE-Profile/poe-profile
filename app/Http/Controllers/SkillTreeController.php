@@ -18,11 +18,10 @@ class SkillTreeController extends Controller
     }
 
     public function showSkillTree(Request $request){
-        $version = config('app.poe_version');
-        if ($request->has('version')) {
-            $version = $request->input('version');
+        if(!\Storage::exists('passive-skill-tree.html')){
+            \Artisan::call('poe:tree');
         }
-        return view('passive_skill_tree', compact('version'));
+        return \Storage::get('passive-skill-tree.html');
     }
 
 

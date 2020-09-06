@@ -40,21 +40,6 @@
 
 ### update skill tree
 
--update in "resources/views/passive_skill_tree.blade.php"
-
-update with new hashes for main/plugins/skilltree in the example below
-
-```
-require.config({
-               baseUrl: "https://web.poecdn.com/js",
-               paths : {"main":"main.7a3174d358e215ad47c089b756c378cc6fa59254","plugins":"plugins.5ba98de7e3d017333712f2389a750340bc9981b1","skilltree":"skilltree.76f51f6f04d55e6ec5e220ffe51376ee9c26055e"},
-               shim: {"main":{"deps":["config","plugins"]},"plugins":{"deps":["config"]}}
-           });
-           require(["main"], function(){});
-```
-
-to be like path of exile site https://www.pathofexile.com/passive-skill-tree
-
 - update or add new version of skill tree in "public/js/st_us{version}.js" in var
 
 ```
