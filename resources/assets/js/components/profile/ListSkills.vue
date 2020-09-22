@@ -8,7 +8,8 @@
         <a class="darken" @click.prevent="showSkill(skill, index)">
           <div :class="['skill', currentIndex === index ? 'current' : '']">
             <div class="icon2" style>
-              <img :src="skill.imgUrl">
+              <img v-if="skill.imgUrl" :src="skill.imgUrl"/>
+              <img v-else :src="'/skill-img/'+skill.name">
             </div>
             <span class="links" v-if="skill.supports.length>0">{{skill.supports.length+1}}</span>
             <span class="name">{{withEllipsis(skill.name,18)}}</span>
