@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Http;
 
 // \DB::listen(function($sql) {
 //     var_dump($sql->sql);
@@ -65,5 +66,29 @@ Route::group(['middleware' => 'web'], function () {
             ->name('profile.tree');
     Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
             ->name('profile.tree.passives');
+    Route::get('/skill-img/{name}', function ($name) {
+        $name=str_replace(" ","_",$name);
+        $name=str_replace("'","",$name);
+        $file_path=storage_path('app/skills/').$name.'.png';
+        if(file_exists($file_path)){
+            return Image::make($file_path)->response();
+        }
+        $response = Http::get('https://poedb.tw/us/'.$name);
+        $html = $response->body();
+        // https://web.poecdn.com/image/Art/2DArt/SkillIcons/DoomBlastSkill.png
+        $pattern = '/https:\/\/web.poecdn.com\/image\/Art\/2DArt\/SkillIcons.*\.png/';
+        preg_match ($pattern, $html, $matches);
+        if(count($matches)>0){
+            $img_url=$matches[0];
+            // dd($img_url);
+            $img = \Image::make($img_url)->encode('png', 100);
+            if(!file_exists(storage_path('app/skills/'))){
+                mkdir(storage_path('app/skills/'));
+            }
+            $img->save($file_path);
+            return $img->response();
+        }
+        return null;
+    });
 
 });

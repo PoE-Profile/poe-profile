@@ -17,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
         //fixing problem for older version of mysql
         //more https://laravel-news.com/laravel-5-4-key-too-long-error
         Schema::defaultStringLength(191);
+        if(cache('current_version')){
+            config(['app.poe_version' => cache('current_version')]);
+        }
     }
 
     /**

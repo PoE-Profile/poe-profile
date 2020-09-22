@@ -14,7 +14,8 @@ class CharacterTreePoints
         $this->version = str_replace(".", "_", $version);
         $path = app_path('Parse_mods/tree_versions/'.$this->version.'.json');
         if (!\File::exists($path)) {
-            throw new \Exception("Invalid File");
+            // throw new \Exception("Invalid File");
+            $path=storage_path('app/latest_nodes.json');
         }
 
         $file = \File::get($path); // string

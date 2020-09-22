@@ -81,7 +81,8 @@
                         :title="'<strong>'+skill.name+'</strong><br>'+skill.supports.map(x => x.name).join('<br>')">
                             <a href="#" @click.prevent="trigerFilterSkills(skill.name)">
                                 <div class="skill-card card card-inverse">
-                                    <img v-bind:src="skill.imgUrl">
+                                    <img v-if="skill.imgUrl" v-bind:src="skill.imgUrl">
+                                    <img v-else :src="'/skill-img/'+skill.name">
                                     <div class="card-backdrop"></div>
                                 </div>
                             </a>

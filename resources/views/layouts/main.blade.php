@@ -2,9 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="tree-version" content="{{config('app.poe_version')}}"/>
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	@yield('metatags')
-
 	 <title> @yield('title', 'PoE Profile Info')</title>
 
 	<!-- Latest compiled and minified CSS -->

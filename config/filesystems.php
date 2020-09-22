@@ -65,6 +65,10 @@ return [
             'visibility' => 'public',
         ],
 
+        'nodes' => [
+            'driver' => 'local',
+            'root' => app_path('Parse_mods/tree_versions'),
+        ],
 
         's3' => [
             'driver' => 's3',

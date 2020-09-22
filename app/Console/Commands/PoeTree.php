@@ -12,7 +12,7 @@ class PoeTree extends Command
      *
      * @var string
      */
-    protected $signature = 'poe:tree';
+    protected $signature = 'poe:tree {--add-nodes}';
 
     /**
      * The console command description.
@@ -40,6 +40,37 @@ class PoeTree extends Command
     {
         $response = Http::get('https://www.pathofexile.com/fullscreen-passive-skill-tree');
         $html = $response->body();
+        $tempHtml = trim(preg_replace('/\s\s+/', '', $html));
+        // dd($html);
+        
+        ///set latest_nodes.json
+        $nodes='';
+        $pattern = '/"nodes"\: (\{.*?\})\,"extraImages":/';
+        preg_match ($pattern, $tempHtml, $matches);
+        if(count($matches)==0){
+            $this->info("no nodes mach send mail");
+        }else{
+            $nodes = (string) $matches[1];
+            \Storage::put('latest_nodes.json', $nodes);
+            $this->info("update latest_nodes.json ");
+        }
+
+        //set version
+        $version='';
+        $pattern = '/version: \'([1-9]*\.[1-9]*)\./';
+        preg_match ($pattern, $tempHtml, $matches2);
+        if(count($matches2)>0){
+            $version = $matches2[1];
+            $this->info("update Cache current_version to ".$version);
+        }
+        \Cache::forever('current_version', $version);
+
+        if($this->option('add-nodes')){
+            $fileName = str_replace('.','_',$version).".json";
+            \Storage::disk('nodes')->put($fileName,$nodes);
+            $this->info("add new nodes file for v.".$version);
+        }
+
         $dom = new \domDocument; 
         $dom->loadHTML($html); 
         
@@ -65,5 +96,6 @@ class PoeTree extends Command
         //     $r->item(0)->parentNode->removeChild($r->item(0));
         // }
         \Storage::put('passive-skill-tree.html', (string) $dom->saveHTML());
+        $this->info("update storage cache for passive-skill-tree.html ");
     }
 }
