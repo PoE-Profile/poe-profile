@@ -67,6 +67,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
             ->name('profile.tree.passives');
     Route::get('/skill-img/{name}', function ($name) {
+        $prefaced = ["Anomalous ", "Divergent ", "Phantasmal "];
+        $name = str_replace($prefaced, '', $name);
         $name=str_replace(" ","_",$name);
         $name=str_replace("'","",$name);
         $file_path=storage_path('app/skills/').$name.'.png';

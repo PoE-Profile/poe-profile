@@ -9,17 +9,17 @@
         </div>
         <div class="container" style="">
             <div class="row">
+                <LadderSelect style="width: 100%"
+                    :leagues="leagues" 
+                    :realm="realm"
+                    :active="league.name"
+                    ></LadderSelect>
                 <h3 class="col-12" style="padding:10px;" v-if="league.type!='public'">Ladder {{league.name}}:
                     <a :href="'https://www.pathofexile.com/private-leagues/league/'+league.name.replace(/\(PL[0-9]+\)/,'')"
                       class="btn btn-sm poe-btn form-inline show-tooltip" target="_blank">
                         <i class="fa fa-external-link" aria-hidden="true"></i> Open in pathofexile.com
                     </a>
                 </h3>
-                <LadderSelect v-if="realm!='pc'||league.type=='public'" style="width: 100%"
-                    :leagues="leagues" 
-                    :realm="realm"
-                    :active="league.name"
-                    ></LadderSelect>
             </div>            
         </div>
         <div class="row filters pb-1" v-if="league.indexed">

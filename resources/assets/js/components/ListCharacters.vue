@@ -2,8 +2,8 @@
 <div class="ladder-table h-100" :class="{'compact': compact }">
     <table class="table h-100 table-hover homapage-table">
         <thead>
-            <slot name="thead">
-                <tr>
+            <slot name="thead" >
+                <tr style="border-top: 1px solid #ebb16c;">
                     <th v-if="showRank">Rank</th>
                     <th v-if="!archive">
                         Class
