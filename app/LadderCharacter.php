@@ -62,7 +62,6 @@ class LadderCharacter extends Model
             $delve['default'] = $entry['character']['depth']['default'];
             $delve['solo'] = $entry['character']['depth']['solo'];
         }
-
         return [
             'rank' => $entry['rank'],
             'dead' => $entry['dead'],
@@ -73,7 +72,7 @@ class LadderCharacter extends Model
             'delve_default' => $delve['default'],
             'delve_solo' => $delve['solo'],
             'experience' => $entry['character']['experience'],
-            'online' => $entry['online'],
+            'online' => false,
             'public' => true
         ];
     }
