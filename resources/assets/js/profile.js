@@ -520,6 +520,17 @@ new Vue({
                 this.treeData.hashes
             );
             this.skillTreeUrl=tempStr.replace('hash',url_hash);
+            /**/
+            const iframe = document.querySelector("#skill-tree-placeholder iframe");
+            if(!iframe){
+                var ifrm = document.createElement("iframe");
+                ifrm.setAttribute("src", this.skillTreeUrl);
+                ifrm.setAttribute("frameborder", 0);
+                ifrm.setAttribute("scrolling", "yes");
+                ifrm.style.width = "100%";
+                ifrm.style.height = "850px";
+                document.getElementById("skill-tree-placeholder").appendChild(ifrm);             
+            }
         },
 
         getCharacterItems: function () {
