@@ -307,7 +307,8 @@ $(function () {
                         </a>
 
                     </div>
-                    <iframe :src="skillTreeUrl" v-if="skillTreeActive" scrolling="yes" width="100%" height="850" frameborder="0"></iframe>
+                    <div id="skill-tree-placeholder" style="height:850px;">
+                    </div>
                 </div>
 
                 <div class="tab-pane" role="tabpanel" :class="{ active: jewelsTabActive }">
