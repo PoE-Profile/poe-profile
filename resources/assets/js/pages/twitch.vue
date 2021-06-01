@@ -48,7 +48,8 @@ export default {
                 this.twitchAccChars = response.data;
                 this.isLoading=false;
                 this.selectedTab='twitch';
-                Vue.nextTick(function () {
+                this.$nextTick(() => {
+                // Vue.nextTick(function () {
                     $('.show-tooltip').tooltip();
                 });
             });

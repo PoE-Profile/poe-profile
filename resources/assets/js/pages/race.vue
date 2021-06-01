@@ -110,7 +110,8 @@ export default {
                 window.history.pushState("", "", stateUrl);
                 this.ladderPaginate = response.data;
                 this.isLoading = false;
-                Vue.nextTick(function () {
+                this.$nextTick(() => {
+                // Vue.nextTick(function () {
                     $('.show-tooltip').tooltip();
                 });
             });

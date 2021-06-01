@@ -113,7 +113,8 @@ export default {
     },
     methods: {
         closePopOver: function(){
-            Vue.nextTick(function () {
+            this.$nextTick(() => {
+            // Vue.nextTick(function () {
                  $( ".po-bandits-link" ).trigger( "click" );
             })
         },

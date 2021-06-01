@@ -29,11 +29,11 @@ if (token) {
 window.Vue = require('vue');
 
 //For production
-// Vue.config.devtools = false;
-// Vue.config.debug = false;
-// Vue.config.silent = true;
-
-//For local development
 Vue.config.devtools = false;
 Vue.config.debug = false;
 Vue.config.silent = true;
+
+//For local development
+// Vue.config.devtools = true;
+// Vue.config.debug = true;
+// Vue.config.silent = false;
