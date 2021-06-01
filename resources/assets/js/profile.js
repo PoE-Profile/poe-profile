@@ -1,4 +1,5 @@
 require('./bootstrap');
+import Vue from 'vue';
 
 Vue.component('item', require('./components/profile/Item.vue').default);
 Vue.component('jewel', require('./components/profile/Jewel.vue').default);

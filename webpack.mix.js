@@ -11,8 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/home.js', 'public/js/build')
-mix.js('resources/assets/js/profile.js', 'public/js/build')
+mix.js('resources/assets/js/home.js', 'public/js/build').vue({ version: 2 })
+mix.js('resources/assets/js/profile.js', 'public/js/build').vue({ version: 2 })
 mix.sass('resources/assets/sass/app.scss', 'public/css/build');
 
 if (mix.inProduction()) {

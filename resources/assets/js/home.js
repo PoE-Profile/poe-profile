@@ -1,5 +1,6 @@
 
 require('./bootstrap');
+import Vue from 'vue';
 
 Vue.component('loader', require('./components/Loader.vue').default);
 Vue.component('ladders-page', require('./pages/ladders.vue').default);
