@@ -251,7 +251,7 @@ export default {
 
     mounted: function() {
         this.skillImages = skillsData;
-        if(window.PHP.realm.length>0){
+        if(!'realm' in window.PHP){
             this.realm=window.PHP.realm;
         }
     },
