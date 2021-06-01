@@ -232,8 +232,8 @@ export default {
                 this.favStore.addAcc(acc);
                 this.alertMsg="Account is added to favorites . To see all favorites go to \"<a href='/favorites' class='about-link'>Favorites</a>\" ";
             }
-
-            Vue.nextTick(function () {
+            this.$nextTick(() => {
+            // Vue.nextTick(function () {
                 $('.show-tooltip').tooltip('dispose');
                 $('.show-tooltip').tooltip();
             })

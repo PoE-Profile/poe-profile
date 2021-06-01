@@ -232,7 +232,8 @@ export default {
         },
 
         loadTooltips(){
-            Vue.nextTick(function () {
+            this.$nextTick(() => {
+            // Vue.nextTick(function () {
                 $('.show-tooltip').tooltip();
             });
         },
@@ -242,7 +243,7 @@ export default {
                 var row = this.filterParms.rank % 50;
                 row=(row==0)?50:row;
                 var scrollTo=(row*40)+100;
-                Vue.nextTick(()=> {
+                this.$nextTick(() => {
                     window.scrollTo(0, scrollTo);
                 });
             }

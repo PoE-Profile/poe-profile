@@ -299,7 +299,8 @@ export default {
             });
         },
         loadTooltips(){
-            Vue.nextTick(function () {
+            this.$nextTick(() => {
+            // Vue.nextTick(function () {
                 $('.show-tooltip').tooltip('dispose');
                 $('.show-tooltip').tooltip();
             });

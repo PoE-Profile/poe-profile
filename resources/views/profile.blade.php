@@ -65,7 +65,7 @@ $(function () {
 @endsection
 
 @section('content')
-<div class="text-xs-center" style="padding-bottom:4px;">
+<div class="text-xs-center" style="padding-bottom:5px;">
     <div style="margin: 0 auto;">
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <!-- exile_profile_big -->
@@ -125,7 +125,6 @@ $(function () {
                                 <i class="fa fa-external-link-square"  style="color: orange;"></i>
                             </a>
                         </h2>
-                    </a>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile')+'/'+original_char">@{{original_char}}</a></h2>
                     <h2 class="info2" v-if="!isBuild">
                         <span v-if="ladderChar && ladderChar.delve_solo>0">
@@ -351,5 +350,5 @@ $(function () {
         @close="isSnapshotsVisible = false"
         :original-char="original_char">
     </modal-snapshots>
-
+</div>
 @endsection

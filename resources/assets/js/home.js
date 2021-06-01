@@ -54,7 +54,8 @@ const app = new Vue({
             axios.get('/api/favorites/chars?accs=' + favStore.favAcc.join()).then((response) => {
                 this.favAccChars = response.data;
                 this.isLoading = false;
-                Vue.nextTick(function () {
+                this.$nextTick(() => {
+                // Vue.nextTick(function () {
                     $('.show-tooltip').tooltip();
                 });
             });
