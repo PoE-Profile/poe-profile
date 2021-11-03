@@ -128,8 +128,11 @@
 		<div>
 			@yield('content')
 		</div>
+		<div style="color:lightgray;padding:15px;text-align: center;">
+			This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
+		</div>
+		
 	</div>
-
 	@routes
 	
 	@yield('jsData')

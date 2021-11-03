@@ -3,6 +3,8 @@ namespace App;
 
 class PoeApi
 {
+    private static $userAgent = "OAuth poe-profile.info/2.6.0 (contact: https://github.com/PoE-Profile/poe-profile/) StrictMode";
+
     static public function getCharsData($acc, $realm="pc")
     {
         if(isset($_GET['realm'])){
@@ -17,11 +19,14 @@ class PoeApi
                     'POST',
                     'https://www.pathofexile.com/character-window/get-characters',
                     [
-                    'form_params' => [
-                        'accountName' => $acc,
-                        'realm' => $realm
+                        'headers' => [
+                            'User-Agent' => self::$userAgent,
+                        ],
+                        'form_params' => [
+                            'accountName' => $acc,
+                            'realm' => $realm
+                        ]
                     ]
-                ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
                 // dd('ClientException');
@@ -51,6 +56,9 @@ class PoeApi
                         'GET',
                         'https://www.pathofexile.com/character-window/get-passive-skills',
                         [
+                            'headers' => [
+                                'User-Agent' => self::$userAgent,
+                            ],
                             'query' => [
                                 'accountName' => $acc,
                                 'character' => $char,
@@ -81,12 +89,16 @@ class PoeApi
                 $response = $client->request(
                     'POST',
                     $page_url, [
-                    'form_params' => [
-                        'accountName' => $acc,
-                        'character' => $char,
-                        'realm' => $realm
+                        'headers' => [
+                            'User-Agent' => self::$userAgent,
+                        ],
+                        'form_params' => [
+                            'accountName' => $acc,
+                            'character' => $char,
+                            'realm' => $realm
+                        ]
                     ]
-                ]);
+                );
             }catch (\GuzzleHttp\Exception\ClientException $e) {
                 //$response = $e->getResponse();
                 return [];
