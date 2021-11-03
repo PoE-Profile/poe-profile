@@ -3,7 +3,7 @@ namespace App;
 
 class PoeApi
 {
-    private static $userAgent = "OAuth poe-profile.info/2.6.0 (contact: https://github.com/PoE-Profile/poe-profile/) StrictMode";
+    public static $userAgent = "OAuth poe-profile.info/2.6.0 (contact: https://github.com/PoE-Profile/poe-profile/) StrictMode";
 
     static public function getCharsData($acc, $realm="pc")
     {
@@ -125,7 +125,21 @@ class PoeApi
 
         $client = new \GuzzleHttp\Client(['http_errors' => false,'cookies' => true]);
         try {
-            $response = $client->get($page_url);
+            //$response = $client->get($page_url);
+            $response = $client->request(
+                'GET',
+                $page_url, 
+                [
+                    'headers' => [
+                        'User-Agent' => self::$userAgent,
+                    ],
+                    'form_params' => [
+                        'accountName' => $acc,
+                        'character' => $char,
+                        'realm' => $realm
+                    ]
+                ]
+            );
         }catch (\GuzzleHttp\Exception\ClientException $e) {
             //$response = $e->getResponse();
             return [];
