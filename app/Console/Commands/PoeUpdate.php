@@ -41,7 +41,15 @@ class PoeUpdate extends Command
     {
         if($this->option('leagues')){
             $client = new \GuzzleHttp\Client(['http_errors' => false]);
-            $response = $client->get('http://api.pathofexile.com/leagues?type=main');
+            $response = $client->request(
+                'GET',
+                'http://api.pathofexile.com/leagues?type=main', 
+                [
+                    'headers' => [
+                        'User-Agent' => \App\PoeApi::$userAgent,
+                    ]
+                ]
+            );
             $response_data = json_decode($response->getBody(), true);
             $current_leagues = $this->leaguesStringify($response_data);
             \Cache::forever('current_leagues', $current_leagues);
