@@ -3,6 +3,8 @@ namespace App;
 
 class PoeApi
 {
+    private static $userAgent = "OAuth poe-profile.info/2.6.0 (contact: https://github.com/PoE-Profile/poe-profile/) StrictMode";
+
     static public function getCharsData($acc, $realm="pc")
     {
         if(isset($_GET['realm'])){
@@ -11,17 +13,20 @@ class PoeApi
         $time = config('app.poe_cache_time') * 60;
         $cacheKey=$acc.'/'.$realm;
         return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
-            $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
                 $response = $client->request(
                     'POST',
                     'https://www.pathofexile.com/character-window/get-characters',
                     [
-                    'form_params' => [
-                        'accountName' => $acc,
-                        'realm' => $realm
+                        'headers' => [
+                            'User-Agent' => self::$userAgent,
+                        ],
+                        'form_params' => [
+                            'accountName' => $acc,
+                            'realm' => $realm
+                        ]
                     ]
-                ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
                 // dd('ClientException');
@@ -45,12 +50,15 @@ class PoeApi
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
         $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
-            $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
             $responseTree = $client->request(
                         'GET',
                         'https://www.pathofexile.com/character-window/get-passive-skills',
                         [
+                            'headers' => [
+                                'User-Agent' => self::$userAgent,
+                            ],
                             'query' => [
                                 'accountName' => $acc,
                                 'character' => $char,
@@ -71,7 +79,7 @@ class PoeApi
         $time = config('app.poe_cache_time') * 60;
 
         return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
-            $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client(['cookies' => true]);
             //make Requests to PathOfExile website to retrieve Character Items
             $page_url='https://www.pathofexile.com/character-window/get-items';
             if($proxy){
@@ -81,12 +89,16 @@ class PoeApi
                 $response = $client->request(
                     'POST',
                     $page_url, [
-                    'form_params' => [
-                        'accountName' => $acc,
-                        'character' => $char,
-                        'realm' => $realm
+                        'headers' => [
+                            'User-Agent' => self::$userAgent,
+                        ],
+                        'form_params' => [
+                            'accountName' => $acc,
+                            'character' => $char,
+                            'realm' => $realm
+                        ]
                     ]
-                ]);
+                );
             }catch (\GuzzleHttp\Exception\ClientException $e) {
                 //$response = $e->getResponse();
                 return [];
@@ -111,7 +123,7 @@ class PoeApi
             $page_url = config('app.poe_proxy').$page_url;
         }
 
-        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+        $client = new \GuzzleHttp\Client(['http_errors' => false,'cookies' => true]);
         try {
             $response = $client->get($page_url);
         }catch (\GuzzleHttp\Exception\ClientException $e) {
