@@ -128,7 +128,7 @@
 		<div>
 			@yield('content')
 		</div>
-		<div style="color:lightgray;padding:15px;text-align: center;">
+		<div style="color:lightgray;padding:15px;text-align: center;" v-cloak>
 			This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 		</div>
 		
