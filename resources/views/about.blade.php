@@ -64,35 +64,8 @@ https://www.pathofexile.com/character-window/get-passive-skills?character=[Charn
 		<br>
 
         <h2>Profile How does it work?</h2>
-        <span>We are using data available from public accounts from  pathofexile.com API:</span>
-        <ul>
-             <li>
-                 <code class="highlighter-rouge" style="font-size: 17px;background:lightblue;">
-                         'POST','https://www.pathofexile.com/character-window/get-characters'
-                 </code><br>
-                 <code class="highlighter-rouge" style="font-size: 17px;background:lightblue;">
-                         'form_params' => ['accountName' => [AccountName]]
-                     <!-- https://www.pathofexile.com/character-window/get-characters?&accountName=[AccountName] -->
-                 </code>
-                 <br> returns all characters from [AcccountName]
-             </li>
-             <li>
-                 <code class="highlighter-rouge" style="font-size: 17px;background:lightblue;">
-                     'POST','https://www.pathofexile.com/character-window/get-items'
-                 </code><br>
-                 <code class="highlighter-rouge" style="font-size: 17px;background:lightblue;">
-                     'form_params' => ['accountName' => [AccountName],'character' => [CharName]]
-                     <!-- https://www.pathofexile.com/character-window/get-items?character=[Charname]&accountName=[AccountName] -->
-                 </code>
-                 <br> returns [CharName] items
-             </li>
-             <li>
-                 <code class="highlighter-rouge" style="font-size: 15px;background:lightblue;">
-                     'GET',https://www.pathofexile.com/character-window/get-passive-skills?character=[CharName]&accountName=[AccountName]
-                 </code>
-                 <br> returns [CharName] passive skill points and jewels
-             </li>
-        </ul>
+        <span>We are using data available from public accounts from  <a class="about-link" href="https://www.pathofexile.com/developer/docs/index">pathofexile.com API</a></span>
+
 
         <br>
 

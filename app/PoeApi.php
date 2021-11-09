@@ -133,11 +133,6 @@ class PoeApi
                     'headers' => [
                         'User-Agent' => self::$userAgent,
                     ],
-                    'form_params' => [
-                        'accountName' => $acc,
-                        'character' => $char,
-                        'realm' => $realm
-                    ]
                 ]
             );
         }catch (\GuzzleHttp\Exception\ClientException $e) {
