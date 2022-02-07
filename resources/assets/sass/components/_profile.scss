@@ -1006,6 +1006,21 @@ a {
     height: 45px;
 }
 
+.inventoryPanel .Trinket {
+    position: absolute;
+    left: 0px;
+    top: 275px;
+    width: 45px;
+    height: 45px;
+}
+
+.Trinket .icon {
+    position: absolute;
+    left: 0px;
+    width: 45px;
+    top: 0px;
+    height: 45px;
+}
 .icon {
     display: table;
     position: absolute;
