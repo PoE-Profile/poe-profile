@@ -38,7 +38,8 @@ class PoeTree extends Command
      */
     public function handle()
     {
-        $response = Http::get('https://www.pathofexile.com/fullscreen-passive-skill-tree');
+        $userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:97.0) Gecko/20100101 Firefox/97.0";
+        $response = Http::withHeaders(['User-Agent' => $userAgent])->get('https://www.pathofexile.com/fullscreen-passive-skill-tree');
         $html = $response->body();
         $tempHtml = trim(preg_replace('/\s\s+/', '', $html));
         // dd($html);
