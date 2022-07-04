@@ -515,6 +515,9 @@ new Vue({
             }
             var userStr="?accountName="+this.account+"&characterName="+this.character.name+version;
             var tempStr = "/passive-skill-tree/hash"+userStr;
+            //console.log('test atlast:');
+            //var url_atlas = (new poeHelpers).getAtlasUrl(this.treeData.hashes_ex);
+            //console.log(url_atlas);
             var url_hash = (new poeHelpers).getTreeUrl(
                 this.character.classId,
                 this.character.ascendancyClass,

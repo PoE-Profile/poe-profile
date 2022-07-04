@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('cache:clear')->dailyAt('13:00');
         $schedule->command('poe:tree')->dailyAt('13:00');
+        $schedule->command('poe:atlas')->dailyAt('13:10');
         $schedule->command('poe:update --leagues')->dailyAt('13:10');
         $schedule->command('poe:twitch update-token')->monthly();
 
