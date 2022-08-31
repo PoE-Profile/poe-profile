@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('poe:update --leagues')->dailyAt('13:10');
         $schedule->command('poe:twitch update-token')->monthly();
 
-        // $schedule->command('poe:ladder --update')->dailyAt('13:00');
+        // $schedule->command('poe:ladder --update')->dailyAt('13:00');//needs laravel/horizon 
 
     }
 
