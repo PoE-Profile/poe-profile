@@ -66,6 +66,11 @@ Route::group(['middleware' => 'web'], function () {
             ->name('profile.tree');
     Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
             ->name('profile.tree.passives');
+
+    // routes for atlas-skill-tree
+    Route::get('/atlas-skill-tree/{any}','SkillTreeController@showAtlasTree')
+            ->name('profile.atlas');
+
     Route::get('/skill-img/{name}', function ($name) {
         $prefaced = ["Anomalous ", "Divergent ", "Phantasmal "];
         $name = str_replace($prefaced, '', $name);

@@ -72,9 +72,16 @@ class PoeTree extends Command
             $this->info("add new nodes file for v.".$version);
         }
 
-        $dom = new \domDocument; 
+        $dom = new \domDocument;
+        
+        // set error level
+        $internalErrors = libxml_use_internal_errors(true);
+        
         $dom->loadHTML($html); 
         
+        // Restore error level
+        libxml_use_internal_errors($internalErrors);
+
         $xpath = new \DOMXPath($dom);
         // $results = $xpath->query("//*[@class='topBar first last']");
         //remove node passiveSkillTreeControlsContainer

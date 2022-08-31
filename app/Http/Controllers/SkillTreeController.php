@@ -39,4 +39,12 @@ class SkillTreeController extends Controller
         $responseThree = PoeApi::getTreeData($acc, $char, $realm);
         return $responseThree;
     }
+
+
+    public function showAtlasTree(Request $request){
+        if(!\Storage::exists('atlas-skill-tree.html')){
+            \Artisan::call('poe:atlas');
+        }
+        return \Storage::get('atlas-skill-tree.html');
+    }
 }

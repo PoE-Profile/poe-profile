@@ -42,6 +42,23 @@ export var poeHelpers  = function() {
         	l = l.replace(/\+/g, "-").replace(/\//g, "_"), (o ? "/fullscreen-passive-skill-tree/" : "/passive-skill-tree/") + l
         	return l;
         },
+        getAtlasUrl : function (nodes){
+        	var u = new ByteEncoder();
+        	// var o=!0;
+        	// //r classId
+        	var r = 0,//n.activeCharacter.get("classId"),
+        	// //i ascendancyClass
+        	i = 0;//n.activeCharacter.get("ascendancyClass"),
+        	// //n PoE/PassiveSkillTree/Version
+        	var n=4;
+        	// //tree nod ids
+        	var s=nodes;
+        	u.appendInt(n), u.appendInt8(r), u.appendInt8(i);
+        	for (var a = 0, f = s.length; a < f; ++a) u.appendInt16(s[a]);
+        	var l=$.base64.encode( u.getDataString() );
+        	l = l.replace(/\+/g, "-").replace(/\//g, "_"), "/atlas-skill-tree/" + l
+        	return l;
+        },
 
     };
 };

@@ -24,16 +24,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('poe:twitch update')->everyTenMinutes();
+        $schedule->command('poe:twitch update')->hourly();
 
         // $schedule->command('poe:ladder')->hourly();
 
         $schedule->command('cache:clear')->dailyAt('13:00');
         $schedule->command('poe:tree')->dailyAt('13:00');
+        $schedule->command('poe:atlas')->dailyAt('13:10');
         $schedule->command('poe:update --leagues')->dailyAt('13:10');
         $schedule->command('poe:twitch update-token')->monthly();
 
-        // $schedule->command('poe:ladder --update')->dailyAt('13:00');
+        // $schedule->command('poe:ladder --update')->dailyAt('13:00');//needs laravel/horizon 
 
     }
 
