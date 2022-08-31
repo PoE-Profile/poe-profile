@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('poe:twitch update')->everyTenMinutes();
+        $schedule->command('poe:twitch update')->hourly();
 
         // $schedule->command('poe:ladder')->hourly();
 

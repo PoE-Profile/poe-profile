@@ -43,7 +43,10 @@ class Account extends Model
             return property_exists($char, 'lastActive');
         });
         if(!$lastChar){
-            $lastChar = collect($chars)->first();
+            $currentLeague = ucfirst(explode(', ', \Cache::get('current_leagues'))[0]);
+            $lastChar = collect($chars)->filter(function ($char) use($currentLeague) {
+                return strpos($char->league, $currentLeague) !== false ;
+            })->sortByDesc('level')->first();
         }
         $this->last_character = $lastChar->name;
         $this->touch();
