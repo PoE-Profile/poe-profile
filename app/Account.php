@@ -48,6 +48,9 @@ class Account extends Model
                 return strpos($char->league, $currentLeague) !== false ;
             })->sortByDesc('level')->first();
         }
+        if(!$lastChar){
+            return;
+        }
         $this->last_character = $lastChar->name;
         $this->touch();
         $this->save();
