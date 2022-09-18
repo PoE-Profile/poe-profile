@@ -75,7 +75,7 @@ class PoeAtlas extends Command
 
 
         // \Storage::put('atlas-skill-tree.html', (string) $html);
-        \Storage::put('passive-skill-tree.html', (string) $dom->saveHTML());
+        \Storage::put('atlas-skill-tree.html', (string) $dom->saveHTML());
         $this->info("update storage cache for atlas-skill-tree.html ");
 
         return 0;
