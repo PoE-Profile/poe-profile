@@ -43,7 +43,7 @@ class PoeUpdate extends Command
             $client = new \GuzzleHttp\Client(['http_errors' => false]);
             $response = $client->request(
                 'GET',
-                'http://api.pathofexile.com/leagues?type=main', 
+                'http://api.pathofexile.com/leagues?type=main',
                 [
                     'headers' => [
                         'User-Agent' => \App\PoeApi::$userAgent,
@@ -82,7 +82,15 @@ class PoeUpdate extends Command
 
     public function addLeagues() {
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
-        $response = $client->get('http://api.pathofexile.com/leagues?type=main');
+        $response = $client->request(
+            'GET',
+            'http://api.pathofexile.com/leagues?type=main',
+            [
+                'headers' => [
+                    'User-Agent' => \App\PoeApi::$userAgent,
+                ]
+            ]
+        );
         $main_leagues = json_decode($response->getBody(), true);
         $main_leagues_string = '';
         foreach ($main_leagues as $league) {
