@@ -70,7 +70,8 @@ class PoeUpdate extends Command
 
     public function leaguesStringify($leagues) {
         $leagues_string = '';
-        $standard_hardcore = ['standard', 'hardcore', 'ssf standard', 'ssf hardcore'];
+        $standard_hardcore = ['standard', 'hardcore', 'solo self-found', 'hardcore ssf', 
+                            'ruthless', 'hardcore ruthless', 'ssf ruthless', 'hardcore ssf ruthless'];
         foreach ($leagues as $league) {
             if (in_array(strtolower($league['id']), $standard_hardcore)) {
                 continue;

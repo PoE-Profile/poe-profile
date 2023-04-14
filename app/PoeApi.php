@@ -10,7 +10,8 @@ class PoeApi
         if(isset($_GET['realm'])){
             $realm = $_GET['realm'];
         }
-        $time = config('app.poe_cache_time') * 60;
+        // $time = config('app.poe_cache_time') * 60;
+        $time = 1440 * 60; //problem with limit make cach
         $cacheKey=$acc.'/'.$realm;
         return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
             $client = new \GuzzleHttp\Client(['cookies' => true]);
