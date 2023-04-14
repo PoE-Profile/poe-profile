@@ -51,7 +51,8 @@ class ProfileController extends Controller
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
-            return redirect()->back();
+            //return redirect()->back();
+            $chars=[];
         }
         $chars = collect($chars);
         $dbAcc = $this->getDbAcc($acc);
