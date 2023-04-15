@@ -33,8 +33,7 @@ class ProfileController extends Controller
         $dbAcc = $this->getDbAcc($acc);
 
         $char = $dbAcc->last_character;
-        $build = Snapshot::getAccChar($acc,$char);
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'build'));
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
     public function getProfileChar(Request $request, $acc, $char)

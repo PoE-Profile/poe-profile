@@ -533,7 +533,7 @@ new Vue({
                 ifrm.setAttribute("scrolling", "yes");
                 ifrm.style.width = "100%";
                 ifrm.style.height = "850px";
-                document.getElementById("skill-tree-placeholder").appendChild(ifrm);             
+                document.getElementById("skill-tree-placeholder").appendChild(ifrm);
             }
         },
 
