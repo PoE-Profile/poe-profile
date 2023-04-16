@@ -14,14 +14,8 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
 
-    public function __construct()
-    {
-        // $this->middleware('auth');
-    }
-
     public function postProfile(Request $request)
     {
-        // dd($request->input('realm'));
         $acc = $request->input('account');
         return redirect()->route('profile.acc',
             ['acc' => $acc,'realm'=>$request->input('realm')]
@@ -32,18 +26,13 @@ class ProfileController extends Controller
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
-            return redirect()->back();
+            $chars = [];
         }
         $chars = collect($chars);
 
-        
         $dbAcc = $this->getDbAcc($acc);
-        //select chars check if last_character exist in $chars cache and set as $char
-        $char = $chars[0]->name;
-        if($chars->contains('name', $dbAcc->last_character)){
-            $char = $dbAcc->last_character;
-        }
 
+        $char = $dbAcc->last_character;
         return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
     }
 
@@ -51,7 +40,6 @@ class ProfileController extends Controller
     {
         $chars = PoeApi::getCharsData($acc);
         if(!$chars){
-            //return redirect()->back();
             $chars=[];
         }
         $chars = collect($chars);

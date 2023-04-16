@@ -19,7 +19,13 @@ class ApiController extends Controller
 
         $b = explode('::', $acc);
         if($b[0] == 'build'){
-            return Snapshot::where('hash','=',$b[1])->get()->item_data['items'];
+            return Snapshot::where('hash','=',$b[1])->first()->item_data['items'];
+        }
+
+        // get snapshot items
+        $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('created_at', 'DESC')->first();
+        if($snapshot) {
+            return $snapshot->item_data['items'];
         }
 
         $dbAcc = \App\Account::where('name', $acc)->first();
@@ -45,6 +51,11 @@ class ApiController extends Controller
                 return [];
             }
             return $build->getStats();
+        }
+        // get snapshot stats
+        $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('updated_at', 'DESC')->first();
+        if($snapshot) {
+            return $snapshot->getStats();
         }
 
         //get acc from db to get real name

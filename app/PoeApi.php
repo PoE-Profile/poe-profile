@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Illuminate\Support\Facades\Log;
+
 class PoeApi
 {
     public static $userAgent = "OAuth poe-profile.info/2.6.0 (contact: https://github.com/PoE-Profile/poe-profile/) StrictMode";
@@ -51,6 +53,7 @@ class PoeApi
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
         $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
+            Log::debug('getting tree from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
             $responseTree = $client->request(
@@ -80,6 +83,7 @@ class PoeApi
         $time = config('app.poe_cache_time') * 60;
 
         return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
+            Log::debug('getting items from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             //make Requests to PathOfExile website to retrieve Character Items
             $page_url='https://www.pathofexile.com/character-window/get-items';
@@ -129,7 +133,7 @@ class PoeApi
             //$response = $client->get($page_url);
             $response = $client->request(
                 'GET',
-                $page_url, 
+                $page_url,
                 [
                     'headers' => [
                         'User-Agent' => self::$userAgent,
