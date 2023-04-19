@@ -30,30 +30,38 @@ class ProfileController extends Controller
         }
         $chars = collect($chars);
 
-        $dbAcc = $this->getDbAcc($acc);
-
+        $dbAcc = $this->getDbAcc($acc);        
         $char = $dbAcc->last_character;
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc'));
+        $snapshot = Snapshot::getAccChar($acc,$char);
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc','snapshot'));
     }
 
     public function getProfileChar(Request $request, $acc, $char)
     {
         $chars = PoeApi::getCharsData($acc);
+        $snapshot = Snapshot::getAccChar($acc,$char);
+
         if(!$chars){
             $chars=[];
+            if($snapshot){
+                $chars[]=json_decode(json_encode($snapshot->item_data['character']));
+            }
         }
         $chars = collect($chars);
         $dbAcc = $this->getDbAcc($acc);
-        if(!$chars->contains('name', $char)){
+        
+        if(!$chars->contains('name', $char)&&!$snapshot){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
-            $char = $chars[0]->name;
+            return redirect()->route('profile.acc',
+                ['acc' => $acc]
+            );
         }
-        $build = Snapshot::getAccChar($acc,$char);
+        
         if($request->has('race')){
             return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
         }
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'build'));
+        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'snapshot'));
     }
 
     private function getDbAcc($acc){

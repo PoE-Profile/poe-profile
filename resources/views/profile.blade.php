@@ -131,6 +131,12 @@ $(function () {
                             Delve Solo depth: @{{ladderChar.delve_solo}}
                         </span>
                     </h2>
+                    @if($snapshot)
+                    <h2 class="info2">
+                        Last Update: {{$snapshot->updated_at->diffForHumans()}}
+                    </h2>
+                    @endif
+                    
                 </div>
                 <div class="inventory ">
                         <div class="inventoryPanel">
