@@ -12,9 +12,15 @@ class PoeApi
         if(isset($_GET['realm'])){
             $realm = $_GET['realm'];
         }
+        $cacheKey=$acc.'/'.$realm;
+
+        //if cache false clear and try again
+        if(\Cache::get($cacheKey)===false){
+            \Cache::forget($cacheKey);
+        }
+        
         // $time = config('app.poe_cache_time') * 60;
         $time = 1440 * 60; //problem with limit make cach
-        $cacheKey=$acc.'/'.$realm;
         return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
@@ -32,18 +38,15 @@ class PoeApi
                     ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
-                // dd('ClientException');
                 // flash('pathofexile.com is currently down for maintenance. Please try again later. ', 'warning');
+                if($exception->getResponse()->getStatusCode()==429){
+                    flash('Problem with pathofexile.com api limit. ', 'warning');
+                    return false;
+                }
                 flash('Аccount is private or does not exist. ', 'warning');
                 return false;
             }
             $result = json_decode((string)$response->getBody());
-            //if result false no data for acc stop here
-            if ($result==false) {
-                flash('Аccount is private or does not exist. ', 'warning');
-                return false;
-            }
-
             return $result;
         });
     }
@@ -71,7 +74,11 @@ class PoeApi
                         ]
                     );
             }catch (\GuzzleHttp\Exception\ClientException $exception) {
-               return [];
+                if($exception->getResponse()->getStatusCode()==429){
+                    flash('Problem with pathofexile.com api limit. ', 'warning');
+                    return false;
+                }
+                return [];
            }
             return json_decode((string)$responseTree->getBody(), true);
         });
@@ -106,6 +113,10 @@ class PoeApi
                 );
             }catch (\GuzzleHttp\Exception\ClientException $e) {
                 //$response = $e->getResponse();
+                if($exception->getResponse()->getStatusCode()==429){
+                    flash('Problem with pathofexile.com api limit. ', 'warning');
+                    return false;
+                }
                 return [];
             }
 
