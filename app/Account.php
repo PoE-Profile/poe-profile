@@ -15,6 +15,8 @@ class Account extends Model
 
     protected $casts = [
         'last_character_info' => 'array',
+        'characters' => 'array',
+        'updated_at'=>'datetime:Y-m-d',
     ];
 
     public function streamer()
@@ -27,35 +29,36 @@ class Account extends Model
         return $this->hasMany('App\LadderCharacter');
     }
 
-    public function updateViews(){
-        if(\Schema::hasColumn('accounts', 'views')){
-            $this->views=$this->views+1;
-            $this->timestamps = false;
-            $this->save();
-        }
-    }
-
     public function updateLastChar(){
-        // stop if acc last_character updated in last 60 min
-        $chars = PoeApi::getCharsData($this->name);
-        if(!$chars) return;
-        $lastChar = collect($chars)->first(function ($char) {
-            return property_exists($char, 'lastActive');
-        });
-        if(!$lastChar){
+        if($this->updated_at->diffInMinutes(now())>12){
+            $chars = PoeApi::getCharsData($this->name);
+            if(!$chars) return;
+            $this->characters = $chars;
             $currentLeague = ucfirst(explode(', ', \Cache::get('current_leagues'))[0]);
             $lastChar = collect($chars)->filter(function ($char) use($currentLeague) {
                 return strpos($char->league, $currentLeague) !== false ;
             })->sortByDesc('level')->first();
+            if($lastChar){
+                $this->last_character = $lastChar->name;
+            }
+            $this->touch();
+            $this->save();
         }
-        if(!$lastChar){
-            return;
-        }
-        $this->last_character = $lastChar->name;
-        $this->touch();
-        $this->save();
     }
 
+    public function updateViews(){
+        $currentLeagues = explode(', ', \Cache::get('current_leagues'));
+        $last_char_league=$this->last_character_info?$this->last_character_info['league']:'';
+        if(!in_array(strtolower($last_char_league),$currentLeagues) //if last char legue is not in curent
+            || !$this->characters || \Request::has('updateCharacters'))
+        {
+            $this->characters = PoeApi::getCharsData($this->name);
+            $this->updateLastChar();
+        }
+        $this->views=$this->views+1;
+        $this->timestamps = false;
+        $this->save();
+    }
 
     public function updateLastCharInfo($itemsData=null){
         if($itemsData==null){

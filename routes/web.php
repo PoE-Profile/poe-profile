@@ -72,6 +72,7 @@ Route::group(['middleware' => 'web'], function () {
             ->name('profile.atlas');
 
     Route::get('/skill-img/{name}', function ($name) {
+        return null;
         $prefaced = ["Anomalous ", "Divergent ", "Phantasmal "];
         $name = str_replace($prefaced, '', $name);
         $name=str_replace(" ","_",$name);

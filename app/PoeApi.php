@@ -24,9 +24,9 @@ class PoeApi
             \Cache::forget($cacheKey);
         }
         
-        // $time = config('app.poe_cache_time') * 60;
-        $time = 1440 * 60; //problem with limit make cach
+        $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
+            Log::debug('getting characters from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
                 $response = $client->request(
@@ -43,11 +43,10 @@ class PoeApi
                     ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
-                // flash('pathofexile.com is currently down for maintenance. Please try again later. ', 'warning');
                 if(self::checkForLimit('characters',$exception)){
                     return false;
                 }
-                flash('Аccount is private or does not exist. ', 'warning');
+                flash('Аccount is private or does not exist. Or pathofexile.com is down for maintenance.', 'warning');
                 return false;
             }
             $result = json_decode((string)$response->getBody());
@@ -83,7 +82,7 @@ class PoeApi
                         ]
                     );
             }catch (\GuzzleHttp\Exception\ClientException $exception) {
-                if(self::checkForLimit('tree',$e)){
+                if(self::checkForLimit('tree',$exception)){
                     return false;
                 }
                 return [];

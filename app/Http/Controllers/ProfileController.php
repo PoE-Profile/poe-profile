@@ -24,55 +24,28 @@ class ProfileController extends Controller
 
     public function getProfile(Request $request, $acc)
     {
-        $chars = PoeApi::getCharsData($acc);
-        if(!$chars){
-            $chars = [];
-        }
-        $chars = collect($chars);
-
-        $dbAcc = $this->getDbAcc($acc);        
-        $char = $dbAcc->last_character;
+        $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
+        $account->updateViews();
+        $char = $account->last_character;
         $snapshot = Snapshot::getAccChar($acc,$char);
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc','snapshot'));
+        return view('profile', compact('account','char','snapshot'));
     }
 
     public function getProfileChar(Request $request, $acc, $char)
     {
-        $chars = PoeApi::getCharsData($acc);
         $snapshot = Snapshot::getAccChar($acc,$char);
-
-        if(!$chars){
-            $chars=[];
-            if($snapshot){
-                $chars[]=json_decode(json_encode($snapshot->item_data['character']));
-            }
-        }
-        $chars = collect($chars);
-        $dbAcc = $this->getDbAcc($acc);
+        $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
+        $account->updateViews();
         
-        if(!$chars->contains('name', $char)&&!$snapshot){
+        if(!collect($account->characters)->contains('name', $char) && !$snapshot){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
             return redirect()->route('profile.acc',
                 ['acc' => $acc]
             );
         }
-        
-        if($request->has('race')){
-            return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
-        }
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'snapshot'));
-    }
 
-    private function getDbAcc($acc){
-        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        if(!$dbAcc){
-            $dbAcc = Account::create(['name' => $acc]);
-            $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        }
-        $dbAcc->updateLastChar();
-        $dbAcc->updateViews();
-        return $dbAcc;
+        return view('profile', compact('account','char','snapshot'));
     }
 
     public function getProfileRanks($acc)

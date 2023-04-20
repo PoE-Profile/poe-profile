@@ -10,10 +10,12 @@
             $account_char = 'Snapshot of: ' . $build->original_char;
         }
     }else{
-        $currentChar = $chars->filter(function ($value, $key) use(&$char) {
-            return $value->name == $char;
-        })->first();
-        $account_char = $acc . ' / ' . $char;
+        if($account->characters){
+            $currentChar = collect($account->characters)->filter(function ($value, $key) use(&$char) {
+                return $value['name'] == $char;
+            })->first();
+        }
+        $account_char = $account->name . ' / ' . $char;
     }
     $classImgPath = '/imgs/classes/' . ($currentChar->class ?? "") . '.png';
     
@@ -37,10 +39,10 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        account: '{{ $acc }}',
+        account: '{{ $account->name }}',
         char: '{{ $char ?? "" }}',
-        chars: {!! $chars ?? "null" !!},
-        dbAcc: {!! $dbAcc ?? 'null' !!},
+        chars: {!! collect($account->characters) ?? "null" !!},
+        dbAcc: {!! $account ?? 'null' !!},
         loadBuild: {{ $loadBuild ?? 'false' }},
         build: {!! $build ?? "null" !!},
         realm: '{!! $_GET["realm"] ?? "pc" !!}',
@@ -86,7 +88,15 @@ $(function () {
                 :selected-tab="isBuild ? 'builds' : 'profile'"
                 :twitch="isBuild ? null : dbAcc.streamer"
                 :character="character"></profile-nav>
-
+    <div class="characters" style="padding:5px;color:white;">
+        <div class="pull-right">
+            list characters updated  {{$account->updated_at->diffForHumans()}}
+            <a class="btn btn-sm poe-btn show-tooltip  mr-1" href="?updateCharacters=true"
+                    data-toggle="tooltip" data-placement="top" title="You can update once every 2 hours">
+                <i class="fa fa-refresh" aria-hidden="true"></i> Update
+            </a>
+        </div>
+    </div>
     <list-characters :characters="accountCharacters" :is-build="isBuild"
         :account="account" :current-character="character" ></list-characters>
 

@@ -33,7 +33,6 @@ class ApiController extends Controller
         if(!$dbAcc || !array_key_exists('items', $itemsData)){
             return;
         }
-        $acc=$dbAcc->name;
         $dbAcc->updateLastCharInfo($itemsData);
         return $itemsData['items'];
     }
