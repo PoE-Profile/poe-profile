@@ -61,13 +61,19 @@ class PoeApi
             return false;
         }
 
+
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
+        //if cache false clear and try again
+        if(\Cache::get($key)===false){
+            \Cache::forget($key);
+        }
+        
         $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
             Log::debug('getting tree from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
-            $responseTree = $client->request(
+                $responseTree = $client->request(
                         'GET',
                         'https://www.pathofexile.com/character-window/get-passive-skills',
                         [
@@ -99,6 +105,10 @@ class PoeApi
 
         //get cahce if no cache get from poe api
         $key='items/'.$acc.'/'.$char.'/'.$realm;
+        //if cache false clear and try again
+        if(\Cache::get($key)===false){
+            \Cache::forget($key);
+        }
         $time = config('app.poe_cache_time') * 60;
 
         return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
