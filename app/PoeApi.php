@@ -47,7 +47,7 @@ class PoeApi
                     return false;
                 }
                 flash('Аccount is private or does not exist. Or pathofexile.com is down for maintenance.', 'warning');
-                return false;
+                return [];
             }
             $result = json_decode((string)$response->getBody());
             return $result;

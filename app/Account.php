@@ -43,23 +43,34 @@ class Account extends Model
     }
 
     public function updateLastChar(){
-        if($this->updated_at->diffInMinutes(now())>120){
+        if($this->updated_at->diffInMinutes(now())>12){
             $chars = PoeApi::getCharsData($this->name);
-            if(!$chars){
-                $this->last_character="";
-                $this->last_character_info=null;
-                $this->touch();
-                $this->save();
+            //problem with limits stop
+            if($chars==false){ 
                 return;
             }
-            $this->characters = $chars;
-            
-            $lastChar = collect($chars)->filter(function ($char) {
-                $currentLeague = strtolower(explode(', ', \Cache::get('current_leagues'))[0]);
-                return strpos(strtolower($char->league), $currentLeague) !== false ;
-            })->sortByDesc('level')->first();
-            if($lastChar){
-                $this->last_character = $lastChar->name;
+
+            //if 0 chars acc is private remove info
+            if(count($chars)==0){ 
+                $this->last_character="";
+                $this->last_character_info=null;
+            }else{ 
+                // else set last_character
+                $this->characters = $chars;
+                $lastChar = collect($chars)->filter(function ($char) {
+                    $currentLeague = strtolower(explode(', ', \Cache::get('current_leagues'))[0]);
+                    return strpos(strtolower($char->league), $currentLeague) !== false ;
+                })->sortByDesc('level')->first();
+                if($lastChar){
+                    $this->last_character = $lastChar->name;
+                    $this->last_character_info=[
+                        'league'=>$lastChar->league,
+                        'name'=>$lastChar->name,
+                        'class'=>$lastChar->class,
+                        'level'=>$lastChar->level,
+                        'items_most_sockets'=>$this->last_character_info['items_most_sockets'],
+                    ];
+                }
             }
             $this->touch();
             $this->save();

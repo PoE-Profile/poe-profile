@@ -94,7 +94,7 @@ class PoeTwitch extends Command
         $token = $this->get_token();
         $response = $client->request(
             'GET',
-            'https://api.twitch.tv/helix/streams?game_id=29307&first=30',
+            'https://api.twitch.tv/helix/streams?game_id=29307&first=20',
             [
                 'headers' => [
                     'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',
@@ -125,10 +125,11 @@ class PoeTwitch extends Command
                 $dbStreamer->save();
 
                 $dbStreamer->account->updateLastChar();
-                $dbStreamer->account->updateLastCharInfo();
+                
                 if ($dbStreamer->isForSnapshot()) {
                     $acc = $dbStreamer->account->name;
                     $char = $dbStreamer->account->last_character;
+                    $dbStreamer->account->updateLastCharInfo();
                     Snapshot::create($acc, $char);
                 }
             }
