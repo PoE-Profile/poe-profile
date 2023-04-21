@@ -27,7 +27,13 @@ class ProfileController extends Controller
         $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
         $char = $account->last_character;
+        if($account->characters && !collect($account->characters)->contains('name', $char)){
+            $char=$account->characters[0]['name'];
+        }
         $snapshot = Snapshot::getAccChar($acc,$char);
+        if(!$snapshot && !$account->characters){
+            return redirect()->back();
+        }
         return view('profile', compact('account','char','snapshot'));
     }
 
@@ -37,7 +43,7 @@ class ProfileController extends Controller
         $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
         
-        if(!collect($account->characters)->contains('name', $char) && !$snapshot){
+        if($account->characters && !collect($account->characters)->contains('name', $char) && !$snapshot){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
             return redirect()->route('profile.acc',

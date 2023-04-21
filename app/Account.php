@@ -30,9 +30,10 @@ class Account extends Model
     }
 
     public function updateLastChar(){
-        if($this->updated_at->diffInMinutes(now())>12){
+        if($this->updated_at->diffInMinutes(now())>120){
             $chars = PoeApi::getCharsData($this->name);
-            if(!$chars) return;
+            if(!$chars)
+                return;
             $this->characters = $chars;
             $currentLeague = ucfirst(explode(', ', \Cache::get('current_leagues'))[0]);
             $lastChar = collect($chars)->filter(function ($char) use($currentLeague) {
@@ -52,7 +53,6 @@ class Account extends Model
         if(!in_array(strtolower($last_char_league),$currentLeagues) //if last char legue is not in curent
             || !$this->characters || \Request::has('updateCharacters'))
         {
-            $this->characters = PoeApi::getCharsData($this->name);
             $this->updateLastChar();
         }
         $this->views=$this->views+1;

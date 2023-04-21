@@ -34,7 +34,7 @@ class ApiController extends Controller
             return;
         }
         $dbAcc->updateLastCharInfo($itemsData);
-        return $itemsData['items'];
+        return $itemsData;
     }
 
     public function getStats(Request $request)

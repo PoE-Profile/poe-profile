@@ -264,6 +264,7 @@ new Vue({
             this.setupBuild();
             return;
         }
+        this.character={name:window.PHP.char}
         this.setAccountData();
         this.getCharacterItems();
     },
@@ -301,7 +302,6 @@ new Vue({
         setAccountData: function () {
             this.account = window.PHP.account;
 
-
             if (window.PHP.chars === null) {
             } else {
                 this.accountCharacters = window.PHP.chars;
@@ -311,14 +311,16 @@ new Vue({
                 this.character = this.accountCharacters[0];
                 return;
             }
-            this.character = this.accountCharacters.filter(function(chars){
-                return chars.name === window.PHP.char;
-            })[0];
+            if(this.accountCharacters.length>0){
+                this.character = this.accountCharacters.filter(function(char){
+                    return char.name === window.PHP.char;
+                })[0];
+            }
             this.original_char=this.account +"/"+this.character.name;
         },
 
         checkBuilds: function(){
-            return this.accountCharacters.length > 0 || this.favStore.isBuildPublic(this.account);
+            return this.dbAcc || this.favStore.isBuildPublic(this.account);
         },
 
         calcReserved: function(reserved){
@@ -451,6 +453,9 @@ new Vue({
         },
 
         getCharacterClass: function(){
+            if(!this.character.classId){
+                return ''; 
+            }
             var self = this;
             return this.classIds.filter(function(x) {
                 return x.id === self.character.classId;
@@ -545,7 +550,8 @@ new Vue({
             formData.append('character', this.character.name);
             formData.append('realm', this.realm);
             axios.post('/api/char/items', formData).then((response) => {
-                this.items = response.data;
+                this.items = response.data.items;
+                this.character = response.data.character;
                 this.loadingItems=false;
             });
         },
