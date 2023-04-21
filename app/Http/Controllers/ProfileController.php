@@ -80,10 +80,7 @@ class ProfileController extends Controller
 
     public function indexBuild()
     {
-        $acc = '';
-        $build = null;
-        $loadBuild = "true";
-        return view('profile', compact('acc', 'build', 'loadBuild'));
+        return view('builds');
     }
 
     public function showBuild($hash)

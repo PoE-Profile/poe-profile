@@ -102,7 +102,7 @@ $(function () {
     <list-characters :characters="accountCharacters" :is-build="isBuild"
         :account="account" :current-character="character" ></list-characters>
 
-    <div class="wrap"  v-if="checkBuilds()">
+    <div class="wrap">
         <div :class="['row', getCharacterClass()+'-panel']">
             <div class="row">
                 <div class=" all-stats">
@@ -346,13 +346,6 @@ $(function () {
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
-        <br><br>
-        <h3 >You havent saved any builds yet!</h3>
-        <span> <a href="{{route('tutorial.build')}}">How to save a build</a></span>
-        <br><br><br><br><br><br>
     </div>
 
     <modal-snapshots v-show="isSnapshotsVisible" :build="build"

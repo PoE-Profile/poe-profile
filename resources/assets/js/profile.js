@@ -285,7 +285,6 @@ new Vue({
         },
 
         checkBuilds: function(){
-            console.log(this.dbAcc);
             return window.PHP.page=='profile' || this.favStore.isBuildPublic(this.account);
         },
 

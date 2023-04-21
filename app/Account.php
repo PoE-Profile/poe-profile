@@ -68,7 +68,7 @@ class Account extends Model
                         'name'=>$lastChar->name,
                         'class'=>$lastChar->class,
                         'level'=>$lastChar->level,
-                        'items_most_sockets'=>$this->last_character_info['items_most_sockets'],
+                        'items_most_sockets'=>$this->last_character_info['items_most_sockets']??null,
                     ];
                 }
             }

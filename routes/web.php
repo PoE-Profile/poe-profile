@@ -44,10 +44,6 @@ Route::group(['middleware' => 'web'], function () {
         return view('profile_tutorial');
     })->name('tutorial.profile');
 
-    Route::get('/tutorial/build', function () {
-        return view('build_tutorial');
-    })->name('tutorial.build');
-
     // saved Builds/Snapshots
     Route::get('/builds', 'ProfileController@indexBuild')->name('builds');
     Route::get('/build/{hash}', 'ProfileController@showBuild')->name('build.show');
