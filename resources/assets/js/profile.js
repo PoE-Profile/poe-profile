@@ -97,41 +97,6 @@ new Vue({
     },
 
     computed: {
-        ladderChar: function(){
-            var char=null;
-            this.dbAcc.ladder_chars.forEach(c => {
-                if (c.name === this.character.name) {
-                    char = c;
-                }
-            });
-            return char;
-        },
-        characterRank: function(){
-            var rank = ''
-            this.dbAcc.ladder_chars.forEach(c => {
-                if (c.name === this.character.name) {
-                    rank = '(Rank: ' + c.rank + ')';
-                    if (c.league !== this.character.league.toLowerCase()) {
-                        rank = '(Rank: ' + c.rank + ' in ' + _.upperFirst(c.league) + ')';
-                    }
-                }
-            });
-            return rank;
-        },
-
-        delveDepth: function () {
-            var depth = ''
-            this.dbAcc.ladder_chars.forEach(c => {
-                if (c.name === this.character.name) {
-                    depth = '(Delve depth Solo: ' + c.delve_solo + ')';
-                    if (c.league !== this.character.league.toLowerCase()) {
-                        depth = '(Delve depth Solo: ' + c.delve_solo + ' in ' + _.upperFirst(c.league) + ')';
-                    }
-                }
-            });
-            return depth;
-        },
-
         stickedStatItems: function(){
             var tempArr = {};
             for (var key in this.hoveredStat.items) {
@@ -301,10 +266,10 @@ new Vue({
 
         setAccountData: function () {
             this.account = window.PHP.account;
-
-            if (window.PHP.chars === null) {
-            } else {
-                this.accountCharacters = window.PHP.chars;
+            this.accountCharacters=[];
+            if (this.dbAcc&&window.PHP.page=='profile') {
+                if(this.dbAcc.characters)
+                    this.accountCharacters = this.dbAcc.characters;
             }
 
             if (window.PHP.char === '') {
@@ -320,7 +285,8 @@ new Vue({
         },
 
         checkBuilds: function(){
-            return this.dbAcc || this.favStore.isBuildPublic(this.account);
+            console.log(this.dbAcc);
+            return window.PHP.page=='profile' || this.favStore.isBuildPublic(this.account);
         },
 
         calcReserved: function(reserved){

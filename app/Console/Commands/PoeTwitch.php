@@ -94,7 +94,7 @@ class PoeTwitch extends Command
         $token = $this->get_token();
         $response = $client->request(
             'GET',
-            'https://api.twitch.tv/helix/streams?game_id=29307&first=50',
+            'https://api.twitch.tv/helix/streams?game_id=29307&first=30',
             [
                 'headers' => [
                     'Client-ID' => 'gi3es6sr9cmscw4aww6lbt309dyj8e',

@@ -8,6 +8,7 @@
         poe_leagues: "{{ env('POE_LEAGUES') }}",
         dbAcc: {!! $dbAcc !!},
         build: {!! $build ?? "null" !!},
+        page: 'snapshot',
     }
 </script>
 @stop

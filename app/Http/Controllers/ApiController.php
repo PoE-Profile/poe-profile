@@ -25,7 +25,7 @@ class ApiController extends Controller
         // get snapshot items
         $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('created_at', 'DESC')->first();
         if($snapshot) {
-            return $snapshot->item_data['items'];
+            return $snapshot->item_data;
         }
 
         $dbAcc = \App\Account::where('name', $acc)->first();

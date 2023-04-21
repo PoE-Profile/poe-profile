@@ -39,13 +39,13 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        account: '{{ $account->name }}',
+        account: '{{ $account->name ?? $acc }}',
         char: '{{ $char ?? "" }}',
-        chars: {!! collect($account->characters) ?? "null" !!},
         dbAcc: {!! $account ?? 'null' !!},
         loadBuild: {{ $loadBuild ?? 'false' }},
         build: {!! $build ?? "null" !!},
         realm: '{!! $_GET["realm"] ?? "pc" !!}',
+        page: 'profile',
     }
 </script>
 @stop
@@ -88,8 +88,9 @@ $(function () {
                 :selected-tab="isBuild ? 'builds' : 'profile'"
                 :twitch="isBuild ? null : dbAcc.streamer"
                 :character="character"></profile-nav>
+    @if($account??false)
     <div class="characters" style="padding:5px;color:white;">
-        <div class="pull-right">
+        <div class="pull-right" >
             list characters updated  {{$account->updated_at->diffForHumans()}}
             <a class="btn btn-sm poe-btn show-tooltip  mr-1" href="?updateCharacters=true"
                     data-toggle="tooltip" data-placement="top" title="You can update once every 2 hours">
@@ -97,6 +98,7 @@ $(function () {
             </a>
         </div>
     </div>
+    @endif
     <list-characters :characters="accountCharacters" :is-build="isBuild"
         :account="account" :current-character="character" ></list-characters>
 
@@ -126,22 +128,14 @@ $(function () {
                     </h2>
                         <h2 class="info2 show-tooltip" v-if="!isBuild"
                             title="Click to Load League" data-placement="bottom">
-                            <a v-if="ladderChar" :href="route('ladders.show', ladderChar.league)+'?rank='+ladderChar.rank">
-                                @{{ladderChar.league}} League (Rank: @{{ladderChar.rank}})
-                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
-                            </a>
-                            <a v-else :href="route('ladders.show', character.league)+'?realm='+realm">
+                            
+                            <a :href="route('ladders.show', character.league)+'?realm='+realm">
                                 @{{character.league}} League
                                 <i class="fa fa-external-link-square"  style="color: orange;"></i>
                             </a>
                         </h2>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile')+'/'+original_char">@{{original_char}}</a></h2>
-                    <h2 class="info2" v-if="!isBuild">
-                        <span v-if="ladderChar && ladderChar.delve_solo>0">
-                            Delve Solo depth: @{{ladderChar.delve_solo}}
-                        </span>
-                    </h2>
-                    @if($snapshot)
+                    @if($snapshot??false)
                     <h2 class="info2">
                         Last Update: {{$snapshot->updated_at->diffForHumans()}}
                     </h2>

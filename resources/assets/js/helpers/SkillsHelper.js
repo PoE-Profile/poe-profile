@@ -277,15 +277,24 @@ export var SkillsHelper = function (images) {
                 if (gem.abyssJewel) {
                     return;
                 }
+                
+                  
                 if (gem.typeLine.search('Support') < 0) {
                     skillAdded = true;
-                    // console.log(gem.typeLine);
+                    var wordsToReplace = {
+                        'Anomalous ': '',
+                        'Divergent ': '',
+                        'Phantasmal ': '',
+                        'Vaal ': '',
+                    }
+                    var gemTypeLine=gem.typeLine.replace(/\b(?:Anomalous |Divergent |Vaal |Phantasmal )\b/gi, matched => wordsToReplace[matched]);
+                    console.log(gemTypeLine);
                     tempSkill.push({
                         'tags': self.getTags(gem.properties[0].name, gem.typeLine),
                         'socketGroup': item.sockets[gem.socket].group,
                         'itemType': item.inventoryId,
                         'name': gem.typeLine,
-                        'imgUrl': self.getImage(gem.typeLine),
+                        'imgUrl': self.getImage(gemTypeLine),
                         'gem': gem,
                         'reducedManaItem': self.getReducedMana(item, gem),
                         'supports': [],

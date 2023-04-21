@@ -5,7 +5,7 @@
         <span v-html="alertMsg"></span>
     </div>
     <ul class="nav nav-tabs poe-profile-menu" style="padding-left: 10px;">
-        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots' ||selectedTab=='stashes'">
+        <div class="profile" v-if="selectedTab=='profile'||selectedTab=='ranks' ||selectedTab=='snapshots'">
             <li class="pull-left" >
                 <h3 style="margin-right:10px;color:#eee;">
                     <span :class="'profile-icon platform-'+realm"></span>
@@ -45,11 +45,7 @@
                     v-bind:class="[selectedTab=='snapshots' ? 'active' : '']"
                     :href="route('profile.snapshots', account)">Snapshots</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                    v-bind:class="[selectedTab=='stashes' ? 'active' : '']"
-                    :href="route('profile.stashes', account)">Public Stash</a>
-            </li>
+
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
                 data-toggle="tooltip" data-placement="bottom" title="Go to profile on pathofexile.com"

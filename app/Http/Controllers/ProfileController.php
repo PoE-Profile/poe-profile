@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Item;
-use App\Stash;
 use App\PoeApi;
 use App\Account;
 use App\Snapshot;
@@ -24,7 +23,7 @@ class ProfileController extends Controller
 
     public function getProfile(Request $request, $acc)
     {
-        $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
+        $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
         $char = $account->last_character;
         if($account->characters && !collect($account->characters)->contains('name', $char)){
@@ -40,7 +39,7 @@ class ProfileController extends Controller
     public function getProfileChar(Request $request, $acc, $char)
     {
         $snapshot = Snapshot::getAccChar($acc,$char);
-        $account = Account::with(['ladderChars', 'streamer'])->firstOrCreate(['name' => $acc]);
+        $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
         
         if($account->characters && !collect($account->characters)->contains('name', $char) && !$snapshot){
@@ -62,24 +61,6 @@ class ProfileController extends Controller
         })->get();
         $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
-    }
-
-    public function getStashs($acc)
-    {
-        $results=[];
-        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        $currentLeagues = explode(', ', \Cache::get('current_leagues', config('app.poe_leagues')));
-        array_splice($currentLeagues, 2);
-        foreach ($currentLeagues as $league) {
-            $publicStash = $dbAcc->getPublicStash($league);
-            if($publicStash->total>0){
-                $results[]=(Object)array(
-                    'league'=> $league,
-                    'result'=>$publicStash
-                );
-            }
-        }
-        return view('public_stash', compact('acc', 'results', 'dbAcc'));
     }
 
     public function getProfileSnapshots(Request $request, $acc)

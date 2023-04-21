@@ -57,7 +57,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/profile', 'ProfileController@postProfile')->name('profile.post');
     Route::get('/profile/{acc}/ranks', 'ProfileController@getProfileRanks')->name('profile.ranks');
     Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');
-    Route::get('/profile/{acc}/stashes', 'ProfileController@getStashs')->name('profile.stashes');
     Route::get('/profile/{acc}', 'ProfileController@getProfile')->name('profile.acc');
     Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.char');
 

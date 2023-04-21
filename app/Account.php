@@ -29,24 +29,6 @@ class Account extends Model
         return $this->hasMany('App\LadderCharacter');
     }
 
-    public function updateLastChar(){
-        if($this->updated_at->diffInMinutes(now())>120){
-            $chars = PoeApi::getCharsData($this->name);
-            if(!$chars)
-                return;
-            $this->characters = $chars;
-            $currentLeague = ucfirst(explode(', ', \Cache::get('current_leagues'))[0]);
-            $lastChar = collect($chars)->filter(function ($char) use($currentLeague) {
-                return strpos($char->league, $currentLeague) !== false ;
-            })->sortByDesc('level')->first();
-            if($lastChar){
-                $this->last_character = $lastChar->name;
-            }
-            $this->touch();
-            $this->save();
-        }
-    }
-
     public function updateViews(){
         $currentLeagues = explode(', ', \Cache::get('current_leagues'));
         $last_char_league=$this->last_character_info?$this->last_character_info['league']:'';
@@ -58,6 +40,30 @@ class Account extends Model
         $this->views=$this->views+1;
         $this->timestamps = false;
         $this->save();
+    }
+
+    public function updateLastChar(){
+        if($this->updated_at->diffInMinutes(now())>120){
+            $chars = PoeApi::getCharsData($this->name);
+            if(!$chars){
+                $this->last_character="";
+                $this->last_character_info=null;
+                $this->touch();
+                $this->save();
+                return;
+            }
+            $this->characters = $chars;
+            
+            $lastChar = collect($chars)->filter(function ($char) {
+                $currentLeague = strtolower(explode(', ', \Cache::get('current_leagues'))[0]);
+                return strpos(strtolower($char->league), $currentLeague) !== false ;
+            })->sortByDesc('level')->first();
+            if($lastChar){
+                $this->last_character = $lastChar->name;
+            }
+            $this->touch();
+            $this->save();
+        }
     }
 
     public function updateLastCharInfo($itemsData=null){
@@ -89,49 +95,6 @@ class Account extends Model
         }
         return true;
 
-    }
-
-
-    public function getPublicStash($league){
-        $client = new \GuzzleHttp\Client();
-        try {
-            $url='https://www.pathofexile.com/api/trade/search/'.rawurlencode($league);
-            $response = $client->post($url, [
-                \GuzzleHttp\RequestOptions::JSON => $this->getStashRequestData()
-            ]);
-            return json_decode((string)$response->getBody());
-        }catch (\GuzzleHttp\Exception\ClientException $e) {
-            return (Object)["total"=>0];
-        }
-    }
-
-    private function getStashRequestData(){
-        return [
-        	"query"=>[
-        		"status"=> [
-        	      "option" => "any"
-        	    ],
-        	    "stats" => [
-        	      [
-        	        "type" => "and",
-        	        "filters" => []
-        	      ]
-        	    ],
-        	    "filters" => [
-        	      "trade_filters"=> [
-        	        "disabled"=> false,
-        	        "filters"=> [
-        		          	"account"=> [
-        		            	"input"=> $this->name
-        		          	]
-        	        	]
-        	      	]
-        	    ]
-        	],
-        	"sort"=>[
-        		"price"=>"asc"
-        	]
-        ];
     }
 
 }
