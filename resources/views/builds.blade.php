@@ -3,6 +3,11 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
+        account: '',
+        char: '',
+        dbAcc: 'null',
+        loadBuild: true,
+        build: "null",
     }
 </script>
 @stop
@@ -12,16 +17,19 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ mix('/js/build/home.js') }}"></script>
+<script type="text/javascript" src="{{ mix('/js/build/profile.js') }}"></script>
+
 @endsection
 
 @section('styleSheets')
 @endsection
 
 @section('content')
+
 <div class="container">
     <div class="row lead" style="padding: 20px;color:white;background: #190a09;">
-
+        <h3 >You havent saved any builds yet!</h3>
+        <br><br>
         <h4>How to save a build</h3>
         <ol>
             <li style="margin: 10px">

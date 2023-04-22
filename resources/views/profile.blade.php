@@ -10,10 +10,12 @@
             $account_char = 'Snapshot of: ' . $build->original_char;
         }
     }else{
-        $currentChar = $chars->filter(function ($value, $key) use(&$char) {
-            return $value->name == $char;
-        })->first();
-        $account_char = $acc . ' / ' . $char;
+        if($account->characters){
+            $currentChar = collect($account->characters)->filter(function ($value, $key) use(&$char) {
+                return $value['name'] == $char;
+            })->first();
+        }
+        $account_char = $account->name . ' / ' . $char;
     }
     $classImgPath = '/imgs/classes/' . ($currentChar->class ?? "") . '.png';
     
@@ -37,13 +39,13 @@
 @section('jsData')
 <script type="text/javascript">
     window.PHP = {
-        account: '{{ $acc }}',
+        account: '{{ $account->name ?? $acc }}',
         char: '{{ $char ?? "" }}',
-        chars: {!! $chars ?? "null" !!},
-        dbAcc: {!! $dbAcc ?? 'null' !!},
+        dbAcc: {!! $account ?? 'null' !!},
         loadBuild: {{ $loadBuild ?? 'false' }},
         build: {!! $build ?? "null" !!},
         realm: '{!! $_GET["realm"] ?? "pc" !!}',
+        page: 'profile',
     }
 </script>
 @stop
@@ -86,11 +88,21 @@ $(function () {
                 :selected-tab="isBuild ? 'builds' : 'profile'"
                 :twitch="isBuild ? null : dbAcc.streamer"
                 :character="character"></profile-nav>
-
+    @if($account??false)
+    <div class="characters" style="padding:5px;color:white;">
+        <div class="pull-right" >
+            list characters updated  {{$account->updated_at->diffForHumans()}}
+            <a class="btn btn-sm poe-btn show-tooltip  mr-1" href="?updateCharacters=true"
+                    data-toggle="tooltip" data-placement="top" title="You can update once every 2 hours">
+                <i class="fa fa-refresh" aria-hidden="true"></i> Update
+            </a>
+        </div>
+    </div>
+    @endif
     <list-characters :characters="accountCharacters" :is-build="isBuild"
         :account="account" :current-character="character" ></list-characters>
 
-    <div class="wrap"  v-if="checkBuilds()">
+    <div class="wrap">
         <div :class="['row', getCharacterClass()+'-panel']">
             <div class="row">
                 <div class=" all-stats">
@@ -116,22 +128,14 @@ $(function () {
                     </h2>
                         <h2 class="info2 show-tooltip" v-if="!isBuild"
                             title="Click to Load League" data-placement="bottom">
-                            <a v-if="ladderChar" :href="route('ladders.show', ladderChar.league)+'?rank='+ladderChar.rank">
-                                @{{ladderChar.league}} League (Rank: @{{ladderChar.rank}})
-                                <i class="fa fa-external-link-square"  style="color: orange;"></i>
-                            </a>
-                            <a v-else :href="route('ladders.show', character.league)+'?realm='+realm">
+                            
+                            <a :href="route('ladders.show', character.league)+'?realm='+realm">
                                 @{{character.league}} League
                                 <i class="fa fa-external-link-square"  style="color: orange;"></i>
                             </a>
                         </h2>
                     <h2 class="info2" v-if="isBuild"> Original: <a :href="route('profile')+'/'+original_char">@{{original_char}}</a></h2>
-                    <h2 class="info2" v-if="!isBuild">
-                        <span v-if="ladderChar && ladderChar.delve_solo>0">
-                            Delve Solo depth: @{{ladderChar.delve_solo}}
-                        </span>
-                    </h2>
-                    @if($snapshot)
+                    @if($snapshot??false)
                     <h2 class="info2">
                         Last Update: {{$snapshot->updated_at->diffForHumans()}}
                     </h2>
@@ -342,13 +346,6 @@ $(function () {
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="no-builds bottom-info-content"  style="text-align:center;" v-else>
-        <br><br>
-        <h3 >You havent saved any builds yet!</h3>
-        <span> <a href="{{route('tutorial.build')}}">How to save a build</a></span>
-        <br><br><br><br><br><br>
     </div>
 
     <modal-snapshots v-show="isSnapshotsVisible" :build="build"

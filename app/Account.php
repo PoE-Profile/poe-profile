@@ -15,6 +15,8 @@ class Account extends Model
 
     protected $casts = [
         'last_character_info' => 'array',
+        'characters' => 'array',
+        'updated_at'=>'datetime:Y-m-d',
     ];
 
     public function streamer()
@@ -28,34 +30,52 @@ class Account extends Model
     }
 
     public function updateViews(){
-        if(\Schema::hasColumn('accounts', 'views')){
-            $this->views=$this->views+1;
-            $this->timestamps = false;
-            $this->save();
+        $currentLeagues = explode(', ', \Cache::get('current_leagues'));
+        $last_char_league=$this->last_character_info?$this->last_character_info['league']:'';
+        if(!in_array(strtolower($last_char_league),$currentLeagues) //if last char legue is not in curent
+            || !$this->characters || \Request::has('updateCharacters'))
+        {
+            $this->updateLastChar();
         }
-    }
-
-    public function updateLastChar(){
-        // stop if acc last_character updated in last 60 min
-        $chars = PoeApi::getCharsData($this->name);
-        if(!$chars) return;
-        $lastChar = collect($chars)->first(function ($char) {
-            return property_exists($char, 'lastActive');
-        });
-        if(!$lastChar){
-            $currentLeague = ucfirst(explode(', ', \Cache::get('current_leagues'))[0]);
-            $lastChar = collect($chars)->filter(function ($char) use($currentLeague) {
-                return strpos($char->league, $currentLeague) !== false ;
-            })->sortByDesc('level')->first();
-        }
-        if(!$lastChar){
-            return;
-        }
-        $this->last_character = $lastChar->name;
-        $this->touch();
+        $this->views=$this->views+1;
+        $this->timestamps = false;
         $this->save();
     }
 
+    public function updateLastChar(){
+        if($this->updated_at->diffInMinutes(now())>12){
+            $chars = PoeApi::getCharsData($this->name);
+            //problem with limits stop
+            if($chars==false){ 
+                return;
+            }
+
+            //if 0 chars acc is private remove info
+            if(count($chars)==0){ 
+                $this->last_character="";
+                $this->last_character_info=null;
+            }else{ 
+                // else set last_character
+                $this->characters = $chars;
+                $lastChar = collect($chars)->filter(function ($char) {
+                    $currentLeague = strtolower(explode(', ', \Cache::get('current_leagues'))[0]);
+                    return strpos(strtolower($char->league), $currentLeague) !== false ;
+                })->sortByDesc('level')->first();
+                if($lastChar){
+                    $this->last_character = $lastChar->name;
+                    $this->last_character_info=[
+                        'league'=>$lastChar->league,
+                        'name'=>$lastChar->name,
+                        'class'=>$lastChar->class,
+                        'level'=>$lastChar->level,
+                        'items_most_sockets'=>$this->last_character_info['items_most_sockets']??null,
+                    ];
+                }
+            }
+            $this->touch();
+            $this->save();
+        }
+    }
 
     public function updateLastCharInfo($itemsData=null){
         if($itemsData==null){
@@ -86,49 +106,6 @@ class Account extends Model
         }
         return true;
 
-    }
-
-
-    public function getPublicStash($league){
-        $client = new \GuzzleHttp\Client();
-        try {
-            $url='https://www.pathofexile.com/api/trade/search/'.rawurlencode($league);
-            $response = $client->post($url, [
-                \GuzzleHttp\RequestOptions::JSON => $this->getStashRequestData()
-            ]);
-            return json_decode((string)$response->getBody());
-        }catch (\GuzzleHttp\Exception\ClientException $e) {
-            return (Object)["total"=>0];
-        }
-    }
-
-    private function getStashRequestData(){
-        return [
-        	"query"=>[
-        		"status"=> [
-        	      "option" => "any"
-        	    ],
-        	    "stats" => [
-        	      [
-        	        "type" => "and",
-        	        "filters" => []
-        	      ]
-        	    ],
-        	    "filters" => [
-        	      "trade_filters"=> [
-        	        "disabled"=> false,
-        	        "filters"=> [
-        		          	"account"=> [
-        		            	"input"=> $this->name
-        		          	]
-        	        	]
-        	      	]
-        	    ]
-        	],
-        	"sort"=>[
-        		"price"=>"asc"
-        	]
-        ];
     }
 
 }

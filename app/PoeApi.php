@@ -14,14 +14,19 @@ class PoeApi
         }
         $cacheKey=$acc.'/'.$realm;
 
+        if(\Cache::get('limit-characters-api',false)){
+            flash('Problem with pathofexile.com api limit. ', 'warning');
+            return false;
+        }
+
         //if cache false clear and try again
         if(\Cache::get($cacheKey)===false){
             \Cache::forget($cacheKey);
         }
         
-        // $time = config('app.poe_cache_time') * 60;
-        $time = 1440 * 60; //problem with limit make cach
+        $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
+            Log::debug('getting characters from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
                 $response = $client->request(
@@ -38,13 +43,11 @@ class PoeApi
                     ]
                 );
             } catch (\GuzzleHttp\Exception\ClientException $exception) {
-                // flash('pathofexile.com is currently down for maintenance. Please try again later. ', 'warning');
-                if($exception->getResponse()->getStatusCode()==429){
-                    flash('Problem with pathofexile.com api limit. ', 'warning');
+                if(self::checkForLimit('characters',$exception)){
                     return false;
                 }
-                flash('Аccount is private or does not exist. ', 'warning');
-                return false;
+                flash('Аccount is private or does not exist. Or pathofexile.com is down for maintenance.', 'warning');
+                return [];
             }
             $result = json_decode((string)$response->getBody());
             return $result;
@@ -53,13 +56,24 @@ class PoeApi
 
     static public function getTreeData($acc, $char, $realm="pc")
     {
+        if(\Cache::get('limit-tree-api',false)){
+            flash('Problem with pathofexile.com api limit. ', 'warning');
+            return false;
+        }
+
+
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
+        //if cache false clear and try again
+        if(\Cache::get($key)===false){
+            \Cache::forget($key);
+        }
+        
         $time = config('app.poe_cache_time') * 60;
         return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
             Log::debug('getting tree from API');
             $client = new \GuzzleHttp\Client(['cookies' => true]);
             try {
-            $responseTree = $client->request(
+                $responseTree = $client->request(
                         'GET',
                         'https://www.pathofexile.com/character-window/get-passive-skills',
                         [
@@ -74,8 +88,7 @@ class PoeApi
                         ]
                     );
             }catch (\GuzzleHttp\Exception\ClientException $exception) {
-                if($exception->getResponse()->getStatusCode()==429){
-                    flash('Problem with pathofexile.com api limit. ', 'warning');
+                if(self::checkForLimit('tree',$exception)){
                     return false;
                 }
                 return [];
@@ -85,8 +98,17 @@ class PoeApi
     }
 
     static public function getItemsData($acc, $char, $realm="pc", $proxy=false){
+        if(\Cache::get('limit-items-api',false)){
+            flash('Problem with pathofexile.com api limit. ', 'warning');
+            return false;
+        }
+
         //get cahce if no cache get from poe api
         $key='items/'.$acc.'/'.$char.'/'.$realm;
+        //if cache false clear and try again
+        if(\Cache::get($key)===false){
+            \Cache::forget($key);
+        }
         $time = config('app.poe_cache_time') * 60;
 
         return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
@@ -111,10 +133,8 @@ class PoeApi
                         ]
                     ]
                 );
-            }catch (\GuzzleHttp\Exception\ClientException $e) {
-                //$response = $e->getResponse();
-                if($exception->getResponse()->getStatusCode()==429){
-                    flash('Problem with pathofexile.com api limit. ', 'warning');
+            }catch (\GuzzleHttp\Exception\ClientException $exception) {
+                if(self::checkForLimit('items',$exception)){
                     return false;
                 }
                 return [];
@@ -162,5 +182,17 @@ class PoeApi
         }
 
         return json_decode($response->getBody(), true);
+    }
+
+    public static function checkForLimit($key, \GuzzleHttp\Exception\ClientException $e)
+    {
+        if($e->getResponse()->getStatusCode()==429){
+            $retryAfter =(int)$e->getResponse()->getHeader('Retry-After')[0];
+            \Cache::add('limit-'.$key.'-api', true, $retryAfter);
+            \Log::critical('Problem with pathofexile.com '.$key.' api limit. Retry-After:'.$retryAfter);
+            flash('Problem with pathofexile.com api limit. ', 'warning');
+            return true;
+        }
+        return false;
     }
 }

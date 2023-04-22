@@ -25,7 +25,7 @@ class ApiController extends Controller
         // get snapshot items
         $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('created_at', 'DESC')->first();
         if($snapshot) {
-            return $snapshot->item_data['items'];
+            return $snapshot->item_data;
         }
 
         $dbAcc = \App\Account::where('name', $acc)->first();
@@ -33,9 +33,8 @@ class ApiController extends Controller
         if(!$dbAcc || !array_key_exists('items', $itemsData)){
             return;
         }
-        $acc=$dbAcc->name;
         $dbAcc->updateLastCharInfo($itemsData);
-        return $itemsData['items'];
+        return $itemsData;
     }
 
     public function getStats(Request $request)

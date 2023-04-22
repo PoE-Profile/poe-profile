@@ -28,7 +28,7 @@ class CharacterTreePoints
         $charTree = [];
         $jewelsObj = new Jewels;
         
-        if(count($tree)==0){
+        if($tree==false || count($tree)==0){
             return $charTree;
         }
 

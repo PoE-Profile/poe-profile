@@ -44,10 +44,6 @@ Route::group(['middleware' => 'web'], function () {
         return view('profile_tutorial');
     })->name('tutorial.profile');
 
-    Route::get('/tutorial/build', function () {
-        return view('build_tutorial');
-    })->name('tutorial.build');
-
     // saved Builds/Snapshots
     Route::get('/builds', 'ProfileController@indexBuild')->name('builds');
     Route::get('/build/{hash}', 'ProfileController@showBuild')->name('build.show');
@@ -57,7 +53,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/profile', 'ProfileController@postProfile')->name('profile.post');
     Route::get('/profile/{acc}/ranks', 'ProfileController@getProfileRanks')->name('profile.ranks');
     Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');
-    Route::get('/profile/{acc}/stashes', 'ProfileController@getStashs')->name('profile.stashes');
     Route::get('/profile/{acc}', 'ProfileController@getProfile')->name('profile.acc');
     Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.char');
 
@@ -72,6 +67,7 @@ Route::group(['middleware' => 'web'], function () {
             ->name('profile.atlas');
 
     Route::get('/skill-img/{name}', function ($name) {
+        return null;
         $prefaced = ["Anomalous ", "Divergent ", "Phantasmal "];
         $name = str_replace($prefaced, '', $name);
         $name=str_replace(" ","_",$name);

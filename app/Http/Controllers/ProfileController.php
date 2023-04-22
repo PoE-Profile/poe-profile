@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Item;
-use App\Stash;
 use App\PoeApi;
 use App\Account;
 use App\Snapshot;
@@ -24,55 +23,34 @@ class ProfileController extends Controller
 
     public function getProfile(Request $request, $acc)
     {
-        $chars = PoeApi::getCharsData($acc);
-        if(!$chars){
-            $chars = [];
+        $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
+        $account->updateViews();
+        $char = $account->last_character;
+        if($account->characters && !collect($account->characters)->contains('name', $char)){
+            $char=$account->characters[0]['name'];
         }
-        $chars = collect($chars);
-
-        $dbAcc = $this->getDbAcc($acc);        
-        $char = $dbAcc->last_character;
         $snapshot = Snapshot::getAccChar($acc,$char);
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc','snapshot'));
+        if(!$snapshot && !$account->characters){
+            return redirect()->back();
+        }
+        return view('profile', compact('account','char','snapshot'));
     }
 
     public function getProfileChar(Request $request, $acc, $char)
     {
-        $chars = PoeApi::getCharsData($acc);
         $snapshot = Snapshot::getAccChar($acc,$char);
-
-        if(!$chars){
-            $chars=[];
-            if($snapshot){
-                $chars[]=json_decode(json_encode($snapshot->item_data['character']));
-            }
-        }
-        $chars = collect($chars);
-        $dbAcc = $this->getDbAcc($acc);
+        $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
+        $account->updateViews();
         
-        if(!$chars->contains('name', $char)&&!$snapshot){
+        if($account->characters && !collect($account->characters)->contains('name', $char) && !$snapshot){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
             return redirect()->route('profile.acc',
                 ['acc' => $acc]
             );
         }
-        
-        if($request->has('race')){
-            return view('race.profile', compact('acc', 'char', 'chars', 'dbAcc'));
-        }
-        return view('profile', compact('acc', 'char', 'chars', 'dbAcc', 'snapshot'));
-    }
 
-    private function getDbAcc($acc){
-        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        if(!$dbAcc){
-            $dbAcc = Account::create(['name' => $acc]);
-            $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        }
-        $dbAcc->updateLastChar();
-        $dbAcc->updateViews();
-        return $dbAcc;
+        return view('profile', compact('account','char','snapshot'));
     }
 
     public function getProfileRanks($acc)
@@ -83,24 +61,6 @@ class ProfileController extends Controller
         })->get();
         $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
         return view('ranks', compact('acc', 'rankArchives', 'dbAcc'));
-    }
-
-    public function getStashs($acc)
-    {
-        $results=[];
-        $dbAcc = Account::with(['ladderChars', 'streamer'])->where('name', $acc)->first();
-        $currentLeagues = explode(', ', \Cache::get('current_leagues', config('app.poe_leagues')));
-        array_splice($currentLeagues, 2);
-        foreach ($currentLeagues as $league) {
-            $publicStash = $dbAcc->getPublicStash($league);
-            if($publicStash->total>0){
-                $results[]=(Object)array(
-                    'league'=> $league,
-                    'result'=>$publicStash
-                );
-            }
-        }
-        return view('public_stash', compact('acc', 'results', 'dbAcc'));
     }
 
     public function getProfileSnapshots(Request $request, $acc)
@@ -120,10 +80,7 @@ class ProfileController extends Controller
 
     public function indexBuild()
     {
-        $acc = '';
-        $build = null;
-        $loadBuild = "true";
-        return view('profile', compact('acc', 'build', 'loadBuild'));
+        return view('builds');
     }
 
     public function showBuild($hash)
