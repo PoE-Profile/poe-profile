@@ -46,7 +46,7 @@ class Account extends Model
     }
 
     public function updateLastChar(){
-        if ($this->updated_at->diffInMinutes(now()) > 12){
+        if ($this->updated_at->diffInMinutes(now()) > 120){
             $chars = PoeApi::getCharsData($this->name);
 
             // problem with limits stop
@@ -54,9 +54,7 @@ class Account extends Model
                 return;
             }
 
-            // if 0 chars acc is private remove info
             if (count($chars) > 0) {
-
                 // set last_character
                 $lastChar = collect($chars)->filter(function ($char) {
                     $currentLeague = strtolower(explode(', ', Cache::get('current_leagues'))[0]);
@@ -81,17 +79,20 @@ class Account extends Model
                     $lastChar = collect($chars)->sortByDesc('level')->first();
                 }
 
-                if ($lastChar) {
-                    $this->characters = $chars;
-                    $this->last_character = $lastChar->name;
-                    $this->last_character_info = [
-                        'league' => $lastChar->league,
-                        'name' => $lastChar->name,
-                        'class' => $lastChar->class,
-                        'level' => $lastChar->level,
-                        'items_most_sockets' => $this->last_character_info['items_most_sockets'] ?? null,
-                    ];
-                }
+                $this->characters = $chars;
+                $this->last_character = $lastChar->name;
+                $this->last_character_info = [
+                    'league' => $lastChar->league,
+                    'name' => $lastChar->name,
+                    'class' => $lastChar->class,
+                    'level' => $lastChar->level,
+                    'items_most_sockets' => $this->last_character_info['items_most_sockets'] ?? null,
+                ];
+            } else {
+                // if account was turned to private or we have returned 0 chars
+                // reset last character data
+                $this->last_character="";
+                $this->last_character_info=null;
             }
 
             $this->touch();
