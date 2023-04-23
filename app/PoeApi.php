@@ -1,6 +1,9 @@
 <?php
 namespace App;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class PoeApi
@@ -14,20 +17,21 @@ class PoeApi
         }
         $cacheKey=$acc.'/'.$realm;
 
-        if(\Cache::get('limit-characters-api',false)){
+        if(Cache::get('limit-characters-api',false)){
             flash('Problem with pathofexile.com api limit. ', 'warning');
             return false;
         }
 
         //if cache false clear and try again
-        if(\Cache::get($cacheKey)===false){
-            \Cache::forget($cacheKey);
+        if(Cache::get($cacheKey)===false){
+            Cache::forget($cacheKey);
         }
-        
+
         $time = config('app.poe_cache_time') * 60;
-        return \Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
+        /* dd('before'); */
+        return Cache::remember($cacheKey, $time, function () use ($acc,$realm) {
             Log::debug('getting characters from API');
-            $client = new \GuzzleHttp\Client(['cookies' => true]);
+            $client = new Client(['cookies' => true]);
             try {
                 $response = $client->request(
                     'POST',
@@ -42,7 +46,7 @@ class PoeApi
                         ]
                     ]
                 );
-            } catch (\GuzzleHttp\Exception\ClientException $exception) {
+            } catch (ClientException $exception) {
                 if(self::checkForLimit('characters',$exception)){
                     return false;
                 }
@@ -56,7 +60,7 @@ class PoeApi
 
     static public function getTreeData($acc, $char, $realm="pc")
     {
-        if(\Cache::get('limit-tree-api',false)){
+        if(Cache::get('limit-tree-api',false)){
             flash('Problem with pathofexile.com api limit. ', 'warning');
             return false;
         }
@@ -64,14 +68,14 @@ class PoeApi
 
         $key='tree/'.$acc.'/'.$char.'/'.$realm;
         //if cache false clear and try again
-        if(\Cache::get($key)===false){
-            \Cache::forget($key);
+        if(Cache::get($key)===false){
+            Cache::forget($key);
         }
-        
+
         $time = config('app.poe_cache_time') * 60;
-        return \Cache::remember($key, $time, function () use ($acc,$char,$realm) {
+        return Cache::remember($key, $time, function () use ($acc,$char,$realm) {
             Log::debug('getting tree from API');
-            $client = new \GuzzleHttp\Client(['cookies' => true]);
+            $client = new Client(['cookies' => true]);
             try {
                 $responseTree = $client->request(
                         'GET',
@@ -87,7 +91,7 @@ class PoeApi
                             ]
                         ]
                     );
-            }catch (\GuzzleHttp\Exception\ClientException $exception) {
+            }catch (ClientException $exception) {
                 if(self::checkForLimit('tree',$exception)){
                     return false;
                 }
@@ -98,7 +102,7 @@ class PoeApi
     }
 
     static public function getItemsData($acc, $char, $realm="pc", $proxy=false){
-        if(\Cache::get('limit-items-api',false)){
+        if(Cache::get('limit-items-api',false)){
             flash('Problem with pathofexile.com api limit. ', 'warning');
             return false;
         }
@@ -106,14 +110,14 @@ class PoeApi
         //get cahce if no cache get from poe api
         $key='items/'.$acc.'/'.$char.'/'.$realm;
         //if cache false clear and try again
-        if(\Cache::get($key)===false){
-            \Cache::forget($key);
+        if(Cache::get($key)===false){
+            Cache::forget($key);
         }
         $time = config('app.poe_cache_time') * 60;
 
-        return \Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
+        return Cache::remember($key, $time, function () use ($acc, $char,$proxy,$realm){
             Log::debug('getting items from API');
-            $client = new \GuzzleHttp\Client(['cookies' => true]);
+            $client = new Client(['cookies' => true]);
             //make Requests to PathOfExile website to retrieve Character Items
             $page_url='https://www.pathofexile.com/character-window/get-items';
             if($proxy){
@@ -133,7 +137,7 @@ class PoeApi
                         ]
                     ]
                 );
-            }catch (\GuzzleHttp\Exception\ClientException $exception) {
+            }catch (ClientException $exception) {
                 if(self::checkForLimit('items',$exception)){
                     return false;
                 }
@@ -159,7 +163,7 @@ class PoeApi
             $page_url = config('app.poe_proxy').$page_url;
         }
 
-        $client = new \GuzzleHttp\Client(['http_errors' => false,'cookies' => true]);
+        $client = new Client(['http_errors' => false,'cookies' => true]);
         try {
             //$response = $client->get($page_url);
             $response = $client->request(
@@ -171,7 +175,7 @@ class PoeApi
                     ],
                 ]
             );
-        }catch (\GuzzleHttp\Exception\ClientException $e) {
+        }catch (ClientException $e) {
             //$response = $e->getResponse();
             return [];
         }
@@ -184,12 +188,12 @@ class PoeApi
         return json_decode($response->getBody(), true);
     }
 
-    public static function checkForLimit($key, \GuzzleHttp\Exception\ClientException $e)
+    public static function checkForLimit($key, ClientException $e)
     {
         if($e->getResponse()->getStatusCode()==429){
             $retryAfter =(int)$e->getResponse()->getHeader('Retry-After')[0];
-            \Cache::add('limit-'.$key.'-api', true, $retryAfter);
-            \Log::critical('Problem with pathofexile.com '.$key.' api limit. Retry-After:'.$retryAfter);
+            Cache::add('limit-'.$key.'-api', true, $retryAfter);
+            Log::critical('Problem with pathofexile.com '.$key.' api limit. Retry-After:'.$retryAfter);
             flash('Problem with pathofexile.com api limit. ', 'warning');
             return true;
         }

@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\PoeApi;
 use App\Helpers\Items;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class Account extends Model
 {
@@ -43,35 +46,54 @@ class Account extends Model
     }
 
     public function updateLastChar(){
-        if($this->updated_at->diffInMinutes(now())>12){
+        if ($this->updated_at->diffInMinutes(now()) > 12){
             $chars = PoeApi::getCharsData($this->name);
-            //problem with limits stop
-            if($chars==false){ 
+
+            // problem with limits stop
+            if ($chars == false) {
                 return;
             }
 
-            //if 0 chars acc is private remove info
-            if(count($chars)==0){ 
-                $this->last_character="";
-                $this->last_character_info=null;
-            }else{ 
-                // else set last_character
-                $this->characters = $chars;
+            // if 0 chars acc is private remove info
+            if (count($chars) > 0) {
+
+                // set last_character
                 $lastChar = collect($chars)->filter(function ($char) {
-                    $currentLeague = strtolower(explode(', ', \Cache::get('current_leagues'))[0]);
-                    return strpos(strtolower($char->league), $currentLeague) !== false ;
+                    $currentLeague = strtolower(explode(', ', Cache::get('current_leagues'))[0]);
+                    return Str::contains(strtolower($char->league), $currentLeague);
                 })->sortByDesc('level')->first();
-                if($lastChar){
+
+                if (!is_null($this->characters)) {
+                    $charactersChanges = collect($this->characters)
+                        ->pluck('experience', 'name')
+                        ->diff(collect($chars)->pluck('experience', 'name'));
+
+                    if (count($charactersChanges->all()) > 0) {
+                        Log::debug($charactersChanges->toJson());
+                        $lastChar = collect($chars)->whereIn('name', array_keys($charactersChanges->all()))->first();
+                    }
+                }
+
+                // if Account dont have characters in the current League
+                // if it is new Account and $this->characters isnt set
+                // take highest level character
+                if (is_null($lastChar)) {
+                    $lastChar = collect($chars)->sortByDesc('level')->first();
+                }
+
+                if ($lastChar) {
+                    $this->characters = $chars;
                     $this->last_character = $lastChar->name;
-                    $this->last_character_info=[
-                        'league'=>$lastChar->league,
-                        'name'=>$lastChar->name,
-                        'class'=>$lastChar->class,
-                        'level'=>$lastChar->level,
-                        'items_most_sockets'=>$this->last_character_info['items_most_sockets']??null,
+                    $this->last_character_info = [
+                        'league' => $lastChar->league,
+                        'name' => $lastChar->name,
+                        'class' => $lastChar->class,
+                        'level' => $lastChar->level,
+                        'items_most_sockets' => $this->last_character_info['items_most_sockets'] ?? null,
                     ];
                 }
             }
+
             $this->touch();
             $this->save();
         }
@@ -85,7 +107,7 @@ class Account extends Model
             return false;
         }
         $items_most_sockets = Items::withMostSockets($itemsData);
-        
+
         if ($this->last_character==$itemsData['character']['name']) {
             $lastChar=[
                 'league'=>$itemsData['character']['league'],

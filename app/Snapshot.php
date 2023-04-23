@@ -7,6 +7,7 @@ use App\Parse_mods\Base_Stats;
 use App\Parse_mods\Stats_Manager;
 use App\Parse_mods\CharacterTreePoints;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Snapshot extends Model
 {
@@ -77,7 +78,7 @@ class Snapshot extends Model
 
     public static function getAccChar($acc, $char){
         $original_char = $acc.'/'.$char;
-        return \App\Snapshot::where('original_char',$original_char)->latest()->first();
+        return self::where('original_char',$original_char)->latest()->first();
     }
 
     public function getSkills()
