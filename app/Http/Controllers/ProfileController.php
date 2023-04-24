@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Item;
-use App\PoeApi;
 use App\Account;
+use App\LadderCharacter;
 use App\Snapshot;
-use App\Http\Requests;
 use Illuminate\Http\Request;
 
 
@@ -30,6 +28,7 @@ class ProfileController extends Controller
             $char=$account->characters[0]['name'];
         }
         $snapshot = Snapshot::getAccChar($acc,$char);
+
         if(!$snapshot && !$account->characters){
             return redirect()->back();
         }
@@ -41,7 +40,7 @@ class ProfileController extends Controller
         $snapshot = Snapshot::getAccChar($acc,$char);
         $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
-        
+
         if($account->characters && !collect($account->characters)->contains('name', $char) && !$snapshot){
             flash('Character with name "'.$char.'" does not exist in account '
                     .$acc.' or is removed.', 'warning');
@@ -55,7 +54,7 @@ class ProfileController extends Controller
 
     public function getProfileRanks($acc)
     {
-        $rankArchives = \App\LadderCharacter::with('account')
+        $rankArchives = LadderCharacter::with('account')
                 ->whereHas('account', function ($query) use (&$acc) {
                     $query->where('name', '=', $acc);
         })->get();
@@ -65,7 +64,7 @@ class ProfileController extends Controller
 
     public function getProfileSnapshots(Request $request, $acc)
     {
-        $q = \App\Snapshot::query();
+        $q = Snapshot::query();
         if($request->has('version')){
             $q->where('poe_version',$request->input('version'));
         }
@@ -85,7 +84,7 @@ class ProfileController extends Controller
 
     public function showBuild($hash)
     {
-        $build = \App\Snapshot::where('hash', '=', $hash)->first();
+        $build = Snapshot::where('hash', '=', $hash)->first();
         $loadBuild = "true";
         $acc = 'build::'.$hash;
         if ($build == null) {
