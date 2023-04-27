@@ -2,10 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\TwitchStreamer;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\Account;
 use App\Snapshot;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PoeTwitch extends Command
 {
@@ -15,7 +19,7 @@ class PoeTwitch extends Command
      * @var string
      */
     protected $signature = 'poe:twitch {operation}';
-    
+
 
     /**
      * The console command description.
@@ -41,7 +45,6 @@ class PoeTwitch extends Command
      */
     public function handle()
     {
-
         // take acounts
         switch ($this->argument('operation')) {
             case 'update-token':
@@ -53,44 +56,55 @@ class PoeTwitch extends Command
                 $this->info("start update twtich table");
                 $this->update_info();
                 break;
+
             case 'add':
                 $poeAcc = $this->ask('Path of Exile profile');
                 $streamerAcc = $this->ask('Streamer channel name');
-                $dbAcc = \App\Account::where('name', $poeAcc)->first();
-                $newStreamer = \App\TwitchStreamer::create([
-                    'name' => $streamerAcc,
-                    'account_id' => $dbAcc->id
-                ]);
+                $dbAcc = Account::where('name', $poeAcc)->first();
+                if ($dbAcc) {
+                    $newStreamer = TwitchStreamer::create([
+                        'name' => $streamerAcc,
+                        'account_id' => $dbAcc->id
+                    ]);
+                } else {
+                    $this->error("Account does not exists or private!");
+                }
                 break;
 
             default:
-                # code...
                 $this->error("No valid operation given");
                 break;
         }
     }
     private function update_token()
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $response = $client->request(
             'POST',
-            'https://id.twitch.tv/oauth2/token?client_id=gi3es6sr9cmscw4aww6lbt309dyj8e&client_secret=g68pe92grxt37fayigrl1w6xcl6807&grant_type=client_credentials'
+            'https://id.twitch.tv/oauth2/token',
+            [
+                'query' => [
+                    'client_id' => env('TWITCH_CLIENT_ID'),
+                    'client_secret' => env('TWITCH_CLIENT_SECRET'),
+                    'grant_type' => 'client_credentials'
+                ]
+            ]
         );
 
-        \Storage::put('access_token.json', (string) $response->getBody());
+        Storage::put('access_token.json', (string) $response->getBody());
     }
 
     public function get_token()
     {
-        $data = json_decode(\Storage::get('access_token.json'));
+        $data = json_decode(Storage::get('access_token.json'));
         return 'Bearer '. $data->access_token;
     }
 
     public function update_info()
     {
-        \DB::statement("UPDATE `twitch_streamers` set online=0 ,viewers=0");
+        DB::statement("UPDATE `twitch_streamers` set online=0 ,viewers=0");
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $token = $this->get_token();
         $response = $client->request(
             'GET',
@@ -104,36 +118,37 @@ class PoeTwitch extends Command
                 ]
             ]
         );
-        
+
         $data = json_decode((string) $response->getBody())->data;
+        // get current streamers from DB sorted Ascending
+        $streamers = TwitchStreamer::whereIn('name', collect($data)->pluck('user_name'))
+            ->orderBy('updated_at', 'asc')
+            ->get();
 
-        foreach ($data as $stream) {
+        foreach ($streamers as $dbStreamer) {
+            $this->info($dbStreamer->name);
+            $stream = collect($data)->where('user_name', $dbStreamer->name)->first();
+            $thumbnail = str_replace('{width}', 240, $stream->thumbnail_url);
+            $thumbnail = str_replace('{height}', 135, $thumbnail);
 
-            $this->info($stream->user_name);
-            $dbStreamer = \App\TwitchStreamer::where('name', $stream->user_name)->first();
-            // if in DB update info
-            if ($dbStreamer) {
-                $thumbnail = str_replace('{width}', 240, $stream->thumbnail_url);
-                $thumbnail = str_replace('{height}', 135, $thumbnail);
+            $dbStreamer->viewers = $stream->viewer_count;
+            $dbStreamer->status = $stream->title;
+            $dbStreamer->img_preview = $thumbnail;
+            $dbStreamer->channel_id = $stream->user_id;
+            $dbStreamer->online = true;
+            $dbStreamer->last_online = now();
+            $dbStreamer->save();
 
-                $dbStreamer->viewers = $stream->viewer_count;
-                $dbStreamer->status = $stream->title;
-                $dbStreamer->img_preview = $thumbnail;
-                $dbStreamer->channel_id = $stream->user_id;
-                $dbStreamer->online = true;
-                $dbStreamer->last_online = \Carbon\Carbon::now();
-                $dbStreamer->save();
+            $dbStreamer->account->updateLastChar();
 
-                $dbStreamer->account->updateLastChar();
-                
-                if ($dbStreamer->isForSnapshot()) {
-                    $acc = $dbStreamer->account->name;
-                    $char = $dbStreamer->account->last_character;
-                    $dbStreamer->account->updateLastCharInfo();
-                    Snapshot::create($acc, $char);
-                }
+            if ($dbStreamer->isForSnapshot()) {
+                $acc = $dbStreamer->account->name;
+                $char = $dbStreamer->account->last_character;
+                $dbStreamer->account->updateLastCharInfo();
+                Snapshot::create($acc, $char);
             }
         }
-        \Cache::forget('OnlineStreamers');
+
+        Cache::forget('OnlineStreamers');
     }
 }
