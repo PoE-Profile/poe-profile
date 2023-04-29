@@ -127,7 +127,10 @@ class PoeTwitch extends Command
 
         foreach ($streamers as $dbStreamer) {
             $this->info($dbStreamer->name);
-            $stream = collect($data)->where('user_name', $dbStreamer->name)->first();
+            $stream = collect($data)
+                ->filter(fn($s) => strtolower($s->user_name) === strtolower($dbStreamer->name))
+                ->first();
+
             $thumbnail = str_replace('{width}', 240, $stream->thumbnail_url);
             $thumbnail = str_replace('{height}', 135, $thumbnail);
 
