@@ -12,6 +12,8 @@
         "laracasts/flash": "^3.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
+        "predis/predis": "^2.1",
+        "pusher/pusher-php-server": "^4.1",
         "tightenco/ziggy": "^0.9.0"
     },
     "require-dev": {

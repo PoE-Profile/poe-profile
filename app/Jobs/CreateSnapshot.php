@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\SnapshotCreated;
 use App\PoeApi;
 use App\Snapshot;
 use Illuminate\Bus\Queueable;
@@ -60,5 +61,7 @@ class CreateSnapshot implements ShouldQueue
         $snapshot->poe_version = config('app.poe_version');
         $snapshot->original_level = $itemsData['character']['level'];
         $snapshot->save();
+        event(new SnapshotCreated($snapshot));
+        // SnapshotCreated::dispatch($snapshot);
     }
 }

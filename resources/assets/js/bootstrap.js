@@ -1,4 +1,6 @@
 import Vue from 'vue';
+
+
 window._ = require('lodash');
 
 
@@ -11,7 +13,6 @@ window._ = require('lodash');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
@@ -37,3 +38,24 @@ Vue.config.silent = true;
 // Vue.config.devtools = true;
 // Vue.config.debug = true;
 // Vue.config.silent = false;
+
+import Echo from "laravel-echo"
+
+window.Pusher = require('pusher-js');
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    wsHost: '127.0.0.1',
+    wsPort: 6001,
+    forceTLS: false,
+    disableStats: true,
+    enabledTransports: ['ws']
+});
+
+// window.io = require('socket.io-client');
+// window.Echo = new Echo({
+//     broadcaster: 'socket.io',
+//     // host: process.env.MIX_LARAVEL_ECHO_SERVER
+//     host: 'http://127.0.0.1:6001/'
+// });

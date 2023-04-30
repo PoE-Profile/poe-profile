@@ -86,6 +86,12 @@ new Vue({
 
 
     mounted: function () {
+        window.Echo.channel('update-snapshot')//.'+account+'.'+character)
+        .listen('SnapshotCreated', (e) => {
+            // console.log(e);
+            console.log(e.snapshot.hash);
+        });
+
         $('.po-bandits-link').popover({
            trigger: 'click',
            html: true,
@@ -232,6 +238,7 @@ new Vue({
         this.character={name:window.PHP.char}
         this.setAccountData();
         this.getCharacterItems();
+        
     },
 
     methods: {
