@@ -40,6 +40,7 @@ class ProfileController extends Controller
     public function getProfileChar(Request $request, $acc, $char)
     {
         $snapshot = Snapshot::getAccChar($acc,$char);
+        CreateSnapshot::dispatch($acc, $char);
         $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
 
