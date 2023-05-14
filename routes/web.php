@@ -1,5 +1,9 @@
 <?php
+use App\Http\Controllers\LadderController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkillTreeController;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 
 // \DB::listen(function($sql) {
 //     var_dump($sql->sql);
@@ -13,16 +17,15 @@ Route::group(['middleware' => 'web'], function () {
         return view('index',compact('current_leagues'));
     })->name('home');
 
-    Route::get('/ladders/', 'LadderController@index')->name('ladders.index');
-    Route::get('/ladders/{name}', 'LadderController@show')->name('ladders.show');
-    Route::get('/api/ladders/{name}', 'LadderController@getLadder')
+    Route::get('/ladders/', [LadderController::class, 'index'])->name('ladders.index');
+    Route::get('/ladders/{name}', [LadderController::class, 'show'])->name('ladders.show');
+    Route::get('/api/ladders/{name}', [LadderController::class, 'getLadder'])
         ->name('api.ladders');
-    Route::get('/api/private-ladders/{name}', 'LadderController@getPrivateLadder')
+    Route::get('/api/private-ladders/{name}', [LadderController::class, 'getPrivateLadder'])
         ->name('api.ladders.private');
-    Route::post('/api/ladders/update-skill/', 'LadderController@updateCharacterSkill')
+    Route::post('/api/ladders/update-skill/', [LadderController::class, 'updateCharacterSkill'])
         ->name('api.ladders.skill');
-    Route::get('/race/{name}', 'LadderController@getRaceLadder')->name('race');
-
+    Route::get('/race/{name}', [LadderController::class, 'getRaceLadder'])->name('race');
 
     Route::get('/twitch', function () {
         return view('twitch');
@@ -45,25 +48,25 @@ Route::group(['middleware' => 'web'], function () {
     })->name('tutorial.profile');
 
     // saved Builds/Snapshots
-    Route::get('/builds', 'ProfileController@indexBuild')->name('builds');
-    Route::get('/build/{hash}', 'ProfileController@showBuild')->name('build.show');
+    Route::get('/builds', [ProfileController::class, 'indexBuild'])->name('builds');
+    Route::get('/build/{hash}', [ProfileController::class, 'showBuild'])->name('build.show');
 
     //profile routes
-    Route::get('/profile', 'ProfileController@getProfile')->name('profile');
-    Route::post('/profile', 'ProfileController@postProfile')->name('profile.post');
-    Route::get('/profile/{acc}/ranks', 'ProfileController@getProfileRanks')->name('profile.ranks');
-    Route::get('/profile/{acc}/snapshots', 'ProfileController@getProfileSnapshots')->name('profile.snapshots');
-    Route::get('/profile/{acc}', 'ProfileController@getProfile')->name('profile.acc');
-    Route::get('/profile/{acc}/{char}', 'ProfileController@getProfileChar')->name('profile.char');
+    Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'postProfile'])->name('profile.post');
+    Route::get('/profile/{acc}/ranks', [ProfileController::class, 'getProfileRanks'])->name('profile.ranks');
+    Route::get('/profile/{acc}/snapshots', [ProfileController::class, 'getProfileSnapshots'])->name('profile.snapshots');
+    Route::get('/profile/{acc}', [ProfileController::class, 'getProfile'])->name('profile.acc');
+    Route::get('/profile/{acc}/{char}', [ProfileController::class, 'getProfileChar'])->name('profile.char');
 
     // routes for passive-skill-tree
-    Route::get('/passive-skill-tree/{any}','SkillTreeController@showSkillTree')
+    Route::get('/passive-skill-tree/{any}', [SkillTreeController::class, 'showSkillTree'])
             ->name('profile.tree');
-    Route::get('/character-window/get-passive-skills','SkillTreeController@getPassiveSkills')
+    Route::get('/character-window/get-passive-skills', [SkillTreeController::class, 'getPassiveSkills'])
             ->name('profile.tree.passives');
 
     // routes for atlas-skill-tree
-    Route::get('/atlas-skill-tree/{any}','SkillTreeController@showAtlasTree')
+    Route::get('/atlas-skill-tree/{any}', [SkillTreeController::class, 'showAtlasTree'])
             ->name('profile.atlas');
 
     Route::get('/skill-img/{name}', function ($name) {
