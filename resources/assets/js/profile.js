@@ -64,13 +64,39 @@ new Vue({
         skillTreeActive: false,
         jewelsTabActive: false,
         classIds: [
-            {id: 0, name: 'Scion'},
-            {id: 1, name: 'Marauder'},
-            {id: 2, name: 'Ranger'},
-            {id: 3, name: 'Witch'},
-            {id: 4, name: 'Duelist'},
-            {id: 5, name: 'Templar'},
-            {id: 6, name: 'Shadow'},
+            // {id: 0, name: 'Scion'},//old
+            {id: 'Scion', name: 'Scion'},
+            {id: 'Ascendant', name: 'Scion'},
+            // {id: 1, name: 'Marauder'},//old
+            {id: 'Marauder', name: 'Marauder', oldId: 1},
+            {id: 'Juggernaut', name: 'Marauder', oldId: 1},
+            {id: 'Berserker', name: 'Marauder', oldId: 1},
+            {id: 'Chieftain', name: 'Marauder', oldId: 1},
+            // {id: 2, name: 'Ranger'},//old
+            {id: 'Ranger', name: 'Ranger', oldId: 2},
+            {id: 'Deadeye', name: 'Ranger', oldId: 2},
+            {id: 'Raider', name: 'Ranger', oldId: 2},
+            {id: 'Pathfinder', name: 'Ranger', oldId: 2},
+            // {id: 3, name: 'Witch'},//old
+            {id: 'Witch', name: 'Witch'},
+            {id: 'Necromancer', name: 'Witch'},
+            {id: 'Elementalist', name: 'Witch'},
+            {id: 'Occultist', name: 'Witch'},
+            // {id: 4, name: 'Duelist'}, //old 
+            {id: 'Duelist', name: 'Duelist', oldId: 4, ascendancyClass:0},
+            {id: 'Slayer', name: 'Duelist', oldId: 4, ascendancyClass:1},
+            {id: 'Gladiator', name: 'Duelist', oldId: 4, ascendancyClass:2},
+            {id: 'Champion', name: 'Duelist', oldId: 4, ascendancyClass:3},
+            // {id: 5, name: 'Templar'},//old
+            {id: 'Templar', name: 'Templar'},
+            {id: 'Inquisitor', name: 'Templar'},
+            {id: 'Hierophant', name: 'Templar'},
+            {id: 'Guardian', name: 'Templar'},
+            //{id: 6, name: 'Shadow'},//OLD
+            {id: 'Shadow', name: 'Shadow', ascendancyClass:0},
+            {id: 'Assassin', name: 'Shadow', ascendancyClass:1},
+            {id: 'Trickster', name: 'Shadow', ascendancyClass:2},
+            {id: 'Saboteur', name: 'Shadow', ascendancyClass:3},
         ],
         loadingItems:false,
         showBandits:false,
@@ -425,12 +451,12 @@ new Vue({
         },
 
         getCharacterClass: function(){
-            if(!this.character.classId){
+            if(!this.character.class){
                 return ''; 
             }
             var self = this;
             return this.classIds.filter(function(x) {
-                return x.id === self.character.classId;
+                return x.id === self.character.class;
             })[0].name;
         },
 
@@ -494,12 +520,26 @@ new Vue({
             var tempStr = "/passive-skill-tree/hash"+userStr;
             //console.log('test atlast:');
             //var url_atlas = (new poeHelpers).getAtlasUrl(this.treeData.hashes_ex);
-            //console.log(url_atlas);
-            var url_hash = (new poeHelpers).getTreeUrl(
-                this.character.classId,
-                this.character.ascendancyClass,
-                this.treeData.hashes
-            );
+
+            if(Object.hasOwn(this.character, 'ascendancyClass')){
+                var url_hash = (new poeHelpers).getTreeUrl(
+                    this.character.classId,
+                    this.character.ascendancyClass,
+                    this.treeData.hashes
+                );
+            }else{
+                //set class
+                var self = this;
+                var char = this.classIds.filter(function(x) {
+                    return x.id === self.character.class;
+                })[0]
+                var url_hash = (new poeHelpers).getTreeUrl(
+                    char.oldId,
+                    char.ascendancyClass,
+                    this.treeData.hashes
+                );
+            }
+            
             this.skillTreeUrl=tempStr.replace('hash',url_hash);
             /**/
             const iframe = document.querySelector("#skill-tree-placeholder iframe");

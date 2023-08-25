@@ -122,7 +122,7 @@ class Stats_Manager
 
         //base stats
         $baseStat = new Base_Stats;
-        $baseStat = $baseStat->getStats($character['level'], $character['classId']);
+        $baseStat = $baseStat->getStats($character['level'], $character['class']);
         foreach ($baseStat as $stat) {
             $this->addBaseMods($stat);
         }

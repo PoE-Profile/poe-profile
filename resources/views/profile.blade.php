@@ -110,7 +110,6 @@ $(function () {
                         :character="character" :account="account" :off-hand="showOffHand"></character-stats>
                 </div>
                 <div style="padding:4px 4px 0 0;">
-                    <pob-code :account="account" :character="character.name" class="pull-right" style=""></pob-code>
 
                     <button class="btn btn-sm poe-btn show-tooltip pull-right mr-1"
                             @click.prevent="isSnapshotsVisible = true"
