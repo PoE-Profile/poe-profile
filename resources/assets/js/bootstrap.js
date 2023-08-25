@@ -41,17 +41,17 @@ Vue.config.silent = true;
 
 import Echo from "laravel-echo"
 
-window.Pusher = require('pusher-js');
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    wsHost: process.env.MIX_PUSHER_HOST,
-    wsPort: process.env.MIX_PUSHER_PORT,
-    forceTLS: false,
-    disableStats: false,
-    enabledTransports: ['ws']
-});
+// window.Pusher = require('pusher-js');
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     wsHost: process.env.MIX_PUSHER_HOST,
+//     wsPort: process.env.MIX_PUSHER_PORT,
+//     forceTLS: false,
+//     disableStats: false,
+//     enabledTransports: ['ws']
+// });
 
 // window.io = require('socket.io-client');
 // window.Echo = new Echo({
