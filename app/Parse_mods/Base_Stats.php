@@ -5,7 +5,15 @@ namespace App\Parse_mods;
 class Base_Stats
 {
     public $level;
-    public $class;
+    public $class=[
+        "Marauder"=>1, "Juggernaut"=>1, "Berserker"=>1, "Chieftain"=>1, 
+        "Ranger"=>2, "Deadeye"=>2, "Raider"=>2, "Pathfinder"=>2,
+        "Witch"=>3, "Necromancer"=>3, "Elementalist"=>3, "Occultist"=>3,
+        "Duelist"=>4, "Gladiator"=>4, "Slayer"=>4, "Champion"=>4, 
+        "Templar"=>5, "Inquisitor"=>5, "Hierophant"=>5, "Guardian"=>5,
+        "Shadow"=>6, "Assassin"=>6, "Saboteur"=>6, "Trickster"=>6,
+        "Scion"=>0, "Ascendant"=>0,
+    ];
     private $class_base_stats = [
         1 => [
             // Marauder
@@ -91,7 +99,7 @@ class Base_Stats
     public function getStats($level, $class)
     {
         $levelStats = $this->base_stats_level($level);
-        $classStats = $this->class_base_stats[$class];
+        $classStats = $this->class_base_stats[$this->class[$class]];
 
         return array_merge($levelStats, $classStats);
     }

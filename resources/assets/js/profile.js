@@ -64,13 +64,39 @@ new Vue({
         skillTreeActive: false,
         jewelsTabActive: false,
         classIds: [
-            {id: 0, name: 'Scion'},
-            {id: 1, name: 'Marauder'},
-            {id: 2, name: 'Ranger'},
-            {id: 3, name: 'Witch'},
-            {id: 4, name: 'Duelist'},
-            {id: 5, name: 'Templar'},
-            {id: 6, name: 'Shadow'},
+            // {id: 0, name: 'Scion'},//old
+            {id: 'Scion', name: 'Scion', oldId: 0, ascendancyClass:0},
+            {id: 'Ascendant', name: 'Scion', oldId: 0, ascendancyClass:1},
+            // {id: 1, name: 'Marauder'},//old
+            {id: 'Marauder', name: 'Marauder', oldId: 1, ascendancyClass:0},
+            {id: 'Juggernaut', name: 'Marauder', oldId: 1, ascendancyClass:1},
+            {id: 'Berserker', name: 'Marauder', oldId: 1, ascendancyClass:2},
+            {id: 'Chieftain', name: 'Marauder', oldId: 1, ascendancyClass:3},
+            // {id: 2, name: 'Ranger'},//old
+            {id: 'Ranger', name: 'Ranger', oldId: 2, ascendancyClass:0},
+            {id: 'Deadeye', name: 'Ranger', oldId: 2, ascendancyClass:1},
+            {id: 'Raider', name: 'Ranger', oldId: 2, ascendancyClass:2},
+            {id: 'Pathfinder', name: 'Ranger', oldId: 2, ascendancyClass:3},
+            // {id: 3, name: 'Witch'},//old
+            {id: 'Witch', name: 'Witch', oldId: 3, ascendancyClass:0},
+            {id: 'Occultist', name: 'Witch', oldId: 3, ascendancyClass:1},
+            {id: 'Elementalist', name: 'Witch', oldId: 3, ascendancyClass:2},
+            {id: 'Necromancer', name: 'Witch', oldId: 3, ascendancyClass:3},
+            // {id: 4, name: 'Duelist'}, //old 
+            {id: 'Duelist', name: 'Duelist', oldId: 4, ascendancyClass:0},
+            {id: 'Slayer', name: 'Duelist', oldId: 4, ascendancyClass:1},
+            {id: 'Gladiator', name: 'Duelist', oldId: 4, ascendancyClass:2},
+            {id: 'Champion', name: 'Duelist', oldId: 4, ascendancyClass:3},
+            // {id: 5, name: 'Templar'},//old
+            {id: 'Templar', name: 'Templar', oldId: 5, ascendancyClass:0},
+            {id: 'Inquisitor', name: 'Templar', oldId: 5, ascendancyClass:1},
+            {id: 'Hierophant', name: 'Templar', oldId: 5, ascendancyClass:2},
+            {id: 'Guardian', name: 'Templar', oldId: 5, ascendancyClass:3},
+            //{id: 6, name: 'Shadow'},//OLD
+            {id: 'Shadow', name: 'Shadow', oldId: 6, ascendancyClass:0},
+            {id: 'Assassin', name: 'Shadow', oldId: 6, ascendancyClass:1},
+            {id: 'Trickster', name: 'Shadow', oldId: 6, ascendancyClass:2},
+            {id: 'Saboteur', name: 'Shadow', oldId: 6, ascendancyClass:3},
         ],
         loadingItems:false,
         showBandits:false,
@@ -86,6 +112,12 @@ new Vue({
 
 
     mounted: function () {
+        // window.Echo.channel('update-snapshot')//.'+account+'.'+character)
+        // .listen('SnapshotCreated', (e) => {
+        //     // console.log(e);
+        //     console.log(e.snapshot.hash);
+        // });
+
         $('.po-bandits-link').popover({
            trigger: 'click',
            html: true,
@@ -231,7 +263,8 @@ new Vue({
         }
         this.character={name:window.PHP.char}
         this.setAccountData();
-        this.getCharacterItems();
+        // this.getCharacterItems();
+        
     },
 
     methods: {
@@ -318,6 +351,7 @@ new Vue({
         },
 
         calcTotals: function(){
+            this.getCharacterItems();
             this.showBubbles = true;
             var allStats = this.profileStore.getAllStats();
             if(allStats.length === 0){
@@ -330,7 +364,7 @@ new Vue({
             var auraVal;
             this.moreInfoStats.forEach(function(stat){
                 var flat = 0,
-                    percent = Math.round(stats.defense[stat.indexes.percent].total);
+                percent = Math.round(stats.defense[stat.indexes.percent].total);
                 // stat.total = Math.floor(Math.floor(Math.floor(flat * percent) / 100) + flat);
                 stat.total = stats.defense[stat.indexes.percent].totalCalc;
                 if (stat.name === 'Life' && flat > 1) {
@@ -418,12 +452,12 @@ new Vue({
         },
 
         getCharacterClass: function(){
-            if(!this.character.classId){
+            if(!this.character.class){
                 return ''; 
             }
             var self = this;
             return this.classIds.filter(function(x) {
-                return x.id === self.character.classId;
+                return x.id === self.character.class;
             })[0].name;
         },
 
@@ -487,12 +521,26 @@ new Vue({
             var tempStr = "/passive-skill-tree/hash"+userStr;
             //console.log('test atlast:');
             //var url_atlas = (new poeHelpers).getAtlasUrl(this.treeData.hashes_ex);
-            //console.log(url_atlas);
-            var url_hash = (new poeHelpers).getTreeUrl(
-                this.character.classId,
-                this.character.ascendancyClass,
-                this.treeData.hashes
-            );
+
+            if(Object.hasOwn(this.character, 'ascendancyClass')){
+                var url_hash = (new poeHelpers).getTreeUrl(
+                    this.character.classId,
+                    this.character.ascendancyClass,
+                    this.treeData.hashes
+                );
+            }else{
+                //set class
+                var self = this;
+                var char = this.classIds.filter(function(x) {
+                    return x.id === self.character.class;
+                })[0]
+                var url_hash = (new poeHelpers).getTreeUrl(
+                    char.oldId,
+                    char.ascendancyClass,
+                    this.treeData.hashes
+                );
+            }
+            
             this.skillTreeUrl=tempStr.replace('hash',url_hash);
             /**/
             const iframe = document.querySelector("#skill-tree-placeholder iframe");
@@ -509,7 +557,7 @@ new Vue({
 
         getCharacterItems: function () {
             //start loading bar for items and stats
-            this.loadingItems=true;
+            // this.loadingItems=true;
             var formData = new FormData();
             formData.append('account', this.account);
             formData.append('character', this.character.name);

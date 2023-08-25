@@ -46,7 +46,7 @@ class Account extends Model
     }
 
     public function updateLastChar(){
-        if ($this->updated_at->diffInMinutes(now()) > 120){
+        if (is_null($this->characters) || $this->updated_at->diffInMinutes(now()) > 120){
             $chars = PoeApi::getCharsData($this->name);
 
             // problem with limits stop

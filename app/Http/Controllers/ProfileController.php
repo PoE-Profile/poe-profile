@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Account;
-use App\LadderCharacter;
 use App\Snapshot;
+use App\LadderCharacter;
+use App\Jobs\CreateSnapshot;
 use Illuminate\Http\Request;
 
 
@@ -27,6 +28,7 @@ class ProfileController extends Controller
         if($account->characters && !collect($account->characters)->contains('name', $char)){
             $char=$account->characters[0]['name'];
         }
+        // CreateSnapshot::dispatch($acc, $char);
         $snapshot = Snapshot::getAccChar($acc,$char);
 
         if(!$snapshot && !$account->characters){
@@ -38,6 +40,7 @@ class ProfileController extends Controller
     public function getProfileChar(Request $request, $acc, $char)
     {
         $snapshot = Snapshot::getAccChar($acc,$char);
+        // CreateSnapshot::dispatch($acc, $char);
         $account = Account::with(['streamer'])->firstOrCreate(['name' => $acc]);
         $account->updateViews();
 
