@@ -351,7 +351,9 @@ new Vue({
         },
 
         calcTotals: function(){
-            this.getCharacterItems();
+            if(!window.PHP.loadBuild){
+                this.getCharacterItems();
+            }
             this.showBubbles = true;
             var allStats = this.profileStore.getAllStats();
             if(allStats.length === 0){
