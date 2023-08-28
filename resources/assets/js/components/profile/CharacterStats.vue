@@ -204,7 +204,11 @@ export default {
                 this.profileStore.setAllStats(response.data);
                 this.$emit('stat-loaded');
                 this.loading=false;
-            });
+            }).catch(e => {
+                if (e.response.status === 404) {
+                    alert(e.response.data.message);
+                }
+            });;
         },
 
         toggleStat: function (stat,index) {
