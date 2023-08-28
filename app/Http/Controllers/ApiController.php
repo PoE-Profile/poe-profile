@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\PoB\PobXMLBuilder;
 use App\PoeApi;
 use App\Snapshot;
+use App\Http\Requests;
+use App\PoB\PobXMLBuilder;
+use Illuminate\Http\Request;
 use App\Parse_mods\Stats_Manager;
 
 class ApiController extends Controller
@@ -22,17 +22,20 @@ class ApiController extends Controller
             return Snapshot::where('hash','=',$b[1])->first()->item_data['items'];
         }
 
-        // get snapshot items
-        $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('created_at', 'DESC')->first();
-        if($snapshot) {
-            return $snapshot->item_data;
-        }
-
         $dbAcc = \App\Account::where('name', $acc)->first();
         $itemsData=PoeApi::getItemsData($acc, $char, $realm);
+        //if rate limited no api res return snapshot if exist
+        if(!$itemsData){
+            $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('created_at', 'DESC')->first();
+            if($snapshot) {
+                return $snapshot->item_data;
+            }
+        }
+
         if(!$dbAcc || !array_key_exists('items', $itemsData)){
             return;
         }
+
         $dbAcc->updateLastCharInfo($itemsData);
         return $itemsData;
     }
@@ -51,17 +54,28 @@ class ApiController extends Controller
             }
             return $build->getStats();
         }
-        // get snapshot stats
-        $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('updated_at', 'DESC')->first();
-        if($snapshot) {
-            return $snapshot->getStats();
-        }
+        
 
         //get acc from db to get real name
         $dbAcc = \App\Account::where('name', $acc)->first();
         $acc = $dbAcc->name;
         $itemsRes = PoeApi::getItemsData($acc, $char, $realm);
         $tree = PoeApi::getTreeData($acc, $char, $realm);
+        //if rate limited no api res return snapshot if exist
+        if(!$itemsRes){
+            $snapshot = Snapshot::where('original_char', $acc . '/' . $char)->orderBy('updated_at', 'DESC')->first();
+            if($snapshot) {
+                return $snapshot->getStats();
+            }
+        }
+
+        if(!$dbAcc || !array_key_exists('items', $itemsRes)){
+            return response()->json([
+                'code'      =>  404,
+                'message'   =>  "Аccount is private or does not exist."
+            ], 404);  
+        }
+        
         $stManager = new Stats_Manager($itemsRes, $tree, isset($_GET['offHand']));
         return $stManager->getStats();
     }

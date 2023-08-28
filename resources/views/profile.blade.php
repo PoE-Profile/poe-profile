@@ -125,7 +125,7 @@ $(function () {
                     <h2 class="info1">Level @{{character.level}} @{{character.class}}
                         <small style="color:white;" v-if="isBuild">(patch @{{ build.poe_version }})</small>
                     </h2>
-                        <h2 class="info2 show-tooltip" v-if="!isBuild"
+                        <h2 class="info2 show-tooltip" v-if="!isBuild && character.league"
                             title="Click to Load League" data-placement="bottom">
                             
                             <a :href="route('ladders.show', character.league)+'?realm='+realm">
