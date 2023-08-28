@@ -42,11 +42,9 @@ class PoeTree extends Command
         $response = Http::withHeaders(['User-Agent' => $userAgent])->get('https://www.pathofexile.com/fullscreen-passive-skill-tree');
         $html = $response->body();
         $tempHtml = trim(preg_replace('/\s\s+/', '', $html));
-        // dd($html);
-        
         ///set latest_nodes.json
         $nodes='';
-        $pattern = '/"nodes"\: (\{.*?\})\,"extraImages":/';
+        $pattern = '/"nodes"\: (\{.*\})\,"extraImages"/';
         preg_match ($pattern, $tempHtml, $matches);
         if(count($matches)==0){
             $this->info("no nodes mach send mail");

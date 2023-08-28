@@ -523,12 +523,13 @@ new Vue({
             var tempStr = "/passive-skill-tree/hash"+userStr;
             //console.log('test atlast:');
             //var url_atlas = (new poeHelpers).getAtlasUrl(this.treeData.hashes_ex);
-
+            
             if(Object.hasOwn(this.character, 'ascendancyClass')){
                 var url_hash = (new poeHelpers).getTreeUrl(
                     this.character.classId,
                     this.character.ascendancyClass,
-                    this.treeData.hashes
+                    this.treeData.hashes,
+                    this.treeData.mastery_effects
                 );
             }else{
                 //set class
@@ -539,7 +540,8 @@ new Vue({
                 var url_hash = (new poeHelpers).getTreeUrl(
                     char.oldId,
                     char.ascendancyClass,
-                    this.treeData.hashes
+                    this.treeData.hashes,
+                    this.treeData.mastery_effects
                 );
             }
             
