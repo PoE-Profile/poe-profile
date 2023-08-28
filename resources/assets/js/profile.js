@@ -74,8 +74,8 @@ new Vue({
             {id: 'Chieftain', name: 'Marauder', oldId: 1, ascendancyClass:3},
             // {id: 2, name: 'Ranger'},//old
             {id: 'Ranger', name: 'Ranger', oldId: 2, ascendancyClass:0},
-            {id: 'Deadeye', name: 'Ranger', oldId: 2, ascendancyClass:1},
-            {id: 'Raider', name: 'Ranger', oldId: 2, ascendancyClass:2},
+            {id: 'Raider', name: 'Ranger', oldId: 2, ascendancyClass:1},
+            {id: 'Deadeye', name: 'Ranger', oldId: 2, ascendancyClass:2},
             {id: 'Pathfinder', name: 'Ranger', oldId: 2, ascendancyClass:3},
             // {id: 3, name: 'Witch'},//old
             {id: 'Witch', name: 'Witch', oldId: 3, ascendancyClass:0},
