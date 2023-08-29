@@ -52,8 +52,8 @@ export var poeHelpers  = function() {
             //         u.appendInt16(i.hashesEx[r])
             // } else
                 u.appendInt8(0);
-            //for mastery_effect_pairs -> https://poedb.tw/us/API%3APassive_Skill_Tree    
-            u.appendInt8(6);
+            //for mastery_effect_pairs -> https://poedb.tw/us/API%3APassive_Skill_Tree
+            u.appendInt8(Object.entries(masteryEffects).length-1);
             Object.entries(masteryEffects).forEach(([k, v], i) => {
                 u.appendInt16(v)
                 u.appendInt16(k)
