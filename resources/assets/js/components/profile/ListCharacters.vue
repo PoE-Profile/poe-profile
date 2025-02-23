@@ -23,7 +23,7 @@
             <li>
                 <a :href="characterUrl(currentCharacter)">
                   <div :class="['character current', hideCurentChar ? 'hide-current' : '']">
-                      <div :class="'icon2 ' + currentCharacter.class" style=""></div>
+                      <div :class="'icon2 ' + charClass(currentCharacter.class)" style=""></div>
                       <span :class="'level ' + currentCharacter.league">L{{currentCharacter.level}}</span>
                       <span class="name">{{withEllipsis(currentCharacter.name,17)}}</span>
                   </div>
@@ -33,7 +33,7 @@
             <li v-for="char in computetChars">
                 <a :href="characterUrl(char)">
                   <div :class="['character', char.name === currentCharacter.name ? 'hide-current' : '']">
-                      <div :class="'icon2 ' + char.class" style=""></div>
+                      <div :class="'icon2 ' + charClass(char.class)" style=""></div>
                       <span :class="'level ' +char.league">L{{char.level}}</span>
                       <span class="name">{{withEllipsis(char.name,17)}}</span>
                   </div>
@@ -150,6 +150,7 @@ export default {
         setLeague:function(l){
             this.currentLeague=l;
         },
+
         characterUrl: function(char){
             if (this.isBuild) {
                 return route('build.show', char.buildId);
@@ -162,6 +163,28 @@ export default {
                 return text;
             }
             return text.substring(0, after)+".."
+        },
+
+        charClass: function(character_class){
+            let baseClasses = {
+                Ranger: ['Daughter of Oshabi', 'Whisperer', 'Wildspeaker', 'Warden'],
+                Marauder: ['Antiquarian', 'Behemoth', 'Ancestral Commander'],
+                Shadow: ['Surfcaster', 'Servant of Arakaali', 'Blind Prophet'],
+                Witch: ['Harbinger', 'Herald', 'Bog Shaman'],
+                Duelist: ['Gambler', 'Paladin', 'Aristocrat'],
+                Templar: ['Architect of Chaos', 'Polytheist', 'Puppeteer'],
+                Scion: ['Scavenger'],
+            };
+
+            for (const [base_class, assendancies] of Object.entries(baseClasses)) {
+                
+                if(assendancies.includes(character_class)) {
+                    return base_class;
+                }
+            }
+
+            return character_class;
+
         },
 
     }

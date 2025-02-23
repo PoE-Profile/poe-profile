@@ -99,9 +99,27 @@ class Base_Stats
     public function getStats($level, $class)
     {
         $levelStats = $this->base_stats_level($level);
-        $classStats = $this->class_base_stats[$this->class[$class]];
+        $classStats = $this->class_base_stats[$this->getClassType($class)];
 
         return array_merge($levelStats, $classStats);
+    }
+
+    private function getClassType($class_type) {
+        if(isset($this->class[$class_type])) {
+            return $this->class[$class_type];
+        }
+
+        $new_classes=[
+            "Marauder"=>1, "Antiquarian"=>1, "Behemoth"=>1, "Ancestral Commander"=>1, 
+            "Ranger"=>2, "Daughter of Oshabi"=>2, "Whisperer"=>2, "Wildspeaker"=>2, "Warden"=>2,
+            "Witch"=>3, "Harbinger"=>3, "Herald"=>3, "Bog Shaman"=>3,
+            "Duelist"=>4, "Gambler"=>4, "Paladin"=>4, "Aristocrat"=>4, 
+            "Templar"=>5, "Architect of Chaos"=>5, "Polytheist"=>5, "Puppeteer"=>5,
+            "Shadow"=>6, "Surfcaster"=>6, "Servant of Arakaali"=>6, "Blind Prophet"=>6,
+            "Scion"=>0, "Scavenger"=>0,
+        ];
+
+        return $new_classes[$class_type];
     }
 
 }
