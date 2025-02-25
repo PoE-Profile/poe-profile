@@ -101,7 +101,7 @@
             <li>Added Public Stashes (redirect to pathofexile.com/trade/)</li>
             <li>Added PoB Code in builds</li>
             <li>Added Snapshots tab in profile </li>
-            <li>Added <a href="{{route('tutorial.build')}}" class="about-link">Tutorial</a> for Builds</li>
+            <li>Added Tutorial for Builds</li>
     	</ul>
 
 

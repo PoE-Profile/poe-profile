@@ -541,7 +541,9 @@ new Vue({
             }
             var userStr="?accountName="+this.account+"&characterName="+this.character.name+version;
             var tempStr = "/passive-skill-tree/hash"+userStr;
-            //console.log('test atlast:');
+            if(this.character.league.includes('Phrecia')){
+                tempStr = "/passive-skill-tree/alternate/hash"+userStr;
+            }
             //var url_atlas = (new poeHelpers).getAtlasUrl(this.treeData.hashes_ex);
             
             if(Object.hasOwn(this.character, 'ascendancyClass')){

@@ -23,7 +23,13 @@ class SkillTreeController extends Controller
         }
         return \Storage::get('passive-skill-tree.html');
     }
-
+    
+    public function showSkillTreeAlternate(Request $request){
+        if(!\Storage::exists('passive-skill-tree-alternate.html')){
+            \Artisan::call('poe:tree');
+        }
+        return \Storage::get('passive-skill-tree-alternate.html');
+    }
 
     public function getPassiveSkills()
     {

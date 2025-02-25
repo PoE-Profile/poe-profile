@@ -35,9 +35,9 @@ Vue.config.debug = false;
 Vue.config.silent = true;
 
 //For local development
-// Vue.config.devtools = true;
-// Vue.config.debug = true;
-// Vue.config.silent = false;
+Vue.config.devtools = true;
+Vue.config.debug = true;
+Vue.config.silent = false;
 
 import Echo from "laravel-echo"
 
