@@ -43,7 +43,7 @@
                     <a href="#" v-if="char.class.length>0" title=""
                         @click.prevent="trigerFilterClass(char.class)" >
                     <div class="card card-inverse twitch-card">
-                        <img v-bind:src="'/imgs/classes/' + char.class + '.png'"  >
+                        <img v-bind:src="'/imgs/classes/' + charClass(char.class) + '.png'"  >
                         <div class="caption-overlay">
                             <p class="card-text">{{char.class}}</p>
                         </div>
@@ -342,7 +342,29 @@ export default {
                 'rank-plus': (parseInt(ranks)>0),
                 'rank-minus': (parseInt(ranks)<0)
             }
-        }
+        },
+
+        charClass: function(character_class){
+            let baseClasses = {
+                Ranger: ['Daughter of Oshabi', 'Whisperer', 'Wildspeaker', 'Warden'],
+                Marauder: ['Antiquarian', 'Behemoth', 'Ancestral Commander'],
+                Shadow: ['Surfcaster', 'Servant of Arakaali', 'Blind Prophet'],
+                Witch: ['Harbinger', 'Herald', 'Bog Shaman'],
+                Duelist: ['Gambler', 'Paladin', 'Aristocrat'],
+                Templar: ['Architect of Chaos', 'Polytheist', 'Puppeteer'],
+                Scion: ['Scavenger'],
+            };
+
+            for (const [base_class, assendancies] of Object.entries(baseClasses)) {
+                
+                if(assendancies.includes(character_class)) {
+                    return base_class;
+                }
+            }
+
+            return character_class;
+
+        },
     },
 };
 </script>

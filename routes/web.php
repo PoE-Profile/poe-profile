@@ -62,6 +62,9 @@ Route::group(['middleware' => 'web'], function () {
     // routes for passive-skill-tree
     Route::get('/passive-skill-tree/{any}', [SkillTreeController::class, 'showSkillTree'])
             ->name('profile.tree');
+    Route::get('/passive-skill-tree/alternate/{any}', [SkillTreeController::class, 'showSkillTreeAlternate'])
+            ->name('profile.tree.alternate');
+            
     Route::get('/character-window/get-passive-skills', [SkillTreeController::class, 'getPassiveSkills'])
             ->name('profile.tree.passives');
 

@@ -49,7 +49,7 @@
             <li class="pull-right " style="padding-right:10px;" v-if="selectedTab=='profile'">
                 [<a class="link show-tooltip" target="_blank"
                 data-toggle="tooltip" data-placement="bottom" title="Go to profile on pathofexile.com"
-                :href="'https://www.pathofexile.com/account/view-profile/' + account + '/characters?characterName='+character.name">PoE profile</a>]
+                :href="'https://www.pathofexile.com/account/view-profile/' + account.replace('#', '%23') + '/characters?characterName='+character.name">PoE profile</a>]
             </li>
             <li class="pull-right " v-if="selectedTab=='profile'||favStore.isBuildPublic(account)" style="display: block;">
                 <a href="#" class="btn btn-sm poe-btn po-save-build-link "

@@ -15,6 +15,7 @@ class ProfileController extends Controller
     public function postProfile(Request $request)
     {
         $acc = $request->input('account');
+        $acc = str_replace('#','%23',$acc);
         return redirect()->route('profile.acc',
             ['acc' => $acc,'realm'=>$request->input('realm')]
         );
