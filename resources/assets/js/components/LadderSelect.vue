@@ -4,7 +4,12 @@
 <template>
 <div class="p-1" style=""> 
     <h5>
-        <div class="pull-right">
+        Ladders Realm
+        <drop-down class="d-inline-block" style="width: 90px" v-on:selected="selectRealm" :list="realms" >
+            <span>{{realm}}</span>
+        </drop-down> :</h5>
+        
+        <div class="">
             <ul class="nav nav-pills char-nav">
                 <li class="nav-item" v-for="l in leagues">
                     <a :href="route('ladders.show',l)+'?realm='+realm" class="nav-link m-0" :class="{'active':(l==active)}">
@@ -14,12 +19,8 @@
             </ul>
         </div>
 
-        Ladders Realm
-        <drop-down class="d-inline-block" style="width: 90px" v-on:selected="selectRealm" :list="realms" >
-            <span>{{realm}}</span>
-        </drop-down> 
-        :
-    </h5>
+        
+    
 </div>
 </template>
 

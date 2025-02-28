@@ -108,7 +108,7 @@ $('.show-tooltip').tooltip();
 
          @include('flash::message')
         
-       <div class="text-xs-center" style="padding-bottom:5px;">
+       {{-- <div class="text-xs-center" style="padding-bottom:5px;">
             <div style="margin: 0 auto;height: 91px;width: 729px;border: 1px solid orange;">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <!-- exileMainAd -->
@@ -134,7 +134,7 @@ $('.show-tooltip').tooltip();
         </div>
         <div class="tab-content" style="background-color: #211F18;min-height:800px;">
             <twitch-page></twitch-page>
-        </div>
+        </div> --}}
 
 
     </div>
